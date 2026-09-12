@@ -56,7 +56,7 @@ function animateDecoration(target: Element) {
   }, 0)
   // Long outlines can outlast their section's visit. Suspend painting off-screen.
   const visibility = new IntersectionObserver(entries => {
-    if (timeline.progress() === 1) return
+    if (timeline.progress() === 1 || (timeline.paused() && timeline.time() === 0)) return
     if (entries.some(entry => entry.isIntersecting)) timeline.resume()
     else timeline.pause()
   })

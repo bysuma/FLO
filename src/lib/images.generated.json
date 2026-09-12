@@ -1,0 +1,112 @@
+{
+  "/about/excavator-mobile.webp": {
+    "width": 960,
+    "height": 541,
+    "srcSet": "/about/responsive/excavator-mobile-160.webp 160w, /about/responsive/excavator-mobile-320.webp 320w, /about/responsive/excavator-mobile-480.webp 480w, /about/responsive/excavator-mobile-640.webp 640w, /about/excavator-mobile.webp 960w"
+  },
+  "/about/excavator.webp": {
+    "width": 800,
+    "height": 451,
+    "srcSet": "/about/responsive/excavator-160.webp 160w, /about/responsive/excavator-320.webp 320w, /about/responsive/excavator-480.webp 480w, /about/responsive/excavator-640.webp 640w, /about/excavator.webp 800w"
+  },
+  "/about/hillside-mobile.webp": {
+    "width": 960,
+    "height": 1295,
+    "srcSet": "/about/responsive/hillside-mobile-160.webp 160w, /about/responsive/hillside-mobile-320.webp 320w, /about/responsive/hillside-mobile-480.webp 480w, /about/responsive/hillside-mobile-640.webp 640w, /about/hillside-mobile.webp 960w"
+  },
+  "/about/hillside.webp": {
+    "width": 800,
+    "height": 1079,
+    "srcSet": "/about/responsive/hillside-160.webp 160w, /about/responsive/hillside-320.webp 320w, /about/responsive/hillside-480.webp 480w, /about/responsive/hillside-640.webp 640w, /about/hillside.webp 800w"
+  },
+  "/about/team-mobile.webp": {
+    "width": 960,
+    "height": 1280,
+    "srcSet": "/about/responsive/team-mobile-160.webp 160w, /about/responsive/team-mobile-320.webp 320w, /about/responsive/team-mobile-480.webp 480w, /about/responsive/team-mobile-640.webp 640w, /about/team-mobile.webp 960w"
+  },
+  "/about/team.webp": {
+    "width": 800,
+    "height": 1067,
+    "srcSet": "/about/responsive/team-160.webp 160w, /about/responsive/team-320.webp 320w, /about/responsive/team-480.webp 480w, /about/responsive/team-640.webp 640w, /about/team.webp 800w"
+  },
+  "/contact/background-mobile.webp": {
+    "width": 960,
+    "height": 398,
+    "srcSet": "/contact/responsive/background-mobile-160.webp 160w, /contact/responsive/background-mobile-320.webp 320w, /contact/responsive/background-mobile-480.webp 480w, /contact/responsive/background-mobile-640.webp 640w, /contact/background-mobile.webp 960w"
+  },
+  "/contact/background.webp": {
+    "width": 1600,
+    "height": 664,
+    "srcSet": "/contact/responsive/background-160.webp 160w, /contact/responsive/background-320.webp 320w, /contact/responsive/background-480.webp 480w, /contact/responsive/background-640.webp 640w, /contact/responsive/background-960.webp 960w, /contact/responsive/background-1280.webp 1280w, /contact/background.webp 1600w"
+  },
+  "/footer/dbe.webp": {
+    "width": 160,
+    "height": 160,
+    "srcSet": "/footer/dbe.webp 160w"
+  },
+  "/footer/sbe.webp": {
+    "width": 160,
+    "height": 160,
+    "srcSet": "/footer/sbe.webp 160w"
+  },
+  "/hero/landscape.webp": {
+    "width": 798,
+    "height": 500,
+    "srcSet": "/hero/responsive/landscape-160.webp 160w, /hero/responsive/landscape-320.webp 320w, /hero/responsive/landscape-480.webp 480w, /hero/responsive/landscape-640.webp 640w, /hero/landscape.webp 798w"
+  },
+  "/hero/video-poster.webp": {
+    "width": 1280,
+    "height": 720,
+    "srcSet": "/hero/responsive/video-poster-160.webp 160w, /hero/responsive/video-poster-320.webp 320w, /hero/responsive/video-poster-480.webp 480w, /hero/responsive/video-poster-640.webp 640w, /hero/responsive/video-poster-960.webp 960w, /hero/video-poster.webp 1280w"
+  },
+  "/projects/robertson.webp": {
+    "width": 894,
+    "height": 784,
+    "srcSet": "/projects/responsive/robertson-160.webp 160w, /projects/responsive/robertson-320.webp 320w, /projects/responsive/robertson-480.webp 480w, /projects/responsive/robertson-640.webp 640w, /projects/robertson.webp 894w"
+  },
+  "/projects/topanga-landslide.webp": {
+    "width": 894,
+    "height": 784,
+    "srcSet": "/projects/responsive/topanga-landslide-160.webp 160w, /projects/responsive/topanga-landslide-320.webp 320w, /projects/responsive/topanga-landslide-480.webp 480w, /projects/responsive/topanga-landslide-640.webp 640w, /projects/topanga-landslide.webp 894w"
+  },
+  "/projects/topanga-slope.webp": {
+    "width": 894,
+    "height": 784,
+    "srcSet": "/projects/responsive/topanga-slope-160.webp 160w, /projects/responsive/topanga-slope-320.webp 320w, /projects/responsive/topanga-slope-480.webp 480w, /projects/responsive/topanga-slope-640.webp 640w, /projects/topanga-slope.webp 894w"
+  },
+  "/results/background-mobile.webp": {
+    "width": 960,
+    "height": 1200,
+    "srcSet": "/results/responsive/background-mobile-160.webp 160w, /results/responsive/background-mobile-320.webp 320w, /results/responsive/background-mobile-480.webp 480w, /results/responsive/background-mobile-640.webp 640w, /results/background-mobile.webp 960w"
+  },
+  "/results/background.webp": {
+    "width": 1600,
+    "height": 2000,
+    "srcSet": "/results/responsive/background-160.webp 160w, /results/responsive/background-320.webp 320w, /results/responsive/background-480.webp 480w, /results/responsive/background-640.webp 640w, /results/responsive/background-960.webp 960w, /results/responsive/background-1280.webp 1280w, /results/background.webp 1600w"
+  },
+  "/services/emergency-mobile.webp": {
+    "width": 960,
+    "height": 541,
+    "srcSet": "/services/responsive/emergency-mobile-160.webp 160w, /services/responsive/emergency-mobile-320.webp 320w, /services/responsive/emergency-mobile-480.webp 480w, /services/responsive/emergency-mobile-640.webp 640w, /services/emergency-mobile.webp 960w"
+  },
+  "/services/emergency.webp": {
+    "width": 1200,
+    "height": 914,
+    "srcSet": "/services/responsive/emergency-160.webp 160w, /services/responsive/emergency-320.webp 320w, /services/responsive/emergency-480.webp 480w, /services/responsive/emergency-640.webp 640w, /services/responsive/emergency-960.webp 960w, /services/emergency.webp 1200w"
+  },
+  "/services/planning-mobile.webp": {
+    "width": 960,
+    "height": 507,
+    "srcSet": "/services/responsive/planning-mobile-160.webp 160w, /services/responsive/planning-mobile-320.webp 320w, /services/responsive/planning-mobile-480.webp 480w, /services/responsive/planning-mobile-640.webp 640w, /services/planning-mobile.webp 960w"
+  },
+  "/services/planning.webp": {
+    "width": 1200,
+    "height": 633,
+    "srcSet": "/services/responsive/planning-160.webp 160w, /services/responsive/planning-320.webp 320w, /services/responsive/planning-480.webp 480w, /services/responsive/planning-640.webp 640w, /services/responsive/planning-960.webp 960w, /services/planning.webp 1200w"
+  },
+  "/testimonials/avatar.webp": {
+    "width": 136,
+    "height": 108,
+    "srcSet": "/testimonials/avatar.webp 136w"
+  }
+}

@@ -20,15 +20,17 @@ describe('SSR reveal preparation', () => {
     assert.ok(motionInitialCSS.includes('[data-text-reveal]'))
     assert.ok(motionInitialCSS.includes(':not([data-motion-ready]) { opacity: 0; }'))
     assert.ok(motionInitialCSS.includes('[data-entrance]'))
+    assert.ok(motionInitialCSS.includes('[data-motion-pending]:not([data-motion-ready])'))
   })
   test('failed hydration reveals content instead of leaving it hidden', () => {
     const state = boot()
     state.timers[0]()
-    assert.equal(state.dataset.motion, undefined)
+    assert.equal(state.dataset.motion, 'ready')
   })
   test('successful setup keeps below-fold reveals prepared after the timeout', () => {
     const state = boot()
-    state.dataset.motion = 'ready'
+    // A partial setup cannot disable the watchdog.
+    state.dataset.motion = 'partial'
     state.timers[0]()
     assert.equal(state.dataset.motion, 'ready')
   })

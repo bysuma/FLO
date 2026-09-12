@@ -1,3 +1,4 @@
+import { useHeroPreparation } from './hero-preparation'
 import { animations, usesSimpleMotion } from '../../lib/animations'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
@@ -16,6 +17,7 @@ export type EntranceGroup = {
 
 /** Shared lifecycle only. Targets and choreography are owned by each component. */
 export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonly EntranceGroup[]) {
+  const preparation = useHeroPreparation()
   const targetsRef = useRef(new Map<string, Map<string, Element>>())
   const bindingsRef = useRef(new Map<string, { ref: (node: Element | null) => void; 'data-entrance': string }>())
   const bind = (name: string, key = name) => {
@@ -38,6 +40,7 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
   useEffect(() => {
     const scope = root.current
     if (!scope) return
+    const prepared = preparation?.register()
     const media = matchMedia('(prefers-reduced-motion: reduce)')
     const context = gsap.context(() => {}, scope)
     const observers: IntersectionObserver[] = []
@@ -46,6 +49,7 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
     const stop = (reveal = false) => {
       observers.forEach(observer => observer.disconnect())
       context.revert()
+      groups.forEach(group => targetsRef.current.get(group.name)?.forEach(element => element.removeAttribute('data-motion-pending')))
       if (reveal) groups.forEach(group => {
         const targets = Array.from(targetsRef.current.get(group.name)?.values() ?? [])
         targets.forEach(element => element.setAttribute('data-motion-ready', ''))
@@ -54,7 +58,7 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
     const onPreference = () => { if (media.matches) stop(true) }
     const setup = async () => {
       await document.fonts.ready
-      if (disposed || media.matches || !document.documentElement.dataset.motion) return
+      if (disposed || media.matches || !document.documentElement.dataset.motion) { prepared?.(); return }
       const { duration, delay, stagger } = animations.entrance
       const easing = motionEase()
       for (const group of groups) {
@@ -68,12 +72,12 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
           positions.set(target, index)
           counts.set(section, index + 1)
         })
-        const observer = new IntersectionObserver(entries => {
+        const reveal = (entries: IntersectionObserverEntry[]) => {
           if (disposed || media.matches) return
           const visible = entries.filter(entry => entry.isIntersecting)
           const measurements = visible.map(entry => entry.target.getBoundingClientRect())
           visible.forEach((entry, index) => {
-            observer.unobserve(entry.target)
+            observer?.unobserve(entry.target)
             if (!document.documentElement.dataset.motion || entry.target.hasAttribute('data-motion-ready')) return
             const mobile = usesSimpleMotion()
             if (mobile && (!group.wipe || group.mobileFade)) {
@@ -85,11 +89,13 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
                   clearProps: 'opacity',
                 })
               })
+              preparation?.hold(context)
               entry.target.setAttribute('data-motion-ready', '')
               return
             }
             if (group.animate) {
               context.add(() => group.animate?.(entry.target))
+              preparation?.hold(context)
               entry.target.setAttribute('data-motion-ready', '')
               return
             }
@@ -121,13 +127,20 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
               }, start)
 
             })
+            preparation?.hold(context)
             entry.target.setAttribute('data-motion-ready', '')
           })
-        }, { threshold: .08 })
-        targets.forEach(element => observer.observe(element))
+        }
+        const observer = new IntersectionObserver(reveal, { threshold: .08 })
+        if (preparation) reveal(targets.filter(target => target.getClientRects().length > 0).map(target => ({ target, isIntersecting: true }) as IntersectionObserverEntry))
+        else targets.forEach(element => {
+          element.setAttribute('data-motion-pending', '')
+          observer.observe(element)
+        })
         observers.push(observer)
       }
-      document.documentElement.dataset.motion = 'ready'
+      prepared?.()
+
     }
     const onFocus = (event: FocusEvent) => {
       const target = event.target
@@ -142,10 +155,11 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
     void setup()
     return () => {
       disposed = true
+      prepared?.()
       stop()
       scope.removeEventListener('focusin', onFocus)
       media.removeEventListener('change', onPreference)
     }
-  }, [root, groups])
+  }, [root, groups, preparation])
   return bind
 }

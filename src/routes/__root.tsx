@@ -1,3 +1,4 @@
+import { NotFound, RouteError } from '../components/route-feedback'
 import { motionBootstrap, motionInitialCSS } from '../lib/motion-bootstrap'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
@@ -21,6 +22,10 @@ export const Route = createRootRoute({
       },
     ],
     links: [
+      { rel: 'preload', href: '/fonts/PPMori-Regular.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+      { rel: 'preload', href: '/fonts/PPMori-Light.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+      { rel: 'preload', href: '/fonts/PPMori-Semibold.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+      { rel: 'preload', href: '/fonts/PPTelegraf-Regular.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
         href: appCss,
@@ -28,6 +33,8 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: NotFound,
+  errorComponent: RouteError,
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {

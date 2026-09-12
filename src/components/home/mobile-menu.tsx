@@ -67,7 +67,7 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
     className="fixed inset-0 m-0 flex h-dvh max-h-none w-screen max-w-none flex-col overflow-y-auto border-0 bg-ink px-page text-white opacity-0 backdrop:bg-transparent">
     <div className="flex min-h-32 shrink-0 items-center justify-between pt-[env(safe-area-inset-top)]">
       <Link to="/" hash="home" aria-label="FLO Engineering home"
-        onClick={event => { event.preventDefault(); close(() => { void navigate({ to: '/', hash: 'home' }) }) }}
+        onClick={event => { if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); close(() => { void navigate({ to: '/', hash: 'home' }) }) }}
         className="flex size-21.5 shrink-0 items-end justify-center pb-[1.3rem] [background:url('/navbar/logo-detail.svg')_right_1.25rem_top_2.22rem/.925rem_.925rem_no-repeat,url('/navbar/logo.svg')_center/contain_no-repeat]">
         <span className="font-display text-[4.789px] leading-[.8] tracking-[2.2508px] text-ink">ENGINEERING</span>
       </Link>
@@ -79,7 +79,7 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
     </div>
     <nav aria-label="Mobile" className="flex flex-1 flex-col justify-center gap-6 pb-[max(3rem,env(safe-area-inset-bottom))]">
       {links.map(link => <Link key={link.href} to="/" hash={link.href.slice(1)} data-menu-link
-        onClick={event => { event.preventDefault(); close(() => { void navigate({ to: '/', hash: link.href.slice(1) }) }) }}
+        onClick={event => { if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); close(() => { void navigate({ to: '/', hash: link.href.slice(1) }) }) }}
         className="py-2 font-display text-[40px] leading-[1.1]"><Rollover reveal={false}>{link.label}</Rollover></Link>)}
     </nav>
   </dialog>, document.body)

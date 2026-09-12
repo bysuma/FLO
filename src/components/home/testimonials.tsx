@@ -1,3 +1,4 @@
+import { responsiveImage } from '../../lib/images'
 import { useEntrance } from './use-entrance'
 import type { EntranceGroup } from './use-entrance'
 import { createElement, useEffect, useRef } from 'react'
@@ -18,7 +19,7 @@ function PartnerCard({ duplicate = false, entrance }: { duplicate?: boolean; ent
   const Text = duplicate ? PlainText : TextReveal
   return <figure {...entrance} data-reveal-owner className={`${duplicate ? '' : 'testimonial-card '}snap-start w-100.25 min-h-99.25 [&_blockquote]:max-w-94 [&_blockquote]:min-h-70 max-md:min-h-[346.509px] max-md:[&_blockquote]:min-h-0 max-md:[&_blockquote]:h-[244.39px] max-md:rounded-[8.728px] [&_blockquote]:[--reveal-stagger:110] [--reveal-delay:80] [&_figcaption]:[--reveal-delay:180] max-md:w-auto max-md:self-stretch flex shrink-0 flex-col overflow-hidden rounded-card bg-brand`}>
         <Text as="blockquote" className="flex-1 px-6 pt-9 font-display text-quote max-md:text-quote-mobile max-md:flex-none max-md:px-[20.07px] max-md:pt-[31.42px] max-md:tracking-[-.559px]">“They showed up before dawn and didn't leave until the slope was secure.”</Text>
-        <figcaption className="flex items-center gap-4 max-md:gap-[13.088px] max-md:px-[33.17px] max-md:py-[26.18px] max-md:[&_img]:w-[59.352px] max-md:[&_img]:h-[47.132px] border-t border-ink/30 px-9 py-7"><img src="/testimonials/avatar.webp" alt="" width="68" height="54" loading="lazy" decoding="async" /><div><Text as="p" className="font-semibold uppercase max-md:text-[13.965px]">Marcus Chen</Text><Text as="p" className="mt-2 max-w-40 text-caption max-md:mt-[5px] max-md:max-w-[132.668px] max-md:text-[10.474px]">Facilities Director, Monterey Park</Text></div></figcaption>
+        <figcaption className="flex items-center gap-4 max-md:gap-[13.088px] max-md:px-[33.17px] max-md:py-[26.18px] max-md:[&_img]:w-[59.352px] max-md:[&_img]:h-[47.132px] border-t border-ink/30 px-9 py-7"><img {...responsiveImage('/testimonials/avatar.webp', '(max-width: 767px) 59.352px, 68px')} alt="" width="68" height="54" loading="lazy" decoding="async" /><div><Text as="p" className="font-semibold uppercase max-md:text-[13.965px]">Marcus Chen</Text><Text as="p" className="mt-2 max-w-40 text-caption max-md:mt-[5px] max-md:max-w-[132.668px] max-md:text-[10.474px]">Facilities Director, Monterey Park</Text></div></figcaption>
       </figure>
 }
 
