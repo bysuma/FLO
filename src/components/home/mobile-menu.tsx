@@ -9,6 +9,7 @@ type MenuLink = { label: string; href: string }
 
 export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const timeline = useRef<gsap.core.Timeline | null>(null)
   const finish = useRef<(() => void) | null>(null)
   const closing = useRef(false)
@@ -21,6 +22,8 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
     const previousFocus = document.activeElement as HTMLElement | null
     root.style.overflow = 'hidden'
     dialog.showModal()
+    // React autofocus runs before showModal; move focus after the dialog opens.
+    closeButtonRef.current?.focus({ preventScroll: true })
     const media = gsap.matchMedia()
     media.add({ reduced: '(prefers-reduced-motion: reduce)', animated: '(prefers-reduced-motion: no-preference)' }, context => {
       const reduced = context.conditions?.reduced
@@ -68,7 +71,7 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
         className="flex size-21.5 shrink-0 items-end justify-center pb-[1.3rem] [background:url('/navbar/logo-detail.svg')_right_1.25rem_top_2.22rem/.925rem_.925rem_no-repeat,url('/navbar/logo.svg')_center/contain_no-repeat]">
         <span className="font-display text-[4.789px] leading-[.8] tracking-[2.2508px] text-ink">ENGINEERING</span>
       </Link>
-      <button type="button" autoFocus aria-label="Close menu" onClick={() => close()} className="flex size-14 items-center justify-center">
+      <button ref={closeButtonRef} type="button" aria-label="Close menu" onClick={() => close()} className="flex size-14 items-center justify-center">
         <span aria-hidden="true" className="grid w-14 [&>span]:col-start-1 [&>span]:row-start-1 [&>span]:h-[1.3px] [&>span]:w-14 [&>span]:bg-white">
           <span className="rotate-45" /><span className="-rotate-45" />
         </span>

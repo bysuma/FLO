@@ -51,6 +51,12 @@
   --text-section-mobile--line-height: 1.125;
   --text-service-mobile: 36px;
   --text-service-mobile--line-height: 1.056;
+  --text-results-heading-mobile: 34px;
+  --text-results-heading-mobile--line-height: 1.05;
+  --text-results-stat-mobile: 52px;
+  --text-results-stat-mobile--line-height: .779;
+  --text-results-description-mobile: 9px;
+  --text-results-description-mobile--line-height: 1.148;
   --text-stat-mobile: 60px;
   --text-stat-mobile--line-height: 1;
   --text-quote-mobile: 26px;
