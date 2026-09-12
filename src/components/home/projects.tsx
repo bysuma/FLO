@@ -20,7 +20,7 @@ export function Projects() {
   const dialog = useRef<HTMLDialogElement>(null)
   const [selected, setSelected] = useState(projects[0])
   return <section ref={motionRef} id="projects" aria-labelledby="projects-heading" className="[&_article]:overflow-clip [&_article_h3]:[--reveal-delay:180] [&_article_p]:[--reveal-delay:310] [&_article_button]:[--reveal-delay:0] section-shell px-page py-10 pb-30 max-md:px-5 max-md:py-16">
-    <div className="flex flex-col items-start gap-7 max-md:gap-6"><Eyebrow>Recent projects</Eyebrow><TextReveal as="h2" id="projects-heading" className="max-w-sm font-display text-section max-md:text-section-mobile">Reliability when it matters most</TextReveal></div>
+    <div className="flex flex-col items-start gap-7 max-md:gap-6"><Eyebrow>Recent projects</Eyebrow><TextReveal as="h2" id="projects-heading" className="max-md:text-balance max-w-sm font-display text-section max-md:text-section-mobile">Reliability when it matters most</TextReveal></div>
     <div className="mt-7 max-md:mt-6 flex flex-col gap-3.5 max-md:gap-6 md:flex-row">{projects.map(project => <article key={project.image} className="flex min-w-0 flex-1 flex-col bg-surface max-md:bg-[#f6f6f2]">
       <ParallaxImage entrance={entrance('images', project.image)} src={`/projects/${project.image}.webp`} alt={project.description} />
       <div className="flex flex-1 flex-col items-start px-5 pb-6 pt-8 max-md:p-[18px]"><TextReveal as="h3" className="max-w-56 max-md:max-w-none max-md:text-lg max-md:leading-normal text-project font-semibold uppercase">{project.title}</TextReveal><TextReveal as="p" className="mt-2 text-lg max-md:mt-1.5 max-md:text-xs">{project.description}</TextReveal>
