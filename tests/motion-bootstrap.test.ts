@@ -1,7 +1,7 @@
 import { describe, it as test } from 'node:test'
 import assert from 'node:assert/strict'
 import { runInNewContext } from 'node:vm'
-import { motionBootstrap, motionInitialCSS, motionGroups } from '../src/lib/motion-bootstrap'
+import { motionBootstrap, motionInitialCSS } from '../src/lib/motion-bootstrap'
 
 function boot(reduced = false) {
   const dataset: Record<string, string> = {}
@@ -19,7 +19,7 @@ describe('SSR reveal preparation', () => {
     assert.equal(boot().dataset.motion, 'boot')
     assert.ok(motionInitialCSS.includes('[data-text-reveal]'))
     assert.ok(motionInitialCSS.includes(':not([data-motion-ready]) { opacity: 0; }'))
-    for (const group of motionGroups) assert.ok(motionInitialCSS.includes(group.selector))
+    assert.ok(motionInitialCSS.includes('[data-entrance]'))
   })
   test('failed hydration reveals content instead of leaving it hidden', () => {
     const state = boot()

@@ -64,10 +64,10 @@ function animateDecoration(target: Element) {
   timeline.eventCallback('onComplete', () => visibility.disconnect())
   return () => visibility.disconnect()
 }
-const entrances = [{ selector: ':self', distance: 0, animate: animateDecoration }] satisfies readonly EntranceGroup[]
+const entrances = [{ name: 'decoration', distance: 0, animate: animateDecoration }] satisfies readonly EntranceGroup[]
 
 export function Decoration({ section }: { section: keyof typeof vectors }) {
   const motionRef = useRef<HTMLDivElement>(null)
-  useEntrance(motionRef, entrances)
-  return <div ref={motionRef} aria-hidden="true" className={`motion-decoration absolute pointer-events-none -z-10 flex [&_svg]:min-w-0 ${positioning[section]}`} dangerouslySetInnerHTML={{ __html: vectors[section] }} />
+  const entrance = useEntrance(motionRef, entrances)
+  return <div {...entrance('decoration')} ref={node => { motionRef.current = node; entrance('decoration').ref(node) }} aria-hidden="true" className={`motion-decoration absolute pointer-events-none -z-10 flex [&_svg]:min-w-0 ${positioning[section]}`} dangerouslySetInnerHTML={{ __html: vectors[section] }} />
 }

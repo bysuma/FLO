@@ -43,7 +43,7 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
     const prepare = async () => {
       await document.fonts.ready
       if (disposed || motion.matches || !document.documentElement.dataset.motion) return
-      const owner = element.closest('.service-card, .stat-card, .testimonial-card, a.button, button')
+      const owner = element.closest('[data-reveal-owner], a[data-entrance], button')
       const configuredThreshold = Number.parseFloat(getComputedStyle(element).getPropertyValue('--reveal-threshold'))
       const threshold = owner ? .08 : Number.isFinite(configuredThreshold) ? configuredThreshold : 0.12
       observer = new IntersectionObserver(entries => {

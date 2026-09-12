@@ -1,11 +1,11 @@
 import { animations, usesSimpleMotion } from '../../lib/animations'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { motionEase } from '../../lib/motion-ease'
 import type { RefObject } from 'react'
 
 export type EntranceGroup = {
-  selector: string
+  name: string
   distance: number
   scale?: number
   wipe?: 'up' | 'side' | 'center'
@@ -15,6 +15,25 @@ export type EntranceGroup = {
 
 /** Shared lifecycle only. Targets and choreography are owned by each component. */
 export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonly EntranceGroup[]) {
+  const targetsRef = useRef(new Map<string, Map<string, Element>>())
+  const bindingsRef = useRef(new Map<string, { ref: (node: Element | null) => void; 'data-entrance': string }>())
+  const bind = (name: string, key = name) => {
+    const id = `${name}:${key}`
+    let binding = bindingsRef.current.get(id)
+    if (!binding) {
+      binding = {
+        'data-entrance': name,
+        ref: node => {
+          let targets = targetsRef.current.get(name)
+          if (!targets) targetsRef.current.set(name, targets = new Map())
+          if (node) targets.set(key, node)
+          else targets.delete(key)
+        },
+      }
+      bindingsRef.current.set(id, binding)
+    }
+    return binding
+  }
   useEffect(() => {
     const scope = root.current
     if (!scope) return
@@ -27,7 +46,7 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
       observers.forEach(observer => observer.disconnect())
       context.revert()
       if (reveal) groups.forEach(group => {
-        const targets = group.selector === ':self' ? [scope] : scope.querySelectorAll(group.selector)
+        const targets = Array.from(targetsRef.current.get(group.name)?.values() ?? [])
         targets.forEach(element => element.setAttribute('data-motion-ready', ''))
       })
     }
@@ -38,7 +57,7 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
       const { duration, delay, stagger } = animations.entrance
       const easing = motionEase()
       for (const group of groups) {
-        const targets = group.selector === ':self' ? [scope] : Array.from(scope.querySelectorAll(group.selector))
+        const targets = Array.from(targetsRef.current.get(group.name)?.values() ?? [])
         // Order belongs to the section's DOM, never to IntersectionObserver batches.
         const positions = new Map<Element, number>()
         const counts = new Map<Element, number>()
@@ -125,4 +144,5 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
       media.removeEventListener('change', onPreference)
     }
   }, [root, groups])
+  return bind
 }

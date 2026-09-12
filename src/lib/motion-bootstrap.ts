@@ -1,7 +1,7 @@
 // Shared by server CSS and client observers: targets are hidden before hydration.
 
 export const motionInitialCSS = `@media (prefers-reduced-motion: no-preference) {
-html[data-motion] :is([data-hero-mask], [data-text-reveal], .section-backdrop, .motion-decoration, .button:not(button .button), .hero-copy a, .navbar a, .navbar button, #projects button:has(.button), .about-gallery > img, .service-card, #projects .project-image, .testimonial-card, .stat-card, .footer img):not([data-motion-ready]) { opacity: 0; }
+html[data-motion] :is([data-hero-mask], [data-text-reveal], [data-entrance]):not([data-motion-ready]) { opacity: 0; }
 }`
 
 // Executed in the head before any content paints. If hydration fails, fail open.

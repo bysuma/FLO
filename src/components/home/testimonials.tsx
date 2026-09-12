@@ -1,22 +1,22 @@
 import { useEntrance } from './use-entrance'
 import type { EntranceGroup } from './use-entrance'
 import { createElement, useEffect, useRef } from 'react'
-import type { ComponentProps } from 'react'
+import type { ComponentProps, Ref } from 'react'
 import { gsap } from 'gsap'
 import { animations } from '../../lib/animations'
 import { Decoration } from './decoration'
 import { TextReveal } from '../text-reveal'
 import { Eyebrow } from './eyebrow'
 
-const entrances = [{ selector: '.testimonial-card', distance: 0, wipe: 'up' }] satisfies readonly EntranceGroup[]
+const entrances = [{ name: 'cards', distance: 0, wipe: 'up' }] satisfies readonly EntranceGroup[]
 
 function PlainText({ as = 'span', children, ...props }: ComponentProps<typeof TextReveal>) {
   return createElement(as, props, children)
 }
 
-function PartnerCard({ duplicate = false }: { duplicate?: boolean }) {
+function PartnerCard({ duplicate = false, entrance }: { duplicate?: boolean; entrance?: { ref: Ref<HTMLElement>; 'data-entrance': string } }) {
   const Text = duplicate ? PlainText : TextReveal
-  return <figure className={`${duplicate ? '' : 'testimonial-card '}snap-start w-100.25 min-h-99.25 [&_blockquote]:max-w-94 [&_blockquote]:min-h-70 max-md:min-h-56 [&_blockquote]:[--reveal-stagger:110] [--reveal-delay:80] [&_figcaption]:[--reveal-delay:180] max-md:w-[min(25rem,calc(100vw-3rem))] flex shrink-0 flex-col overflow-hidden rounded-card bg-brand`}>
+  return <figure {...entrance} data-reveal-owner className={`${duplicate ? '' : 'testimonial-card '}snap-start w-100.25 min-h-99.25 [&_blockquote]:max-w-94 [&_blockquote]:min-h-70 max-md:min-h-56 [&_blockquote]:[--reveal-stagger:110] [--reveal-delay:80] [&_figcaption]:[--reveal-delay:180] max-md:w-[min(25rem,calc(100vw-3rem))] flex shrink-0 flex-col overflow-hidden rounded-card bg-brand`}>
         <Text as="blockquote" className="flex-1 px-6 pt-9 font-display text-quote max-md:text-quote-mobile">“They showed up before dawn and didn't leave until the slope was secure.”</Text>
         <figcaption className="flex items-center gap-4 border-t border-ink/30 px-9 py-7"><img src="/testimonials/avatar.webp" alt="" width="68" height="54" loading="lazy" decoding="async" /><div><Text as="p" className="font-semibold uppercase">Marcus Chen</Text><Text as="p" className="mt-2 max-w-40 text-caption">Facilities Director, Monterey Park</Text></div></figcaption>
       </figure>
@@ -24,7 +24,7 @@ function PartnerCard({ duplicate = false }: { duplicate?: boolean }) {
 
 export function Testimonials() {
   const motionRef = useRef<HTMLElement>(null)
-  useEntrance(motionRef, entrances)
+  const entrance = useEntrance(motionRef, entrances)
   const trackRef = useRef<HTMLDivElement>(null)
   const tweenRef = useRef<gsap.core.Timeline | null>(null)
   useEffect(() => {
@@ -87,7 +87,7 @@ export function Testimonials() {
     <div className="testimonial-track snap-x snap-mandatory flex-1 max-lg:self-stretch min-w-0 pr-page pb-2 scrollbar-thin [scrollbar-color:var(--color-brand)_var(--color-ink)] overflow-hidden motion-reduce:overflow-x-auto max-lg:overflow-x-auto [@media(pointer:coarse)]:overflow-x-auto" tabIndex={0} role="region" aria-label="Partner testimonials">
       <div ref={trackRef} className="flex w-max">
         {[false, true, true].map((duplicate, groupIndex) => <div key={groupIndex} aria-hidden={duplicate || undefined} className="flex shrink-0 gap-2.5 pr-2.5 aria-hidden:motion-reduce:hidden aria-hidden:max-lg:hidden [@media(pointer:coarse)]:aria-hidden:hidden">
-          {[0, 1].map(index => <PartnerCard key={index} duplicate={duplicate} />)}
+          {[0, 1].map(index => <PartnerCard entrance={duplicate ? undefined : entrance('cards', String(index))} key={index} duplicate={duplicate} />)}
         </div>)}
       </div>
     </div>
