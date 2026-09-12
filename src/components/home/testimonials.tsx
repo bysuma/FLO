@@ -8,7 +8,7 @@ import { Decoration } from './decoration'
 import { TextReveal } from '../text-reveal'
 import { Eyebrow } from './eyebrow'
 
-const entrances = [{ name: 'cards', distance: 0, wipe: 'up' }] satisfies readonly EntranceGroup[]
+const entrances = [{ name: 'cards', distance: 0, wipe: 'bottom-to-top' }] satisfies readonly EntranceGroup[]
 
 function PlainText({ as = 'span', children, ...props }: ComponentProps<typeof TextReveal>) {
   return createElement(as, props, children)

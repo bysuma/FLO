@@ -8,7 +8,7 @@ export type EntranceGroup = {
   name: string
   distance: number
   scale?: number
-  wipe?: 'up' | 'side' | 'center'
+  wipe?: 'up' | 'side' | 'center' | 'bottom-to-top'
   simultaneous?: boolean
   animate?: (target: Element) => void | (() => void)
 }
@@ -97,6 +97,8 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
               ? `inset(0px ${bounds.width}px 0px 0px)`
               : group.wipe === 'center'
                 ? `inset(${bounds.height / 2}px 0px ${bounds.height / 2}px 0px)`
+                : group.wipe === 'bottom-to-top'
+                  ? `inset(${bounds.height}px 0px 0px 0px)`
                 : `inset(0px 0px ${bounds.height}px 0px)`
             context.add(() => {
               const timeline = gsap.timeline()
