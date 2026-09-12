@@ -1,19 +1,10 @@
 import { useHeroPreparation } from './hero-preparation'
 import { animations, usesSimpleMotion } from '../../lib/animations'
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-
-const WIDTH = 797.847
-const HEIGHT = 500
-// Exact path coordinates from the exported Figma vector, not an approximation.
-const bands = [
-  'M797.847 250V125L502.098 0H0V125L295.749 250H797.847Z',
-  'M797.847 500V375L502.098 250H0V375L295.749 500H797.847Z',
-]
 
 export function HeroVideo({ src, alt }: { src: string; alt: string }) {
   const preparation = useHeroPreparation()
-  const id = `hero-mask-${useId().replace(/:/g, '')}`
   const ref = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -51,7 +42,6 @@ export function HeroVideo({ src, alt }: { src: string; alt: string }) {
     const media = gsap.matchMedia()
     media.add('(prefers-reduced-motion: no-preference)', () => {
       if (!document.documentElement.dataset.motion) return
-      const paths = element.querySelectorAll('clipPath path')
       const context = gsap.context(() => {
         if (usesSimpleMotion()) {
           gsap.fromTo(element, { opacity: 0 }, {
@@ -61,18 +51,13 @@ export function HeroVideo({ src, alt }: { src: string; alt: string }) {
           element.setAttribute('data-motion-ready', '')
           return
         }
-        // Expand the actual clipping geometry, leaving the video frame stationary.
-        gsap.fromTo(paths, {
-          scaleY: 0,
-          svgOrigin: (index: number) => `0 ${index * 250 + 125}`,
-        }, {
-          scaleY: 1,
+        // Keep the SVG mask static; animate a separate reveal on the HTML wrapper.
+        gsap.fromTo(element, { clipPath: 'inset(0 0 100% 0)' }, {
+          clipPath: 'inset(0 0 0% 0)',
           duration: 1.45,
-          stagger: .2,
           ease: 'power3.inOut',
-          clearProps: 'transform',
+          clearProps: 'clipPath',
         })
-        // Initial mask transforms are applied synchronously before revealing the SVG.
         element.setAttribute('data-motion-ready', '')
       }, element)
       preparation?.hold(context)
@@ -82,12 +67,7 @@ export function HeroVideo({ src, alt }: { src: string; alt: string }) {
   }, [src, preparation])
 
   return <div ref={ref} className="hero-landscape relative block w-199.5 h-125 max-w-none shrink-0 aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:w-[797.847px] min-[1101px]:h-[500px] min-[1101px]:ml-auto" data-hero-mask>
-    <svg className="pointer-events-none absolute h-0 w-0" aria-hidden="true">
-      <defs><clipPath id={id} clipPathUnits="objectBoundingBox"><g transform={`scale(${1 / WIDTH} ${1 / HEIGHT})`}>{bands.map(path => <path key={path} d={path} />)}</g></clipPath></defs>
-    </svg>
-    {/* Native HTML video avoids Safari's foreignObject video compositing bug.
-        Mobile uses a static external SVG mask; desktop keeps the animated paths. */}
-    <div style={{ '--hero-clip': `url(#${id})` } as React.CSSProperties} className="h-full w-full aspect-[797.847/500] [clip-path:var(--hero-clip)] max-[1100px]:[clip-path:none] max-[1100px]:mask-[url('/hero/video-mask.svg')] max-[1100px]:mask-size-[100%_100%] max-[1100px]:mask-no-repeat">
+    <div className="h-full w-full aspect-[797.847/500] mask-[url('/hero/video-mask.svg')] mask-size-[100%_100%] mask-no-repeat">
       <video ref={videoRef} src={src} poster="/hero/video-poster.webp" aria-label={alt} muted loop playsInline preload="auto" className="block h-full w-full aspect-[797.847/500] object-cover" />
     </div>
   </div>
