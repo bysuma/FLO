@@ -1,0 +1,58 @@
+VIEWPORT { width: 390, height: 844, touch: true, body: 390 }
+{
+  "sections": [
+    {
+      "name": "home",
+      "top": 0,
+      "height": 708
+    },
+    {
+      "name": "about",
+      "top": 709.921875,
+      "height": 598
+    },
+    {
+      "name": "services",
+      "top": 1307.921875,
+      "height": 1218
+    },
+    {
+      "name": "results-heading",
+      "top": 2525.921875,
+      "height": 737
+    },
+    {
+      "name": "projects",
+      "top": 3262.921875,
+      "height": 1893
+    },
+    {
+      "name": "testimonials-heading",
+      "top": 5155.71875,
+      "height": 717
+    },
+    {
+      "name": "contact",
+      "top": 5872.71875,
+      "height": 480
+    },
+    {
+      "name": "footer",
+      "top": 6352.71875,
+      "height": 817
+    },
+    {
+      "name": "footer",
+      "top": 844,
+      "height": 35
+    }
+  ],
+  "frames": [
+    {
+      "ms": 25.69999999999709,
+      "y": 6323
+    }
+  ],
+  "long": [],
+  "shifts": []
+}

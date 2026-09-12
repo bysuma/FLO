@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-Light.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-Semibold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Telegraf';
+  src: url('/fonts/PPTelegraf-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+
+
+@theme {
+  --color-brand: #3b6dfe;
+  --color-ink: #121c58;
+  --color-surface: #f3f3f3;
+  --color-surface-soft: #f9f9f9;
+  --color-accent: #e75d3c;
+  --font-sans: 'PP Mori', Arial, sans-serif;
+  --font-display: 'PP Telegraf', Arial, sans-serif;
+  --text-hero-mobile: 40px;
+  --text-hero-mobile--line-height: 1;
+  --text-display-mobile: 40px;
+  --text-display-mobile--line-height: 1.05;
+  --text-section-mobile: 32px;
+  --text-section-mobile--line-height: 1.125;
+  --text-service-mobile: 36px;
+  --text-service-mobile--line-height: 1.056;
+  --text-stat-mobile: 60px;
+  --text-stat-mobile--line-height: 1;
+  --text-quote-mobile: 26px;
+  --text-quote-mobile--line-height: 1.2;
+  --text-hero: 72px;
+  --text-hero--line-height: 0.96; /* 69.122 / 72 */
+  --text-hero--letter-spacing: -1.44px;
+  --text-display: 72px;
+  --text-display--line-height: 1.028; /* 74 / 72 */
+  --text-display--letter-spacing: -1.44px;
+  --text-section: 42px;
+  --text-section--line-height: 1.071; /* 45 / 42 */
+  --text-section--letter-spacing: -.84px;
+  --text-service: 52px;
+  --text-service--line-height: 1;
+  --text-service--letter-spacing: -1.04px;
+  --text-stat: 82px;
+  --text-stat--line-height: 0.763; /* 62.534 / 82 */
+  --text-quote: 32px;
+  --text-quote--line-height: 1.2;
+  --text-quote--letter-spacing: -.02em;
+  --text-intro: 22px;
+  --text-intro--line-height: 1.182; /* 26 / 22 */
+  --text-project: 22px;
+  --text-project--line-height: 1.031;
+  --text-project--letter-spacing: -.02em;
+  --text-body: 16px;
+  --text-body--line-height: 1.375;
+  --text-small: 14px;
+  --text-eyebrow: 14px;
+  --text-eyebrow--line-height: 1;
+  --text-caption: 12px;
+  --radius-tag: .25rem;
+  --radius-button: .5rem;
+  --radius-card: .625rem;
+  --spacing-page: clamp(1.25rem, 2.2vw, 2rem);
+  --spacing-inset: clamp(1.25rem, 10vw, 9rem);
+}
