@@ -43,14 +43,16 @@
   --color-accent: #e75d3c;
   --font-sans: 'PP Mori', Arial, sans-serif;
   --font-display: 'PP Telegraf', Arial, sans-serif;
-  --text-hero-mobile: 40px;
-  --text-hero-mobile--line-height: 1;
+  --text-hero-mobile: 46px;
+  --text-hero-mobile--line-height: .94;
+  --text-intro-heading-mobile: 34px;
+  --text-intro-heading-mobile--line-height: 1.02;
   --text-display-mobile: 40px;
   --text-display-mobile--line-height: 1.05;
   --text-section-mobile: 32px;
-  --text-section-mobile--line-height: 1.125;
-  --text-service-mobile: 36px;
-  --text-service-mobile--line-height: 1.056;
+  --text-section-mobile--line-height: 1.05;
+  --text-service-mobile: 34px;
+  --text-service-mobile--line-height: .95;
   --text-results-heading-mobile: 34px;
   --text-results-heading-mobile--line-height: 1.05;
   --text-results-stat-mobile: 52px;
@@ -59,7 +61,7 @@
   --text-results-description-mobile--line-height: 1.148;
   --text-stat-mobile: 60px;
   --text-stat-mobile--line-height: 1;
-  --text-quote-mobile: 26px;
+  --text-quote-mobile: 27.93px;
   --text-quote-mobile--line-height: 1.2;
   --text-hero: 72px;
   --text-hero--line-height: 0.96; /* 69.122 / 72 */

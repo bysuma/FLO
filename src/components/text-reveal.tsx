@@ -51,6 +51,20 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
         observer?.disconnect()
         if (!document.documentElement.dataset.motion || element.hasAttribute('data-motion-ready')) return
         try {
+          // Compact footer copy does not need DOM splitting during touch scroll.
+          if (usesSimpleMotion() && element.closest('[data-mobile-text="block"]')) {
+            context.add(() => {
+              gsap.fromTo(element, { y: animations.mobile.distance, opacity: 0 }, {
+                y: 0,
+                opacity: 1,
+                duration: animations.mobile.revealDuration / 1000,
+                ease: motionEase(),
+                clearProps: 'transform,opacity',
+              })
+            })
+            element.setAttribute('data-motion-ready', '')
+            return
+          }
           split = splitText(element, { type: ['lines'], mask: { lines: '.15em' } })
           const style = getComputedStyle(element)
           const mobile = usesSimpleMotion()

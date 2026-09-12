@@ -50,7 +50,7 @@ export function ParallaxImage({ src, alt, entrance }: { src: string; alt: string
     }
   }, [])
 
-  return <div {...entrance} ref={node => { ref.current = node; entrance?.ref(node) }} className="project-image self-stretch w-auto h-auto aspect-447/392 object-cover parallax-frame grid overflow-clip @container-size [&>img]:[grid-area:1/1] [&>img]:w-[100cqw] [&>img]:h-[100cqh] [&>img]:min-w-0 [&>img]:min-h-0 [&>img]:object-cover">
+  return <div {...entrance} ref={node => { ref.current = node; entrance?.ref(node) }} className="project-image self-stretch w-auto h-auto aspect-447/392 max-md:aspect-auto max-md:h-60 object-cover parallax-frame grid overflow-clip @container-size [&>img]:[grid-area:1/1] [&>img]:w-[100cqw] [&>img]:h-[100cqh] [&>img]:min-w-0 [&>img]:min-h-0 [&>img]:object-cover">
     <img ref={imageRef} src={src} alt={alt} width="447" height="392" loading="lazy" decoding="async" />
   </div>
 }

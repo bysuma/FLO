@@ -10,6 +10,7 @@ export type EntranceGroup = {
   scale?: number
   wipe?: 'up' | 'side' | 'center' | 'bottom-to-top'
   simultaneous?: boolean
+  mobileFade?: boolean
   animate?: (target: Element) => void | (() => void)
 }
 
@@ -75,7 +76,7 @@ export function useEntrance(root: RefObject<HTMLElement | null>, groups: readonl
             observer.unobserve(entry.target)
             if (!document.documentElement.dataset.motion || entry.target.hasAttribute('data-motion-ready')) return
             const mobile = usesSimpleMotion()
-            if (mobile && !group.wipe) {
+            if (mobile && (!group.wipe || group.mobileFade)) {
               context.add(() => {
                 gsap.fromTo(entry.target, { opacity: 0 }, {
                   opacity: 1,
