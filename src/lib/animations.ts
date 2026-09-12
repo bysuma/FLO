@@ -1,6 +1,7 @@
 /** Durations, delays and stagger are in milliseconds. */
 export const animations = {
   hero: { preparationTimeout: 4000 },
+  serviceHover: { duration: 650, stagger: 90, ease: 'power3.inOut' },
   menu: { duration: 450 },
   mobile: { duration: 350, distance: 10, revealDuration: 650, revealStagger: 45, maskDuration: 650 },
   testimonials: { hold: 2500, duration: 600, ease: 'power2.inOut' },
