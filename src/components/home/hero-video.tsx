@@ -14,7 +14,7 @@ const bands = [
 export function HeroVideo({ src, alt }: { src: string; alt: string }) {
   const preparation = useHeroPreparation()
   const id = `hero-mask-${useId().replace(/:/g, '')}`
-  const ref = useRef<SVGSVGElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -81,11 +81,14 @@ export function HeroVideo({ src, alt }: { src: string; alt: string }) {
     return () => media.revert()
   }, [src, preparation])
 
-  return <svg ref={ref} className="hero-landscape block w-199.5 h-125 max-w-none shrink-0 object-contain aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:w-[797.847px] min-[1101px]:h-[500px] min-[1101px]:ml-auto" data-hero-mask viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-labelledby={`${id}-title`}>
-    <title id={`${id}-title`}>{alt}</title>
-    <defs><clipPath id={id} clipPathUnits="userSpaceOnUse">{bands.map(path => <path key={path} d={path} />)}</clipPath></defs>
-    <foreignObject width={WIDTH} height={HEIGHT} clipPath={`url(#${id})`}>
-      <video ref={videoRef} src={src} poster="/hero/video-poster.webp" muted loop playsInline preload="auto" className="block h-full w-full object-cover" />
-    </foreignObject>
-  </svg>
+  return <div ref={ref} className="hero-landscape relative block w-199.5 h-125 max-w-none shrink-0 aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:w-[797.847px] min-[1101px]:h-[500px] min-[1101px]:ml-auto" data-hero-mask>
+    <svg className="pointer-events-none absolute h-0 w-0" aria-hidden="true">
+      <defs><clipPath id={id} clipPathUnits="objectBoundingBox"><g transform={`scale(${1 / WIDTH} ${1 / HEIGHT})`}>{bands.map(path => <path key={path} d={path} />)}</g></clipPath></defs>
+    </svg>
+    {/* Native HTML video avoids Safari's foreignObject video compositing bug.
+        Mobile uses a static external SVG mask; desktop keeps the animated paths. */}
+    <div style={{ '--hero-clip': `url(#${id})` } as React.CSSProperties} className="h-full w-full aspect-[797.847/500] [clip-path:var(--hero-clip)] max-[1100px]:[clip-path:none] max-[1100px]:mask-[url('/hero/video-mask.svg')] max-[1100px]:mask-size-[100%_100%] max-[1100px]:mask-no-repeat">
+      <video ref={videoRef} src={src} poster="/hero/video-poster.webp" aria-label={alt} muted loop playsInline preload="auto" className="block h-full w-full aspect-[797.847/500] object-cover" />
+    </div>
+  </div>
 }
