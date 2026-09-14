@@ -24,9 +24,11 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let disposed = false
     let split: TextSplit | undefined
+    let preparedWidth = 0
     const context = gsap.context(() => {}, element)
     let observer: IntersectionObserver | undefined
     let resize: ResizeObserver | undefined
+    let prewarm: IntersectionObserver | undefined
 
     const restore = (reveal = true) => {
       context.revert()
@@ -37,6 +39,7 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
     }
     const stop = (reveal = true) => {
       observer?.disconnect()
+      prewarm?.disconnect()
       restore(reveal)
       element.removeAttribute('data-motion-pending')
     }
@@ -70,7 +73,8 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
             element.setAttribute('data-motion-ready', '')
             return
           }
-          split = splitText(element, { type: ['lines'], mask: { lines: '.15em' } })
+          if (split && Math.abs(element.getBoundingClientRect().width - preparedWidth) > 1) { split.revert(); split = undefined }
+          split ??= splitText(element, { type: ['lines'], mask: { lines: '.15em' } })
           const style = getComputedStyle(element)
           const mobile = usesSimpleMotion()
           const duration = mobile ? animations.mobile.revealDuration : Number.parseFloat(style.getPropertyValue('--reveal-duration')) || animations.reveal.duration
@@ -124,6 +128,21 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
         else prepared?.()
       } else {
         element.setAttribute('data-motion-pending', '')
+        // Prepare line DOM ahead of the viewport; playback still uses the original threshold.
+        if (!(usesSimpleMotion() && element.closest('[data-mobile-text="block"]'))) {
+          prewarm = new IntersectionObserver(entries => {
+            if (disposed || motion.matches || !entries.some(entry => entry.isIntersecting)) return
+            prewarm?.disconnect()
+            if (!split && !element.hasAttribute('data-motion-ready')) {
+              try {
+                split = splitText(element, { type: ['lines'], mask: { lines: '.15em' } })
+                preparedWidth = element.getBoundingClientRect().width
+              }
+              catch { restore() }
+            }
+          }, { rootMargin: '300px 0px', threshold: 0 })
+          prewarm.observe(owner ?? element)
+        }
         observer.observe(owner ?? element)
       }
     }

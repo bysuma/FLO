@@ -13,10 +13,20 @@ export function HeroVideo({ src, alt }: { src: string; alt: string }) {
     if (!video) return
     let disposed = false
     let visible = true
+    let covered = false
+    let frame = 0
+    const cover = ref.current?.closest('header')?.nextElementSibling
+    const checkCover = () => {
+      frame = 0
+      covered = !!cover && !!ref.current && cover.getBoundingClientRect().top <= ref.current.getBoundingClientRect().top
+      sync()
+    }
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(checkCover) }
     const motion = matchMedia('(prefers-reduced-motion: reduce)')
     const sync = () => {
-      if ((!preparation || preparation.released) && visible && !document.hidden && !motion.matches) void video.play().catch(() => {})
-      else video.pause()
+      if ((!preparation || preparation.released) && visible && !covered && !document.hidden && !motion.matches) {
+        if (video.paused) void video.play().catch(() => {})
+      } else if (!video.paused) video.pause()
     }
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting
@@ -26,9 +36,14 @@ export function HeroVideo({ src, alt }: { src: string; alt: string }) {
     void preparation?.ready.then(() => { if (!disposed) sync() })
     document.addEventListener('visibilitychange', sync)
     motion.addEventListener('change', sync)
-    sync()
+    checkCover()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
     return () => {
       disposed = true
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
       observer.disconnect()
       document.removeEventListener('visibilitychange', sync)
       motion.removeEventListener('change', sync)

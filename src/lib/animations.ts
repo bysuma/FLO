@@ -5,7 +5,7 @@ export const animations = {
   menu: { duration: 450 },
   mobile: { duration: 350, distance: 10, revealDuration: 650, revealStagger: 45, maskDuration: 650 },
   testimonials: { hold: 2500, duration: 600, ease: 'power2.inOut' },
-  parallax: { intensity: 20 },
+  parallax: { intensity: 40 },
   lines: { speed: 1800 }, // Rendered pixels per second.
   entrance: { duration: 1200, delay: 80, stagger: 170 },
   counter: { duration: 1800 },

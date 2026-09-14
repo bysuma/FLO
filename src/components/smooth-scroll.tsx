@@ -9,8 +9,8 @@ export function SmoothScroll() {
 
     const media = gsap.matchMedia()
 
-    // Keep Lenis mounted across screen sizes; touch gestures remain native.
-    media.add('(prefers-reduced-motion: no-preference)', () => {
+    // Touch devices use native scrolling without a Lenis ticker.
+    media.add('(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
       gsap.ticker.lagSmoothing(0)
       const lenis = new Lenis({
         autoRaf: false,

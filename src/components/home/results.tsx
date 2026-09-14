@@ -1,7 +1,10 @@
 import { BackgroundPhoto } from './background-photo'
 import { useEntrance } from './use-entrance'
 import type { EntranceGroup } from './use-entrance'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { animations } from '../../lib/animations'
 import { TextReveal } from '../text-reveal'
 const stats = [
   { value: '40+', title: 'Years of experience', description: 'Decades of engineering and field experience.' },
@@ -15,7 +18,40 @@ const entrances = [{ name: 'backdrop', distance: 0, scale: 1.06 }, { name: 'card
 export function Results() {
   const motionRef = useRef<HTMLElement>(null)
   const entrance = useEntrance(motionRef, entrances)
-  return <section ref={motionRef} aria-labelledby="results-heading" className="results-section relative isolate overflow-clip min-h-194.75 pt-22.25 max-lg:min-h-0 max-lg:pt-16 max-md:min-h-[869px] max-md:px-5 max-md:py-14 max-md:gap-6.5 [--reveal-delay:0] [--reveal-stagger:70] [--reveal-threshold:.01] flex flex-col"><div {...entrance('backdrop')} className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true"><BackgroundPhoto src="/results/background.webp" mobileSrc="/results/background-mobile.webp" /><div className="absolute inset-0 bg-linear-to-b from-black/53 to-[#66666688] max-md:from-black/45 max-md:to-black/45" /></div>
+  const photoRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const section = motionRef.current
+    const photo = photoRef.current
+    if (!section || !photo) return
+    gsap.registerPlugin(ScrollTrigger)
+    const media = gsap.matchMedia()
+    media.add('(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+      // Nura's image uses y = -(section.top / viewport.height) * intensity * 6.
+      const distance = animations.parallax.intensity * 6
+      const endY = () => distance * section.clientHeight / window.innerHeight
+      // Keep enough photo above and below the crop across viewport changes.
+      const overscan = () => Math.max(distance, endY())
+      const setCrop = () => gsap.set(photo, { top: -overscan(), bottom: -overscan() })
+      setCrop()
+      gsap.fromTo(photo, { y: -distance }, {
+        y: endY,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+          invalidateOnRefresh: true,
+          onRefreshInit: () => { setCrop() },
+          onToggle: self => { photo.style.willChange = self.isActive ? 'transform' : '' },
+        },
+      })
+      return () => photo.style.removeProperty('will-change')
+    }, section)
+    return () => media.revert()
+  }, [])
+  return <section ref={motionRef} aria-labelledby="results-heading" className="results-section relative isolate overflow-clip min-h-194.75 pt-22.25 max-lg:min-h-0 max-lg:pt-16 max-md:min-h-[869px] max-md:px-5 max-md:py-14 max-md:gap-6.5 [--reveal-delay:0] [--reveal-stagger:70] [--reveal-threshold:.01] flex flex-col"><div {...entrance('backdrop')} className="absolute inset-0 -z-10 pointer-events-none" aria-hidden="true"><div ref={photoRef} className="absolute inset-0"><BackgroundPhoto src="/results/background.webp" mobileSrc="/results/background-mobile.webp" /></div><div className="absolute inset-0 bg-linear-to-b from-black/53 to-[#66666688] max-md:from-black/45 max-md:to-black/45" /></div>
     <div className="flex flex-col items-center gap-7 px-6 max-md:gap-5 max-md:px-0 text-center text-white"><TextReveal as="h2" id="results-heading" className="max-w-md font-display text-section max-md:font-sans max-md:text-results-heading-mobile max-md:text-balance max-md:tracking-normal uppercase">4 decades of proven results</TextReveal><TextReveal as="p" className="max-w-72 text-body max-md:max-w-66 max-md:leading-[1.313]">We've earned our reputation through consistent work and accountability.</TextReveal></div>
     <div className="stats-row mt-auto flex items-start max-md:hidden max-lg:mt-12 max-lg:grid max-lg:grid-cols-2 max-lg:items-stretch max-[480px]:grid-cols-1">{stats.map((stat, index) => <article {...entrance('cards', stat.title)} data-reveal-owner className={`stat-card min-h-[12.8rem] pt-8.5 px-7.5 pb-4 bg-top-left bg-cover bg-no-repeat even:mt-[12.8rem] [&_h3]:text-base [&_.text-stat]:tabular-nums max-[1100px]:px-4 max-lg:min-h-60 max-lg:bg-surface max-lg:bg-none max-lg:even:mt-0 max-lg:p-6 [--reveal-delay:0] [--reveal-stagger:0] [--reveal-threshold:.01] ${["bg-[url('/results/card.svg')]", "bg-[url('/results/card-4.svg')]", "bg-[url('/results/card-2.svg')]", "bg-[url('/results/card-3.svg')]"][index]} flex min-w-0 flex-1 flex-col`} key={stat.title}><TextReveal as="p" className="text-stat max-lg:text-stat-mobile tracking-tight">{stat.value}</TextReveal><TextReveal as="h3" className="mt-4 text-body font-semibold uppercase">{stat.title}</TextReveal><TextReveal as="p" className="mt-4 max-w-52 text-small leading-tight">{stat.description}</TextReveal></article>)}</div>
     <div className="flex flex-col items-center gap-[9px] md:hidden">

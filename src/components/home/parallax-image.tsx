@@ -26,11 +26,11 @@ export function ParallaxImage({ src, alt, entrance }: { src: string; alt: string
           return intensity * 6
         }
         const endY = () => distance() * frame.clientHeight / window.innerHeight
-        // Reserve enough photo outside the crop for either end of the movement.
-        const scale = () => 1 + 2 * Math.max(distance(), endY()) / Math.max(frame.clientHeight, 1)
-        gsap.fromTo(image, { y: () => -distance(), scale }, {
+        const overscan = () => Math.max(distance(), endY())
+        const crop = () => gsap.set(image, { height: frame.clientHeight + 2 * overscan(), marginTop: -overscan() })
+        crop()
+        gsap.fromTo(image, { y: () => -distance() }, {
           y: endY,
-          scale,
           ease: 'none',
           scrollTrigger: {
             trigger: frame,
@@ -38,6 +38,7 @@ export function ParallaxImage({ src, alt, entrance }: { src: string; alt: string
             end: 'bottom top',
             scrub: true,
             invalidateOnRefresh: true,
+            onRefreshInit: () => { crop() },
             onToggle: self => { image.style.willChange = self.isActive ? 'transform' : '' },
           },
         })
