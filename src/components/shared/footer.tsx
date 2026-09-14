@@ -105,36 +105,6 @@ export function Footer() {
           />
         </div>
       </div>
-      <div className="mt-8 flex items-center gap-12 max-md:hidden">
-        <span
-          {...entrance('images', 'image-4')}
-          className="flex size-13.5 shrink-0 items-center justify-center overflow-hidden mix-blend-darken"
-        >
-          <img
-            {...responsiveImage('/footer/dbe.webp', '54px')}
-            alt="DBE certification"
-            width="160"
-            height="160"
-            className="size-13.5 max-w-none shrink-0"
-            loading="lazy"
-            decoding="async"
-          />
-        </span>
-        <span
-          {...entrance('images', 'image-5')}
-          className="flex size-13.5 shrink-0 items-center justify-center overflow-hidden mix-blend-darken"
-        >
-          <img
-            {...responsiveImage('/footer/sbe.webp', '85.5px')}
-            alt="SBE certification"
-            width="160"
-            height="160"
-            className="size-[85.5px] max-w-none shrink-0 -translate-x-[2.4px] translate-y-[0.3px]"
-            loading="lazy"
-            decoding="async"
-          />
-        </span>
-      </div>
       <div className="footer-bottom max-md:pt-9 max-md:flex-col max-md:items-start max-md:gap-[57px] mt-auto flex flex-wrap items-end justify-between gap-8 pt-24">
         <Link to="/" hash="home" aria-label="FLO home" className="flex items-start max-md:order-2">
           <img
@@ -151,7 +121,7 @@ export function Footer() {
             alt=""
             width="30"
             height="16"
-            className="-ml-5 mt-1"
+            className="ml-1 mt-1 shrink-0"
           />
         </Link>
         <div className="flex flex-wrap gap-8 pb-1 text-caption max-md:flex-col max-md:gap-3.5">
@@ -159,9 +129,41 @@ export function Footer() {
           <TextReveal as="span">Terms of service</TextReveal>
           <TextReveal as="span">Cookies settings</TextReveal>
         </div>
-        <TextReveal as="p" className="pb-1 text-caption max-md:order-3">
-          © 2026 FLO Engineering. All rights reserved.
-        </TextReveal>
+        <div className="flex flex-col items-end gap-6 max-md:items-start max-md:order-3">
+          <div className="flex items-center gap-12">
+            <span
+              {...entrance('images', 'image-4')}
+              className="flex size-13.5 shrink-0 items-center justify-center overflow-hidden mix-blend-darken"
+            >
+              <img
+                {...responsiveImage('/footer/dbe.webp', '54px')}
+                alt="DBE certification"
+                width="160"
+                height="160"
+                className="size-13.5 max-w-none shrink-0"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+            <span
+              {...entrance('images', 'image-5')}
+              className="flex size-13.5 shrink-0 items-center justify-center overflow-hidden mix-blend-darken"
+            >
+              <img
+                {...responsiveImage('/footer/sbe.webp', '85.5px')}
+                alt="SBE certification"
+                width="160"
+                height="160"
+                className="size-[85.5px] max-w-none shrink-0 -translate-x-[2.4px] translate-y-[0.3px]"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+          </div>
+          <TextReveal as="p" className="pb-1 text-caption">
+            © 2026 FLO Engineering. All rights reserved.
+          </TextReveal>
+        </div>
       </div>
     </footer>
   )

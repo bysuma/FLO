@@ -10,7 +10,7 @@ export function SmoothScroll() {
     const media = gsap.matchMedia()
 
     media.add(
-      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+      '(min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
       () => {
         gsap.ticker.lagSmoothing(0)
         const lenis = new Lenis({
