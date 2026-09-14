@@ -13,17 +13,20 @@ export function CountUp({ value }: { value: string }) {
     const target = parseInt(value, 10)
     const suffix = value.replace(/^\d+/, '')
     const duration = animations.counter.duration
-    const observer = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting)) return
-      observer.disconnect()
-      const start = performance.now()
-      const tick = (now: number) => {
-        const progress = Math.min((now - start) / duration, 1)
-        setDisplay(`${Math.round(target * (1 - Math.pow(1 - progress, 3)))}${suffix}`)
-        if (progress < 1) frame = requestAnimationFrame(tick)
-      }
-      frame = requestAnimationFrame(tick)
-    }, { threshold: .4 })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        observer.disconnect()
+        const start = performance.now()
+        const tick = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1)
+          setDisplay(`${Math.round(target * (1 - Math.pow(1 - progress, 3)))}${suffix}`)
+          if (progress < 1) frame = requestAnimationFrame(tick)
+        }
+        frame = requestAnimationFrame(tick)
+      },
+      { threshold: 0.4 },
+    )
     const stop = () => {
       if (!media.matches) return
       cancelAnimationFrame(frame)
@@ -38,5 +41,9 @@ export function CountUp({ value }: { value: string }) {
       media.removeEventListener('change', stop)
     }
   }, [value])
-  return <span ref={ref} aria-label={value}><span aria-hidden="true">{display}</span></span>
+  return (
+    <span ref={ref} aria-label={value}>
+      <span aria-hidden="true">{display}</span>
+    </span>
+  )
 }

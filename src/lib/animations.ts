@@ -1,10 +1,20 @@
 /** Durations, delays and stagger are in milliseconds. */
 export const animations = {
+  leadership: { duration: 420, ease: 'power3.inOut' },
+  standardsDivider: { duration: 900 },
+  aboutGallery: { speed: 32 },
+  pageTransition: { duration: 450, ease: 'power3.inOut' },
   hero: { preparationTimeout: 4000 },
   projectHover: { duration: 420, ease: 'power3.inOut' },
   serviceHover: { duration: 650, stagger: 90, ease: 'power3.inOut' },
   menu: { duration: 450 },
-  mobile: { duration: 350, distance: 10, revealDuration: 650, revealStagger: 45, maskDuration: 650 },
+  mobile: {
+    duration: 350,
+    distance: 10,
+    revealDuration: 650,
+    revealStagger: 45,
+    maskDuration: 650,
+  },
   testimonials: { hold: 2500, duration: 600, ease: 'power2.inOut' },
   parallax: { intensity: 40 },
   lines: { speed: 1800 }, // Rendered pixels per second.

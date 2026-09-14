@@ -1,13 +1,6 @@
+import { Home } from '../components/home/Home'
 import { siteUrl, siteTitle, siteDescription } from '../lib/site'
 import { createFileRoute } from '@tanstack/react-router'
-import { Hero } from '../components/home/hero'
-import { About } from '../components/home/about'
-import { Services } from '../components/home/services'
-import { Results } from '../components/home/results'
-import { Projects } from '../components/home/projects'
-import { Testimonials } from '../components/home/testimonials'
-import { Contact } from '../components/home/contact'
-import { Footer } from '../components/home/footer'
 
 export const Route = createFileRoute('/')({
   head: () => ({
@@ -19,10 +12,12 @@ export const Route = createFileRoute('/')({
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: 'FLO Engineering' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      ...(siteUrl ? [
-        { property: 'og:url', content: `${siteUrl}/` },
-        { property: 'og:image', content: `${siteUrl}/hero/video-poster.webp` },
-      ] : []),
+      ...(siteUrl
+        ? [
+            { property: 'og:url', content: `${siteUrl}/` },
+            { property: 'og:image', content: `${siteUrl}/hero/video-poster.webp` },
+          ]
+        : []),
     ],
     links: [
       { rel: 'preload', href: '/hero/video-poster.webp', as: 'image' },
@@ -31,13 +26,3 @@ export const Route = createFileRoute('/')({
   }),
   component: Home,
 })
-
-function Home() {
-  return <div className="relative isolate">
-    <Hero />
-    <div className="relative z-10 bg-white">
-      <main className="relative z-10 bg-white"><About /><Services /><Results /><Projects /><Testimonials /><Contact /></main>
-      <Footer />
-    </div>
-  </div>
-}
