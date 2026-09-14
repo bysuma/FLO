@@ -14,7 +14,7 @@ export function PageTransition() {
 
   useBlocker({
     enableBeforeUnload: false,
-    shouldBlockFn: async ({ current, next }) => {
+    shouldBlockFn: ({ current, next }) => {
       const curtain = curtainRef.current
       if (
         current.pathname === next.pathname ||
@@ -48,14 +48,16 @@ export function PageTransition() {
           gsap.set(curtain, { visibility: 'hidden', pointerEvents: 'none' })
         }, 10000)
       }
-      await pendingRef.current
       return false
     },
   })
 
   useEffect(() => {
-    const unsubscribe = router.subscribe('onResolved', () => {
+    const unsubscribe = router.subscribe('onResolved', async () => {
       if (!pendingRef.current || !curtainRef.current) return
+      const pending = pendingRef.current
+      await pending
+      if (pendingRef.current !== pending || !curtainRef.current) return
       clearTimeout(timeoutRef.current)
       pendingRef.current = null
       releaseRef.current = null
@@ -77,6 +79,7 @@ export function PageTransition() {
       clearTimeout(timeoutRef.current)
       tweenRef.current?.kill()
       releaseRef.current?.()
+      pendingRef.current = null
     }
   }, [router])
 

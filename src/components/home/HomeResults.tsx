@@ -1,8 +1,11 @@
+import { useGSAP } from '@gsap/react'
 import { BackgroundPhoto } from '../shared/background-photo'
 import { useEntrance } from '../shared/use-entrance'
 import type { EntranceGroup } from '../shared/use-entrance'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { gsap } from 'gsap'
+
+gsap.registerPlugin(useGSAP)
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { animations } from '../../lib/animations'
 import { TextReveal } from '../text-reveal'
@@ -39,49 +42,52 @@ export function HomeResults() {
   const entrance = useEntrance(motionRef, entrances)
   const photoRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const section = motionRef.current
-    const photo = photoRef.current
-    if (!section || !photo) return
-    gsap.registerPlugin(ScrollTrigger)
-    const media = gsap.matchMedia()
-    media.add(
-      '(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-      () => {
-        // Nura's image uses y = -(section.top / viewport.height) * intensity * 6.
-        const distance = animations.parallax.intensity * 6
-        const endY = () => (distance * section.clientHeight) / window.innerHeight
-        // Keep enough photo above and below the crop across viewport changes.
-        const overscan = () => Math.max(distance, endY())
-        const setCrop = () => gsap.set(photo, { top: -overscan(), bottom: -overscan() })
-        setCrop()
-        gsap.fromTo(
-          photo,
-          { y: -distance },
-          {
-            y: endY,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-              invalidateOnRefresh: true,
-              onRefreshInit: () => {
-                setCrop()
-              },
-              onToggle: (self) => {
-                photo.style.willChange = self.isActive ? 'transform' : ''
+  useGSAP(
+    () => {
+      const section = motionRef.current
+      const photo = photoRef.current
+      if (!section || !photo) return
+      gsap.registerPlugin(ScrollTrigger)
+      const media = gsap.matchMedia()
+      media.add(
+        '(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+        () => {
+          // Nura's image uses y = -(section.top / viewport.height) * intensity * 6.
+          const distance = animations.parallax.intensity * 6
+          const endY = () => (distance * section.clientHeight) / window.innerHeight
+          // Keep enough photo above and below the crop across viewport changes.
+          const overscan = () => Math.max(distance, endY())
+          const setCrop = () => gsap.set(photo, { top: -overscan(), bottom: -overscan() })
+          setCrop()
+          gsap.fromTo(
+            photo,
+            { y: -distance },
+            {
+              y: endY,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+                invalidateOnRefresh: true,
+                onRefreshInit: () => {
+                  setCrop()
+                },
+                onToggle: (self) => {
+                  photo.style.willChange = self.isActive ? 'transform' : ''
+                },
               },
             },
-          },
-        )
-        return () => photo.style.removeProperty('will-change')
-      },
-      section,
-    )
-    return () => media.revert()
-  }, [])
+          )
+          return () => photo.style.removeProperty('will-change')
+        },
+        section,
+      )
+      return () => media.revert()
+    },
+    { scope: motionRef },
+  )
   return (
     <section
       ref={motionRef}

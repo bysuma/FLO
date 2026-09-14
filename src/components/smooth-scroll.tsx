@@ -1,23 +1,25 @@
-import { useEffect } from 'react'
+import { useGSAP } from '@gsap/react'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-export function SmoothScroll() {
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
+export function SmoothScroll() {
+  useGSAP(() => {
     const media = gsap.matchMedia()
 
-    // Touch devices use native scrolling without a Lenis ticker.
     media.add(
-      '(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+      '(prefers-reduced-motion: no-preference)',
       () => {
         gsap.ticker.lagSmoothing(0)
         const lenis = new Lenis({
           autoRaf: false,
+          autoToggle: true,
           anchors: true,
-          syncTouch: false,
+          stopInertiaOnNavigate: true,
+          // Use Lenis's touch inertia defaults without a second smoothing loop.
+          syncTouch: true,
         })
         const update = (time: number) => {
           // GSAP uses seconds; Lenis expects milliseconds.

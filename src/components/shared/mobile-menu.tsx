@@ -1,7 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { gsap } from 'gsap'
+
+gsap.registerPlugin(useGSAP)
 import { animations } from '../../lib/animations'
 import { Rollover } from './rollover'
 
@@ -15,63 +18,66 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
   const closing = useRef(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const dialog = ref.current!
-    const root = document.documentElement
-    const previousOverflow = root.style.overflow
-    const previousFocus = document.activeElement as HTMLElement | null
-    root.style.overflow = 'hidden'
-    dialog.showModal()
-    // React autofocus runs before showModal; move focus after the dialog opens.
-    closeButtonRef.current?.focus({ preventScroll: true })
-    const media = gsap.matchMedia()
-    media.add(
-      {
-        reduced: '(prefers-reduced-motion: reduce)',
-        animated: '(prefers-reduced-motion: no-preference)',
-      },
-      (context) => {
-        const reduced = context.conditions?.reduced
-        const items = dialog.querySelectorAll('[data-menu-link]')
-        const sequence = gsap.timeline().fromTo(
-          dialog,
-          { yPercent: reduced ? 0 : -100, opacity: 1 },
-          {
-            yPercent: 0,
-            duration: reduced ? 0 : animations.menu.duration / 1000,
-            ease: 'power3.out',
-          },
-        )
-        if (!reduced)
-          sequence.fromTo(
-            items,
-            { y: 24, opacity: 0 },
+  useGSAP(
+    () => {
+      const dialog = ref.current!
+      const root = document.documentElement
+      const previousOverflow = root.style.overflow
+      const previousFocus = document.activeElement as HTMLElement | null
+      root.style.overflow = 'hidden'
+      dialog.showModal()
+      // React autofocus runs before showModal; move focus after the dialog opens.
+      closeButtonRef.current?.focus({ preventScroll: true })
+      const media = gsap.matchMedia()
+      media.add(
+        {
+          reduced: '(prefers-reduced-motion: reduce)',
+          animated: '(prefers-reduced-motion: no-preference)',
+        },
+        (context) => {
+          const reduced = context.conditions?.reduced
+          const items = dialog.querySelectorAll('[data-menu-link]')
+          const sequence = gsap.timeline().fromTo(
+            dialog,
+            { yPercent: reduced ? 0 : -100, opacity: 1 },
             {
-              y: 0,
-              opacity: 1,
-              duration: 0.35,
-              stagger: 0.06,
-              ease: 'power2.out',
+              yPercent: 0,
+              duration: reduced ? 0 : animations.menu.duration / 1000,
+              ease: 'power3.out',
             },
-            0.16,
           )
-        timeline.current = sequence
-      },
-      dialog,
-    )
-    const desktop = matchMedia('(min-width: 768px)')
-    const onDesktop = () => {
-      if (desktop.matches) onClose()
-    }
-    desktop.addEventListener('change', onDesktop)
-    return () => {
-      desktop.removeEventListener('change', onDesktop)
-      media.revert()
-      dialog.close()
-      root.style.overflow = previousOverflow
-      previousFocus?.focus({ preventScroll: true })
-    }
-  }, [onClose])
+          if (!reduced)
+            sequence.fromTo(
+              items,
+              { y: 24, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.35,
+                stagger: 0.06,
+                ease: 'power2.out',
+              },
+              0.16,
+            )
+          timeline.current = sequence
+        },
+        dialog,
+      )
+      const desktop = matchMedia('(min-width: 768px)')
+      const onDesktop = () => {
+        if (desktop.matches) onClose()
+      }
+      desktop.addEventListener('change', onDesktop)
+      return () => {
+        desktop.removeEventListener('change', onDesktop)
+        media.revert()
+        dialog.close()
+        root.style.overflow = previousOverflow
+        previousFocus?.focus({ preventScroll: true })
+      }
+    },
+    { scope: ref, dependencies: [onClose], revertOnUpdate: true },
+  )
 
   const close = (after?: () => void) => {
     if (closing.current) return

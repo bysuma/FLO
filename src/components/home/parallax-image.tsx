@@ -1,8 +1,11 @@
+import { useGSAP } from '@gsap/react'
 import { responsiveImage } from '../../lib/images'
 import { animations } from '../../lib/animations'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import type { RefCallback } from 'react'
 import { gsap } from 'gsap'
+
+gsap.registerPlugin(useGSAP)
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 /** Nura's position / viewport * intensity * -6 mapping, within a stable crop. */
@@ -19,59 +22,65 @@ export function ParallaxImage({
 
   const imageRef = useRef<HTMLImageElement>(null)
 
-  useEffect(() => {
-    const frame = ref.current
-    const image = imageRef.current
-    if (!frame || !image) return
-    gsap.registerPlugin(ScrollTrigger)
-    const media = gsap.matchMedia()
-    let disposed = false
-    void document.fonts.ready.then(() => {
-      if (disposed) return
-      media.add(
-        '(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-        () => {
-          const distance = () => {
-            const intensity = animations.parallax.intensity
-            return intensity * 6
-          }
-          const endY = () => (distance() * frame.clientHeight) / window.innerHeight
-          const overscan = () => Math.max(distance(), endY())
-          const crop = () =>
-            gsap.set(image, { height: frame.clientHeight + 2 * overscan(), marginTop: -overscan() })
-          crop()
-          gsap.fromTo(
-            image,
-            { y: () => -distance() },
-            {
-              y: endY,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: frame,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true,
-                invalidateOnRefresh: true,
-                onRefreshInit: () => {
-                  crop()
-                },
-                onToggle: (self) => {
-                  image.style.willChange = self.isActive ? 'transform' : ''
+  useGSAP(
+    () => {
+      const frame = ref.current
+      const image = imageRef.current
+      if (!frame || !image) return
+      gsap.registerPlugin(ScrollTrigger)
+      const media = gsap.matchMedia()
+      let disposed = false
+      void document.fonts.ready.then(() => {
+        if (disposed) return
+        media.add(
+          '(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+          () => {
+            const distance = () => {
+              const intensity = animations.parallax.intensity
+              return intensity * 6
+            }
+            const endY = () => (distance() * frame.clientHeight) / window.innerHeight
+            const overscan = () => Math.max(distance(), endY())
+            const crop = () =>
+              gsap.set(image, {
+                height: frame.clientHeight + 2 * overscan(),
+                marginTop: -overscan(),
+              })
+            crop()
+            gsap.fromTo(
+              image,
+              { y: () => -distance() },
+              {
+                y: endY,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: frame,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: true,
+                  invalidateOnRefresh: true,
+                  onRefreshInit: () => {
+                    crop()
+                  },
+                  onToggle: (self) => {
+                    image.style.willChange = self.isActive ? 'transform' : ''
+                  },
                 },
               },
-            },
-          )
-          return () => image.style.removeProperty('will-change')
-        },
-        frame,
-      )
-    })
-    return () => {
-      disposed = true
-      media.revert()
-      image.style.removeProperty('will-change')
-    }
-  }, [])
+            )
+            return () => image.style.removeProperty('will-change')
+          },
+          frame,
+        )
+      })
+      return () => {
+        disposed = true
+        media.revert()
+        image.style.removeProperty('will-change')
+      }
+    },
+    { scope: ref },
+  )
 
   return (
     <div

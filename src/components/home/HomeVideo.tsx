@@ -1,7 +1,10 @@
+import { useGSAP } from '@gsap/react'
 import { useHeroPreparation } from '../shared/hero-preparation'
 import { animations, usesSimpleMotion } from '../../lib/animations'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+
+gsap.registerPlugin(useGSAP)
 
 export function HomeVideo({ src, alt }: { src: string; alt: string }) {
   const preparation = useHeroPreparation()
@@ -64,45 +67,48 @@ export function HomeVideo({ src, alt }: { src: string; alt: string }) {
     }
   }, [src, preparation])
 
-  useEffect(() => {
-    const element = ref.current
-    if (!element) return
-    const media = gsap.matchMedia()
-    media.add('(prefers-reduced-motion: no-preference)', () => {
-      if (!document.documentElement.dataset.motion) return
-      const context = gsap.context(() => {
-        if (usesSimpleMotion()) {
+  useGSAP(
+    () => {
+      const element = ref.current
+      if (!element) return
+      const media = gsap.matchMedia()
+      media.add('(prefers-reduced-motion: no-preference)', () => {
+        if (!document.documentElement.dataset.motion) return
+        const context = gsap.context(() => {
+          if (usesSimpleMotion()) {
+            gsap.fromTo(
+              element,
+              { opacity: 0 },
+              {
+                opacity: 1,
+                duration: animations.mobile.duration / 1000,
+                ease: 'power1.out',
+                clearProps: 'opacity',
+              },
+            )
+            element.setAttribute('data-motion-ready', '')
+            return
+          }
+          // Keep the SVG mask static; animate a separate reveal on the HTML wrapper.
           gsap.fromTo(
             element,
-            { opacity: 0 },
+            { clipPath: 'inset(0 0 100% 0)' },
             {
-              opacity: 1,
-              duration: animations.mobile.duration / 1000,
-              ease: 'power1.out',
-              clearProps: 'opacity',
+              clipPath: 'inset(0 0 0% 0)',
+              duration: 1.45,
+              ease: 'power3.inOut',
+              clearProps: 'clipPath',
             },
           )
           element.setAttribute('data-motion-ready', '')
-          return
-        }
-        // Keep the SVG mask static; animate a separate reveal on the HTML wrapper.
-        gsap.fromTo(
-          element,
-          { clipPath: 'inset(0 0 100% 0)' },
-          {
-            clipPath: 'inset(0 0 0% 0)',
-            duration: 1.45,
-            ease: 'power3.inOut',
-            clearProps: 'clipPath',
-          },
-        )
-        element.setAttribute('data-motion-ready', '')
-      }, element)
-      preparation?.hold(context)
-      return () => context.revert()
-    })
-    return () => media.revert()
-  }, [src, preparation])
+        }, element)
+        preparation?.hold(context)
+        return () => context.revert()
+      })
+      return () => media.revert()
+    },
+    { scope: ref, dependencies: [src, preparation], revertOnUpdate: true },
+  )
 
   return (
     <div

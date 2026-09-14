@@ -1,6 +1,6 @@
-import pattern from '../../../public/about-page/pattern.svg?raw'
+import pattern from '../../assets/about/pattern.svg?raw'
 import { animateDecoration } from '../shared/decoration'
-import { useEntrance } from '../shared/use-entrance'
+import { useAboutEntrance } from './use-about-entrance'
 import type { EntranceGroup } from '../shared/use-entrance'
 import { useRef } from 'react'
 import { Navbar } from '../shared/navbar'
@@ -11,7 +11,7 @@ const entrances = [
 ] satisfies readonly EntranceGroup[]
 export function AboutHero() {
   const ref = useRef<HTMLElement>(null)
-  const entrance = useEntrance(ref, entrances)
+  const entrance = useAboutEntrance(ref, entrances)
   return (
     <header ref={ref} className="relative isolate overflow-clip bg-white pb-5 text-ink">
       <div

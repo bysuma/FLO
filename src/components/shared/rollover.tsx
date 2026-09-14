@@ -1,6 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 import type { ReactNode } from 'react'
 import { gsap } from 'gsap'
+
+gsap.registerPlugin(useGSAP)
 import { TextReveal } from '../text-reveal'
 
 export function Rollover({
@@ -14,41 +17,44 @@ export function Rollover({
 }) {
   const ref = useRef<HTMLSpanElement>(null)
 
-  useEffect(() => {
-    const element = ref.current
-    const control = element?.closest('a, button')
-    if (!element || !control) return
-    const media = gsap.matchMedia()
-    media.add(
-      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-      () => {
-        const layers = element.querySelectorAll(':scope > span')
-        const timeline = gsap
-          .timeline({ paused: true, defaults: { duration: 0.3, ease: 'power2.inOut' } })
-          .fromTo(layers[0], { y: 0, yPercent: 0 }, { y: 0, yPercent: -110 }, 0)
-          .fromTo(
-            layers[1],
-            {
-              y: 0,
-              yPercent: 110,
-              visibility: 'inherit',
-            },
-            { y: 0, yPercent: 0 },
-            0,
-          )
-        const enter = () => timeline.play()
-        const leave = () => timeline.reverse()
-        control.addEventListener('pointerenter', enter)
-        control.addEventListener('pointerleave', leave)
-        return () => {
-          control.removeEventListener('pointerenter', enter)
-          control.removeEventListener('pointerleave', leave)
-        }
-      },
-      element,
-    )
-    return () => media.revert()
-  }, [])
+  useGSAP(
+    () => {
+      const element = ref.current
+      const control = element?.closest('a, button')
+      if (!element || !control) return
+      const media = gsap.matchMedia()
+      media.add(
+        '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+        () => {
+          const layers = element.querySelectorAll(':scope > span')
+          const timeline = gsap
+            .timeline({ paused: true, defaults: { duration: 0.3, ease: 'power2.inOut' } })
+            .fromTo(layers[0], { y: 0, yPercent: 0 }, { y: 0, yPercent: -110 }, 0)
+            .fromTo(
+              layers[1],
+              {
+                y: 0,
+                yPercent: 110,
+                visibility: 'inherit',
+              },
+              { y: 0, yPercent: 0 },
+              0,
+            )
+          const enter = () => timeline.play()
+          const leave = () => timeline.reverse()
+          control.addEventListener('pointerenter', enter)
+          control.addEventListener('pointerleave', leave)
+          return () => {
+            control.removeEventListener('pointerenter', enter)
+            control.removeEventListener('pointerleave', leave)
+          }
+        },
+        element,
+      )
+      return () => media.revert()
+    },
+    { scope: ref },
+  )
 
   return (
     <span

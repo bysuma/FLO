@@ -1,7 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { animations } from '../../lib/animations'
 import { TextReveal } from '../text-reveal'
+gsap.registerPlugin(useGSAP)
+
 const values = [
   {
     title: 'Expertise That Goes Further',
@@ -21,7 +24,7 @@ const values = [
 ]
 export function AboutStandards() {
   const dividers = useRef<Array<HTMLDivElement | null>>([])
-  useEffect(() => {
+  useGSAP(() => {
     const media = gsap.matchMedia()
     media.add(
       { desktop: '(min-width: 768px)', reduced: '(prefers-reduced-motion: reduce)' },

@@ -1,10 +1,12 @@
-import { flushSync } from 'react-dom'
+import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
+
+gsap.registerPlugin(useGSAP)
 import { animations } from '../../lib/animations'
 import { responsiveImage } from '../../lib/images'
 import { useEntrance } from '../shared/use-entrance'
 import type { EntranceGroup } from '../shared/use-entrance'
-import { memo, useEffect, useRef, useState } from 'react'
+import { memo, useRef } from 'react'
 import type { Ref } from 'react'
 import { Rollover } from '../shared/rollover'
 import { Decoration } from '../shared/decoration'
@@ -62,213 +64,217 @@ export function HomeTestimonials() {
   const motionRef = useRef<HTMLElement>(null)
   const entrance = useEntrance(motionRef, entrances)
   const trackRef = useRef<HTMLDivElement>(null)
-  const [order, setOrder] = useState([0, 1, 2, 3, 4, 5])
+  const order = [0, 1, 2, 3, 4, 5]
   const navigateRef = useRef<(direction: number) => void>(() => {})
   const step = (direction: number) => navigateRef.current(direction)
-  useEffect(() => {
-    const track = trackRef.current
-    if (!track) return
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)')
-    const desktop = matchMedia('(min-width: 1024px) and (pointer: fine)')
-    let timer: ReturnType<typeof setTimeout> | undefined
-    let tween: gsap.core.Tween | undefined
-    let visible = false
-    let drag: {
-      id: number
-      x: number
-      scroll: number
-      lastX: number
-      time: number
-      velocity: number
-      samples: Array<{ x: number; time: number }>
-    } | null = null
-    const max = () => Math.max(0, track.scrollWidth - track.clientWidth)
-    const stride = () => {
-      const first = track.children[0] as HTMLElement | undefined
-      const second = track.children[1] as HTMLElement | undefined
-      return first && second
-        ? second.getBoundingClientRect().left - first.getBoundingClientRect().left
-        : 0
-    }
-    let position = track.scrollLeft
-    let rotating = false
-    const normalize = () => {
-      if (rotating || max() <= 1 || !matchMedia('(min-width: 768px)').matches) return
-      const width = stride()
-      if (!width) return
-      const steps = Math.floor(position / width) - 1
-      if (!steps) return
-      rotating = true
-      flushSync(() =>
-        setOrder((items) => {
-          const shift = ((steps % items.length) + items.length) % items.length
-          return [...items.slice(shift), ...items.slice(0, shift)]
-        }),
-      )
-      position -= steps * width
-      track.scrollLeft = position
-      rotating = false
-    }
-    const clear = () => {
-      clearTimeout(timer)
-      tween?.kill()
-      tween = undefined
-    }
-    const schedule = () => {
-      clearTimeout(timer)
-      if (!visible || document.hidden || drag || reduced.matches || !desktop.matches || max() <= 1)
-        return
-      timer = setTimeout(() => animate(track.scrollLeft + stride()), animations.testimonials.hold)
-    }
-    const animate = (destination: number, momentumDuration?: number) => {
-      clear()
-      position = track.scrollLeft
-      const progress = { distance: 0 }
-      let previous = 0
-      tween = gsap.to(progress, {
-        distance: destination - track.scrollLeft,
-        onUpdate: () => {
-          position += progress.distance - previous
-          track.scrollLeft = position
-          previous = progress.distance
-          normalize()
-        },
-        duration: reduced.matches
-          ? 0
-          : (momentumDuration ?? animations.testimonials.duration / 1000),
-        ease: momentumDuration !== undefined ? 'power3.out' : animations.testimonials.ease,
-        onComplete: () => {
-          tween = undefined
-          schedule()
-        },
+  useGSAP(
+    (_context, contextSafe) => {
+      const track = trackRef.current
+      if (!track) return
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)')
+      const desktop = matchMedia('(min-width: 1024px) and (pointer: fine)')
+      let timer: ReturnType<typeof setTimeout> | undefined
+      let tween: gsap.core.Tween | undefined
+      let visible = false
+      let drag: {
+        id: number
+        x: number
+        scroll: number
+        lastX: number
+        time: number
+        velocity: number
+        samples: Array<{ x: number; time: number }>
+      } | null = null
+      const cards = Array.from(track.children) as HTMLElement[]
+      const setters = cards.map((card) => gsap.quickSetter(card, 'x', 'px'))
+      const horizontal = matchMedia('(min-width: 768px)')
+      let cardStride = 0
+      let overflow = false
+      let position = 0
+      const stride = () => cardStride
+      // The DOM order stays stable. Only compositor transforms change while moving.
+      const render = () => {
+        if (!horizontal.matches || !cardStride || !overflow) return
+        const cycle = cardStride * cards.length
+        cards.forEach((_card, index) => {
+          const origin = index * cardStride
+          const wrapped =
+            ((((origin - position + cardStride) % cycle) + cycle) % cycle) - cardStride
+          setters[index](wrapped - origin)
+        })
+      }
+      const clear = () => {
+        clearTimeout(timer)
+        tween?.kill()
+        tween = undefined
+      }
+      const schedule = () => {
+        clearTimeout(timer)
+        if (!visible || document.hidden || drag || reduced.matches || !desktop.matches || !overflow)
+          return
+        timer = setTimeout(() => animate(position + stride()), animations.testimonials.hold)
+      }
+      const animate = contextSafe!((destination: number, momentumDuration?: number) => {
+        clear()
+        const progress = { value: position }
+        tween = gsap.to(progress, {
+          value: destination,
+          onUpdate: () => {
+            position = progress.value
+            render()
+          },
+          duration: reduced.matches
+            ? 0
+            : (momentumDuration ?? animations.testimonials.duration / 1000),
+          ease: momentumDuration !== undefined ? 'power3.out' : animations.testimonials.ease,
+          onComplete: () => {
+            tween = undefined
+            schedule()
+          },
+        })
       })
-    }
-    navigateRef.current = (direction) => {
-      // Ignore repeated arrow clicks until the current movement finishes.
-      if (tween?.isActive() || drag) return
-      const width = stride()
-      if (width) animate((Math.round(track.scrollLeft / width) + direction) * width)
-    }
-    const update = () => {
-      if (!tween && !drag) position = track.scrollLeft
-      normalize()
-      if (!tween && !drag) schedule()
-    }
-    const interrupt = () => {
-      clear()
-      schedule()
-    }
-    const down = (event: PointerEvent) => {
-      clear()
-      if (event.pointerType !== 'mouse' || event.button !== 0 || max() <= 1) {
+      navigateRef.current = (direction) => {
+        // Ignore repeated arrow clicks until the current movement finishes.
+        if (tween?.isActive() || drag) return
+        const width = stride()
+        if (width) animate((Math.round(position / width) + direction) * width)
+      }
+      const measure = () => {
+        clear()
+        cardStride = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : 0
+        overflow = horizontal.matches && cardStride * cards.length > track.clientWidth
+        if (overflow) {
+          position = Math.round(position / cardStride) * cardStride
+          render()
+        } else {
+          cards.forEach((card) => card.style.removeProperty('transform'))
+        }
         schedule()
-        return
       }
-      position = track.scrollLeft
-      drag = {
-        id: event.pointerId,
-        x: event.clientX,
-        scroll: track.scrollLeft,
-        lastX: event.clientX,
-        time: performance.now(),
-        velocity: 0,
-        samples: [{ x: event.clientX, time: performance.now() }],
-      }
-      track.setPointerCapture(event.pointerId)
-      track.style.cursor = 'grabbing'
-      event.preventDefault()
-    }
-    const move = (event: PointerEvent) => {
-      if (!drag) return
-      const now = performance.now()
-      drag.samples.push({ x: event.clientX, time: now })
-      drag.samples = drag.samples.filter((sample) => now - sample.time <= 100)
-      const first = drag.samples[0]
-      drag.velocity = (first.x - event.clientX) / Math.max(1, now - first.time)
-      position += drag.lastX - event.clientX
-      track.scrollLeft = position
-      normalize()
-      drag.lastX = event.clientX
-      drag.time = now
-    }
-    const up = (event: PointerEvent) => {
-      if (!drag) {
+      const wheel = (event: WheelEvent) => {
+        const delta = event.deltaX || (event.shiftKey ? event.deltaY : 0)
+        if (!delta || !horizontal.matches || !overflow) return
+        event.preventDefault()
+        clear()
+        position += delta
+        render()
         schedule()
-        return
       }
-      const velocity =
-        event.type === 'pointercancel' || performance.now() - drag.time > 100 ? 0 : drag.velocity
-      const id = drag.id
-      drag = null
-      if (track.hasPointerCapture(id)) track.releasePointerCapture(id)
-      track.style.removeProperty('cursor')
-      const width = stride()
-      if (!width) {
+      const key = (event: KeyboardEvent) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+        event.preventDefault()
+        navigateRef.current(event.key === 'ArrowRight' ? 1 : -1)
+      }
+      const down = (event: PointerEvent) => {
+        clear()
+        if (event.button !== 0 || !horizontal.matches || !overflow) {
+          schedule()
+          return
+        }
+        drag = {
+          id: event.pointerId,
+          x: event.clientX,
+          scroll: position,
+          lastX: event.clientX,
+          time: performance.now(),
+          velocity: 0,
+          samples: [{ x: event.clientX, time: performance.now() }],
+        }
+        track.setPointerCapture(event.pointerId)
+        track.style.cursor = 'grabbing'
+        event.preventDefault()
+      }
+      const move = (event: PointerEvent) => {
+        if (!drag) return
+        const now = performance.now()
+        drag.samples.push({ x: event.clientX, time: now })
+        drag.samples = drag.samples.filter((sample) => now - sample.time <= 100)
+        const first = drag.samples[0]
+        drag.velocity = (first.x - event.clientX) / Math.max(1, now - first.time)
+        position += drag.lastX - event.clientX
+        render()
+        drag.lastX = event.clientX
+        drag.time = now
+      }
+      const up = (event: PointerEvent) => {
+        if (!drag) {
+          schedule()
+          return
+        }
+        const velocity =
+          event.type === 'pointercancel' || performance.now() - drag.time > 100 ? 0 : drag.velocity
+        const id = drag.id
+        drag = null
+        if (track.hasPointerCapture(id)) track.releasePointerCapture(id)
+        track.style.removeProperty('cursor')
+        const width = stride()
+        if (!width) {
+          schedule()
+          return
+        }
+        // Project the gesture, then decelerate directly to a card boundary.
+        // Keep floating-point position separate from browser scroll rounding.
+        const speed = Math.min(Math.abs(velocity), 3)
+        const travel = (Math.sign(velocity) * speed * speed) / (2 * 0.006)
+        const destination = Math.round((position + travel) / width) * width
+        const remaining = Math.abs(destination - position)
+        const duration = Math.max(
+          0.28,
+          Math.min(1.1, (remaining / Math.max(speed * 1000, 650)) * 3),
+        )
+        animate(destination, duration)
+      }
+      const visibility = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting
+        if (!visible) clear()
+        else schedule()
+      })
+      visibility.observe(track)
+      const resize = new ResizeObserver(measure)
+      resize.observe(track)
+      cards.forEach((card) => resize.observe(card))
+      const onVisibility = () => {
+        if (document.hidden) clear()
+        else schedule()
+      }
+      const onMedia = () => {
+        clear()
         schedule()
-        return
       }
-      // Project the gesture, then decelerate directly to a card boundary.
-      // Keep floating-point position separate from browser scroll rounding.
-      const speed = Math.min(Math.abs(velocity), 3)
-      const travel = (Math.sign(velocity) * speed * speed) / (2 * 0.006)
-      const destination = Math.round((position + travel) / width) * width
-      const remaining = Math.abs(destination - position)
-      const duration = Math.max(0.28, Math.min(1.1, (remaining / Math.max(speed * 1000, 650)) * 3))
-      animate(destination, duration)
-    }
-    const visibility = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting
-      if (!visible) clear()
-      else schedule()
-    })
-    visibility.observe(track)
-    const resize = new ResizeObserver(() => {
-      update()
-      schedule()
-    })
-    resize.observe(track)
-    const onVisibility = () => {
-      if (document.hidden) clear()
-      else schedule()
-    }
-    const onMedia = () => {
-      clear()
-      schedule()
-    }
-    track.addEventListener('scroll', update, { passive: true })
-    track.addEventListener('wheel', interrupt, { passive: true })
-    track.addEventListener('keydown', interrupt)
-    track.addEventListener('pointerdown', down)
-    track.addEventListener('pointermove', move)
-    track.addEventListener('pointerup', up)
-    track.addEventListener('pointercancel', up)
-    document.addEventListener('visibilitychange', onVisibility)
-    reduced.addEventListener('change', onMedia)
-    desktop.addEventListener('change', onMedia)
-    const initialFrame = requestAnimationFrame(() => {
-      normalize()
-      schedule()
-    })
-    return () => {
-      cancelAnimationFrame(initialFrame)
-      clear()
-      navigateRef.current = () => {}
-      resize.disconnect()
-      visibility.disconnect()
-      if (drag && track.hasPointerCapture(drag.id)) track.releasePointerCapture(drag.id)
-      track.style.removeProperty('cursor')
-      track.removeEventListener('scroll', update)
-      track.removeEventListener('wheel', interrupt)
-      track.removeEventListener('keydown', interrupt)
-      track.removeEventListener('pointerdown', down)
-      track.removeEventListener('pointermove', move)
-      track.removeEventListener('pointerup', up)
-      track.removeEventListener('pointercancel', up)
-      document.removeEventListener('visibilitychange', onVisibility)
-      reduced.removeEventListener('change', onMedia)
-      desktop.removeEventListener('change', onMedia)
-    }
-  }, [])
+      track.addEventListener('wheel', wheel, { passive: false })
+      track.addEventListener('keydown', key)
+      track.addEventListener('pointerdown', down)
+      track.addEventListener('pointermove', move)
+      track.addEventListener('pointerup', up)
+      track.addEventListener('pointercancel', up)
+      document.addEventListener('visibilitychange', onVisibility)
+      reduced.addEventListener('change', onMedia)
+      desktop.addEventListener('change', onMedia)
+      const initialFrame = requestAnimationFrame(() => {
+        measure()
+      })
+      return () => {
+        cancelAnimationFrame(initialFrame)
+        clear()
+        navigateRef.current = () => {}
+        resize.disconnect()
+        visibility.disconnect()
+        if (drag && track.hasPointerCapture(drag.id)) track.releasePointerCapture(drag.id)
+        track.style.removeProperty('cursor')
+        cards.forEach((card) => card.style.removeProperty('transform'))
+        track.removeEventListener('wheel', wheel)
+        track.removeEventListener('keydown', key)
+        track.removeEventListener('pointerdown', down)
+        track.removeEventListener('pointermove', move)
+        track.removeEventListener('pointerup', up)
+        track.removeEventListener('pointercancel', up)
+        document.removeEventListener('visibilitychange', onVisibility)
+        reduced.removeEventListener('change', onMedia)
+        desktop.removeEventListener('change', onMedia)
+      }
+    },
+    { scope: motionRef },
+  )
   return (
     <section
       ref={motionRef}
@@ -289,14 +295,16 @@ export function HomeTestimonials() {
       <div className="mr-page flex min-w-0 max-w-[812px] flex-1 flex-col gap-6 max-md:mr-0 max-md:max-w-none">
         <div
           ref={trackRef}
-          className="testimonial-track flex flex-1 min-w-0 gap-2.5 overflow-x-auto pb-2 cursor-grab select-none [scrollbar-width:none] [overflow-anchor:none] max-md:flex-col max-md:gap-6 max-md:pr-0 max-md:cursor-auto"
+          className="testimonial-track flex flex-1 min-w-0 gap-2.5 overflow-x-clip pb-2 cursor-grab select-none touch-pan-y [scrollbar-width:none] [overflow-anchor:none] max-md:flex-col max-md:gap-6 max-md:pr-0 max-md:cursor-auto"
           tabIndex={0}
           role="region"
           aria-label="Partner testimonials"
         >
           {/* Temporary duplicates for testing drag and arrow navigation. */}
           {order.map((index) => (
-            <PartnerCard entrance={entrance('cards', String(index))} key={index} />
+            <div key={index} className="shrink-0 max-md:w-full">
+              <PartnerCard entrance={entrance('cards', String(index))} />
+            </div>
           ))}
         </div>
         <div className="flex justify-end gap-2 max-md:hidden">

@@ -17,6 +17,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "4.3.3",
     "@tanstack/react-devtools": "0.10.12",
     "@tanstack/react-router": "1.170.35",

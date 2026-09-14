@@ -1,7 +1,7 @@
-import storyLines from '../../../public/about-page/story-lines.svg?raw'
+import storyLines from '../../assets/about/story-lines.svg?raw'
 import { animateDecoration } from '../shared/decoration'
 import { useRef } from 'react'
-import { useEntrance } from '../shared/use-entrance'
+import { useAboutEntrance } from './use-about-entrance'
 import type { EntranceGroup } from '../shared/use-entrance'
 import { TextReveal } from '../text-reveal'
 import { responsiveImage } from '../../lib/images'
@@ -13,7 +13,7 @@ const entrances = [
 
 export function AboutStory() {
   const sectionRef = useRef<HTMLElement>(null)
-  const entrance = useEntrance(sectionRef, entrances)
+  const entrance = useAboutEntrance(sectionRef, entrances)
   return (
     <section
       ref={sectionRef}

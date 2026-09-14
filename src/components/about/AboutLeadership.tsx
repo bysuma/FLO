@@ -1,11 +1,14 @@
+import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Rollover } from '../shared/rollover'
 import { animations } from '../../lib/animations'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { TextReveal } from '../text-reveal'
 import { BackgroundPhoto } from '../shared/background-photo'
 import { responsiveImage } from '../../lib/images'
+gsap.registerPlugin(useGSAP, ScrollTrigger)
+
 export function AboutLeadership() {
   const [selected, setSelected] = useState(0)
   const [open, setOpen] = useState(true)
@@ -18,118 +21,124 @@ export function AboutLeadership() {
   const blurRef = useRef<HTMLDivElement>(null)
   const toggleIconRef = useRef<HTMLSpanElement>(null)
   const portraitsRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const mobile = matchMedia('(max-width: 1023px)')
-    const keepOpen = () => {
-      if (mobile.matches) setOpen(true)
-    }
-    keepOpen()
-    mobile.addEventListener('change', keepOpen)
-    return () => mobile.removeEventListener('change', keepOpen)
-  }, [])
-  useEffect(() => {
-    const section = sectionRef.current
-    const background = backgroundRef.current
-    if (!section || !background) return
-    gsap.registerPlugin(ScrollTrigger)
-    const media = gsap.matchMedia()
-    let disposed = false
-    void document.fonts.ready.then(() => {
-      if (disposed) return
+  const panelTimeline = useRef<gsap.core.Timeline | null>(null)
+  const openRef = useRef(open)
+  openRef.current = open
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current!
+      const background = backgroundRef.current!
+      const panel = panelRef.current!
+      const media = gsap.matchMedia()
       media.add(
-        '(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
-        () => {
-          const distance = animations.parallax.intensity * 6
-          const endY = () => (distance * section.clientHeight) / window.innerHeight
-          const crop = () => {
-            const overscan = Math.max(distance, endY())
-            gsap.set(background, {
-              height: section.clientHeight + 2 * overscan,
-              marginTop: -overscan,
-            })
-          }
-          crop()
-          gsap.fromTo(
-            background,
-            { y: -distance },
-            {
-              y: endY,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true,
-                invalidateOnRefresh: true,
-                onRefreshInit: crop,
-                onToggle: (self) => {
-                  background.style.willChange = self.isActive ? 'transform' : ''
+        {
+          desktop: '(min-width: 1024px)',
+          fine: '(hover: hover) and (pointer: fine)',
+          reduced: '(prefers-reduced-motion: reduce)',
+        },
+        (context) => {
+          const { desktop, fine, reduced } = context.conditions!
+          if (!desktop) setOpen(true)
+          const duration = reduced ? 0 : animations.leadership.duration / 1000
+          const timeline = gsap
+            .timeline({ paused: true, defaults: { duration, ease: animations.leadership.ease } })
+            .fromTo(
+              panel,
+              { autoAlpha: 0, x: () => panel.offsetWidth + 16 },
+              { autoAlpha: 1, x: 0 },
+              0,
+            )
+            .fromTo(toggleIconRef.current, { rotation: 0 }, { rotation: 45 }, 0)
+            .fromTo(blurRef.current, { opacity: 0 }, { opacity: 1 }, 0)
+            .fromTo(
+              headingRef.current,
+              { scale: desktop ? 1.15 : 1, transformOrigin: 'left center' },
+              { scale: 1 },
+              0,
+            )
+            .fromTo(
+              closeRef.current,
+              { x: () => (desktop ? panel.offsetWidth + 10 : 0) },
+              { x: 0 },
+              0,
+            )
+          panelTimeline.current = timeline
+          timeline.progress(!desktop || openRef.current ? 1 : 0)
+          let width = panel.offsetWidth
+          const resize = new ResizeObserver(() => {
+            if (panel.offsetWidth === width) return
+            width = panel.offsetWidth
+            const progress = timeline.progress()
+            timeline.invalidate().progress(progress)
+          })
+          resize.observe(panel)
+
+          if (desktop && fine && !reduced) {
+            const distance = animations.parallax.intensity * 6
+            const endY = () => (distance * section.clientHeight) / window.innerHeight
+            const crop = () => {
+              const overscan = Math.max(distance, endY())
+              gsap.set(background, {
+                height: section.clientHeight + 2 * overscan,
+                marginTop: -overscan,
+              })
+            }
+            crop()
+            gsap.fromTo(
+              background,
+              { y: -distance },
+              {
+                y: endY,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: section,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: true,
+                  invalidateOnRefresh: true,
+                  onRefreshInit: crop,
+                  onToggle: (self) => {
+                    background.style.willChange = self.isActive ? 'transform' : ''
+                  },
                 },
               },
-            },
-          )
-          return () => background.style.removeProperty('will-change')
+            )
+          }
+          return () => {
+            resize.disconnect()
+            panelTimeline.current = null
+            background.style.removeProperty('will-change')
+          }
         },
-        section,
       )
-    })
-    return () => {
-      disposed = true
-      media.revert()
-    }
-  }, [])
-  useEffect(() => {
-    const panel = panelRef.current
-    const control = closeRef.current
-    if (!panel || !control) return
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-    const duration = reduced ? 0 : animations.leadership.duration / 1000
-    const ease = animations.leadership.ease
-    const desktop = matchMedia('(min-width: 1024px)').matches
-    let width = panel.offsetWidth
-    const timeline = gsap
-      .timeline({ defaults: { duration, ease } })
-      .to(panel, { autoAlpha: open ? 1 : 0, x: open ? 0 : width + 16 }, 0)
-      .to(toggleIconRef.current, { rotation: open ? 45 : 0 }, 0)
-      .to(blurRef.current, { opacity: open ? 1 : 0 }, 0)
-      .to(
-        headingRef.current,
-        { scale: open || !desktop ? 1 : 1.15, transformOrigin: 'left center' },
-        0,
-      )
-      .to(control, { x: open || !desktop ? 0 : width + 10 }, 0)
-    const observer = new ResizeObserver(() => {
-      const nextWidth = panel.offsetWidth
-      if (nextWidth === width) return
-      width = nextWidth
-      timeline.kill()
-      const mobile = matchMedia('(max-width: 1023px)').matches
-      gsap.set(panel, { x: open ? 0 : width + 16, autoAlpha: open ? 1 : 0 })
-      gsap.set(control, { x: open || mobile ? 0 : width + 10 })
-      gsap.set(headingRef.current, { scale: open || mobile ? 1 : 1.15 })
-      gsap.set(blurRef.current, { opacity: open ? 1 : 0 })
-      gsap.set(toggleIconRef.current, { rotation: open ? 45 : 0 })
-    })
-    observer.observe(panel)
-    return () => {
-      observer.disconnect()
-      timeline.kill()
-    }
-  }, [open])
-  useEffect(() => {
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-    const tweens = Array.from(portraitsRef.current?.children ?? []).map((portrait, index) =>
-      gsap.to(portrait, {
-        opacity: index === selected ? 1 : 0,
+      return () => media.revert()
+    },
+    { scope: sectionRef },
+  )
+
+  useGSAP(
+    () => {
+      const timeline = panelTimeline.current
+      if (!timeline) return
+      timeline.reversed(!open)
+      timeline.paused(false)
+    },
+    { dependencies: [open], scope: sectionRef },
+  )
+
+  useGSAP(
+    () => {
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+      gsap.to(Array.from(portraitsRef.current?.children ?? []), {
+        opacity: (index) => (index === selected ? 1 : 0),
         duration: reduced ? 0 : animations.leadership.duration / 1000,
         ease: animations.leadership.ease,
         overwrite: 'auto',
-      }),
-    )
-    // Preserve the current opacity when interrupted so the reverse crossfade
-    // starts from the visible frame instead of restoring the initial portrait.
-    return () => tweens.forEach((tween) => tween.kill())
-  }, [selected])
+      })
+    },
+    { dependencies: [selected], scope: sectionRef },
+  )
 
   return (
     <section
