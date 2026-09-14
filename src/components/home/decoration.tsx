@@ -14,7 +14,7 @@ const vectors = {
 // Figma coordinates include the exported stroke bounds. About starts at page x=-3.
 const positioning = {
   hero: 'max-md:hidden left-0 top-[588.035px] w-[1256px] h-[170px] overflow-hidden [&_svg]:flex-none [&_svg]:w-[1256px] [&_svg]:h-[170px] max-md:top-auto max-md:bottom-0',
-  about: 'max-md:hidden -left-[230.361px] top-0 w-[1856.71px] h-[774.949px] [&_svg]:flex-none [&_svg]:w-[1856.71px] [&_svg]:h-[774.949px]',
+  about: 'max-md:hidden -left-[229.361px] top-0 w-[1856.71px] h-[774.949px] [&_svg]:flex-none [&_svg]:w-[1856.71px] [&_svg]:h-[774.949px]',
   footer: 'max-md:left-[-185px] max-md:top-[400px] max-md:w-[844px] max-md:h-[560px] max-md:[&_svg]:w-[844px] max-md:[&_svg]:h-[560px] max-md:contain-paint left-[244.552px] -top-[84.448px] w-[1407.9px] h-[934.963px] [&_svg]:flex-none [&_svg]:w-[1407.9px] [&_svg]:h-[934.963px]',
   testimonials: 'max-md:hidden -left-[47px] top-[374px] w-160 h-[399px] [&_svg]:flex-none [&_svg]:w-160 [&_svg]:h-[399px]',
 }
