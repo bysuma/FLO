@@ -66,14 +66,14 @@ export function AboutStandards() {
     return () => media.revert()
   }, [])
   return (
-    <section className="mx-4 flex min-h-[709px] flex-col items-center gap-7 rounded-md bg-surface px-4 pt-14 pb-5 text-center max-md:mx-0 max-md:py-16">
+    <section className="mx-4 flex min-h-177.25 flex-col items-center gap-7 rounded-md bg-surface px-4 pt-14 pb-5 text-center max-md:mx-0 max-md:py-16">
       <TextReveal
         as="h2"
         className="max-w-140 font-display text-[42px] leading-[1.143] tracking-[-.84px]"
       >
         A higher standard of Engineering
       </TextReveal>
-      <TextReveal as="p" className="max-w-96 text-base leading-[1.375]">
+      <TextReveal as="p" className="max-w-96 text-base leading-snug">
         We hold every project to a standard that reflects{' '}
         <strong>our commitment to the people behind it.</strong>
       </TextReveal>

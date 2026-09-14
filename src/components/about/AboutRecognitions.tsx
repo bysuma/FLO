@@ -1,3 +1,4 @@
+import { cn } from '../../lib/cn'
 import { useState } from 'react'
 import { TextReveal } from '../text-reveal'
 import { responsiveImage } from '../../lib/images'
@@ -50,7 +51,10 @@ export function AboutRecognitions() {
               key={index}
               aria-pressed={index === selected}
               onClick={() => setSelected(index)}
-              className={`max-w-100 text-left text-[32px] leading-normal tracking-[-.64px] ${index === selected ? 'text-white' : 'text-[#898989]'}`}
+              className={cn(
+                "max-w-100 text-left text-[32px] leading-normal tracking-[-.64px]",
+                index === selected ? 'text-white' : 'text-[#898989]',
+              )}
             >
               {index === selected && (
                 <span aria-hidden="true" className="mr-4 inline-block size-1 bg-accent" />
@@ -67,7 +71,7 @@ export function AboutRecognitions() {
             height="416"
             className="h-104 w-full rounded-md object-cover object-bottom"
           />
-          <TextReveal as="p" className="text-base leading-[1.375]">
+          <TextReveal as="p" className="text-base leading-snug">
             Recognized as a Small Business Trailblazer for leadership, growth, and participation in
             advancing the next generation of infrastructure contractors.
           </TextReveal>

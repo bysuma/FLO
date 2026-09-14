@@ -1,7 +1,7 @@
 import { contactLinks } from '../../lib/config'
 import { responsiveImage } from '../../lib/images'
-import { useEntrance } from '../shared/use-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { ProjectCard } from './project-card'
 import { ParallaxImage } from './parallax-image'
 import { Rollover } from '../shared/rollover'
@@ -42,7 +42,7 @@ export function HomeProjects() {
       ref={motionRef}
       id="projects"
       aria-labelledby="projects-heading"
-      className="[&_article]:overflow-clip [&_article_h3]:[--reveal-delay:180] [&_article_p]:[--reveal-delay:310] [&_article_button]:[--reveal-delay:0] section-shell px-page py-10 pb-30 max-md:px-5 max-md:py-16"
+      className="px-page pt-10 pb-30 max-md:px-5 max-md:py-16"
     >
       <div className="flex flex-col items-start gap-7 max-md:gap-6">
         <Eyebrow>Recent projects</Eyebrow>
@@ -68,24 +68,27 @@ export function HomeProjects() {
           >
             <TextReveal
               as="h3"
-              className="max-w-56 max-md:max-w-none max-md:text-lg max-md:leading-normal text-project font-semibold uppercase"
+              className="[--reveal-delay:180] max-w-56 max-md:max-w-none max-md:text-lg max-md:leading-normal text-project font-semibold uppercase"
             >
               {project.title}
             </TextReveal>
-            <TextReveal as="p" className="mt-2 text-lg max-md:mt-1.5 max-md:text-xs">
+            <TextReveal
+              as="p"
+              className="[--reveal-delay:310] mt-2 text-lg max-md:mt-1.5 max-md:text-xs"
+            >
               {project.description}
             </TextReveal>
             <button
               {...entrance('controls', project.image)}
               type="button"
-              className="mt-9 max-md:mt-[19px] flex self-stretch items-center justify-between text-left"
+              className="[--reveal-delay:0] mt-9 max-md:mt-4.75 flex self-stretch items-center justify-between text-left"
               onClick={() => {
                 setSelected(project)
                 dialog.current?.showModal()
               }}
               aria-label={`View project: ${project.description}`}
             >
-              <span className="button inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] has-[img]:p-[.2rem] has-[img]:pl-[.8rem] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none bg-white text-ink">
+              <span className="inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none bg-white text-ink">
                 <Rollover>View Project</Rollover>
               </span>
               <Rollover icon>
@@ -97,7 +100,7 @@ export function HomeProjects() {
       </div>
       <dialog
         ref={dialog}
-        className="project-dialog m-auto max-w-[min(48rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] p-6 border-0 rounded-card text-ink backdrop:bg-[#121c58bb]"
+        className="m-auto max-w-[min(48rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] p-6 border-0 rounded-card text-ink backdrop:bg-[#121c58bb]"
         aria-labelledby="project-dialog-title"
         onClick={(event) => {
           if (event.target === event.currentTarget) dialog.current?.close()
@@ -106,13 +109,14 @@ export function HomeProjects() {
         <div className="flex flex-col gap-5">
           <button
             {...entrance('controls', 'close')}
-            className="button inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] has-[img]:p-[.2rem] has-[img]:pl-[.8rem] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none self-end bg-surface"
+            className="inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none self-end bg-surface"
             onClick={() => dialog.current?.close()}
             autoFocus
           >
             <Rollover>Close</Rollover>
           </button>
-          <img loading="lazy"
+          <img
+            loading="lazy"
             {...responsiveImage(
               `/projects/${selected.image}.webp`,
               '(max-width: 767px) calc(100vw - 80px), 720px',
@@ -132,7 +136,7 @@ export function HomeProjects() {
           <TextReveal as="p">{selected.description}</TextReveal>
           <a
             {...entrance('controls', 'contact')}
-            className="button inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] has-[img]:p-[.2rem] has-[img]:pl-[.8rem] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none self-start bg-brand text-white"
+            className="inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none self-start bg-brand text-white"
             href={`${contactLinks.email}?subject=${encodeURIComponent(selected.description)}`}
           >
             <Rollover>Ask about this project</Rollover>

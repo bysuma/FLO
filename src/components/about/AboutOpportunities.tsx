@@ -1,3 +1,4 @@
+import { cn } from '../../lib/cn'
 import { contactLinks } from '../../lib/config'
 import { TextReveal } from '../text-reveal'
 import { ButtonLink } from '../shared/button-link'
@@ -17,7 +18,10 @@ export function AboutOpportunities() {
       ].map((item, index) => (
         <article
           key={item.title}
-          className={`relative isolate flex min-h-66.25 w-full max-w-228 overflow-clip max-md:flex-col ${index ? 'flex-row-reverse bg-surface' : 'bg-ink text-white'}`}
+          className={cn(
+            "relative isolate flex min-h-66.25 w-full max-w-228 overflow-clip max-md:flex-col",
+            index ? 'flex-row-reverse bg-surface' : 'bg-ink text-white',
+          )}
         >
           <div className="flex flex-1 flex-col items-start gap-3 px-9 py-6">
             <TextReveal
@@ -29,8 +33,9 @@ export function AboutOpportunities() {
             <TextReveal as="p" className="text-lg leading-normal">
               Join a team that builds things that matter.
             </TextReveal>
-            <div className="[&_a]:min-h-7.5 [&_a]:text-sm">
+            <div>
               <ButtonLink
+                className="min-h-7.5 text-sm"
                 href={`${contactLinks.email}?subject=${index ? 'Partnership' : 'Careers'}`}
                 primary
               >
@@ -43,7 +48,12 @@ export function AboutOpportunities() {
             alt={index ? 'FLO infrastructure partner' : 'Join the FLO team'}
             width="474"
             height="265"
-            className={`h-66.25 min-w-0 flex-1 object-cover mask-size-[100%_100%] mask-no-repeat ${index ? "mask-[url('/about-page/partners-mask.svg')]" : "mask-[url('/about-page/careers-mask.svg')]"}`}
+            className={cn(
+              "h-66.25 min-w-0 flex-1 object-cover mask-size-[100%_100%] mask-no-repeat",
+              index
+                ? "mask-[url('/about-page/partners-mask.svg')]"
+                : "mask-[url('/about-page/careers-mask.svg')]",
+            )}
           />
         </article>
       ))}

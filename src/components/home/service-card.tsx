@@ -1,3 +1,4 @@
+import { cn } from '../../lib/cn'
 import { contactLinks } from '../../lib/config'
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
@@ -129,7 +130,7 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
         cardEntrance.ref(node)
       }}
       data-reveal-owner
-      className="relative isolate flex min-h-130 min-w-0 flex-1 flex-col items-start justify-end gap-7 overflow-clip px-8.5 pt-8 pb-7 max-md:min-h-[310px] max-md:justify-between max-md:p-5 max-md:[&_a]:h-[32.168px] max-md:[&_a]:min-h-[32.168px] max-md:[&_a]:w-[115px] max-md:[&_a]:gap-2 max-md:[&_a]:pl-[10.45px] max-md:[&_a]:text-[10.35px] max-md:[&_a_img]:size-[27.343px] [--reveal-delay:0] [--reveal-stagger:0] [--reveal-threshold:.01]"
+      className="relative isolate flex min-h-130 min-w-0 flex-1 flex-col items-start justify-end gap-7 overflow-clip px-8.5 pt-8 pb-7 max-md:min-h-77.5 max-md:justify-between max-md:p-5 [--reveal-delay:0] [--reveal-stagger:0] [--reveal-threshold:.01]"
     >
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <BackgroundPhoto
@@ -138,11 +139,14 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
           sizes="(max-width: 767px) calc(100vw - 40px), 58vw"
         />
         <div
-          className={`absolute inset-0 max-md:bg-black/30 ${emergency ? '' : 'md:bg-black/30'}`}
+          className={cn("absolute inset-0 max-md:bg-black/30", emergency ? '' : 'md:bg-black/30')}
         />
         <div
           ref={background}
-          className={`absolute inset-0 origin-left scale-x-0 ${emergency ? 'bg-brand' : 'bg-ink'}`}
+          className={cn(
+            "absolute inset-0 origin-left scale-x-0",
+            emergency ? 'bg-brand' : 'bg-ink',
+          )}
         />
         <div className="absolute -right-27.75 bottom-0 flex flex-col max-md:hidden">
           {[0, 1].map((index) => (
@@ -172,21 +176,30 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
       <span
         ref={badge}
         aria-hidden="true"
-        className={`invisible absolute top-0 px-4 py-2.5 font-display text-base max-md:hidden ${emergency ? 'left-0 bg-ink text-brand' : 'right-0 bg-brand text-ink'}`}
+        className={cn(
+          "invisible absolute top-0 px-4 py-2.5 font-display text-base max-md:hidden",
+          emergency ? 'left-0 bg-ink text-brand' : 'right-0 bg-brand text-ink',
+        )}
       >
         {emergency ? '01' : '02'}
       </span>
       <div ref={heading} className="relative">
         <TextReveal
           as="h3"
-          className={`font-display text-service text-white max-md:max-w-[233px] max-md:text-service-mobile ${emergency ? 'max-w-74' : 'max-w-107.5'}`}
+          className={cn(
+            "font-display text-service text-white max-md:max-w-58.25 max-md:text-service-mobile",
+            emergency ? 'max-w-74' : 'max-w-107.5',
+          )}
         >
           {emergency ? 'Emergency Work' : 'Infrastructure Planning'}
         </TextReveal>
       </div>
       <p
         ref={description}
-        className={`invisible absolute bottom-21 left-9.25 text-lg leading-normal tracking-[-.36px] text-white max-md:hidden ${emergency ? 'max-w-58.25' : 'max-w-86.5'}`}
+        className={cn(
+          "invisible absolute bottom-21 left-9.25 text-lg leading-normal tracking-[-.36px] text-white max-md:hidden",
+          emergency ? 'max-w-58.25' : 'max-w-86.5',
+        )}
       >
         {emergency
           ? 'Rapid, precise infrastructure repair and restoration.'

@@ -1,6 +1,6 @@
 import { BackgroundPhoto } from './background-photo'
-import { useEntrance } from './use-entrance'
-import type { EntranceGroup } from './use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { useRef } from 'react'
 import { TextReveal } from '../text-reveal'
 import { ButtonLink } from './button-link'
@@ -18,11 +18,11 @@ export function Contact() {
       ref={motionRef}
       id="contact"
       aria-labelledby="contact-heading"
-      className="contact-section relative isolate overflow-clip max-md:min-h-[708px] max-md:justify-start max-md:pt-[127px] max-md:gap-[33px] max-md:bg-[#295f8b] max-md:[&_a]:bg-brand max-md:[&_a]:text-white max-md:[&_a]:rounded-none max-md:[&_a]:w-[155px] max-md:[&_a]:h-10 flex min-h-150 flex-col items-center justify-center gap-8 px-6 text-center"
+      className="relative isolate overflow-clip max-md:min-h-177 max-md:justify-start max-md:pt-31.75 max-md:gap-8.25 max-md:bg-[#295f8b] flex min-h-150 flex-col items-center justify-center gap-8 px-6 text-center"
     >
       <div
         {...entrance('backdrop')}
-        className="absolute inset-0 max-md:top-[215px] -z-10 pointer-events-none"
+        className="absolute inset-0 max-md:top-53.75 -z-10 pointer-events-none"
         aria-hidden="true"
       >
         <BackgroundPhoto
@@ -35,17 +35,18 @@ export function Contact() {
       <TextReveal
         as="h2"
         id="contact-heading"
-        className="max-w-md font-display text-display max-md:text-[42px] max-md:leading-[1.2] max-md:tracking-[-.84px] max-md:font-sans max-md:max-w-[272px] text-white"
+        className="max-w-md font-display text-display max-md:text-[42px] max-md:leading-[1.2] max-md:tracking-[-.84px] max-md:font-sans max-md:max-w-68 text-white"
       >
         Ready when it can’t wait
       </TextReveal>
-      <TextReveal
-        as="p"
-        className="-mt-[13px] max-w-[228px] text-center text-base text-white md:hidden"
-      >
+      <TextReveal as="p" className="-mt-3.25 max-w-57 text-center text-base text-white md:hidden">
         Let's talk about what your infrastructure needs and how we can help.
       </TextReveal>
-      <ButtonLink {...entrance('controls')} href="/contact">
+      <ButtonLink
+        className="max-md:bg-brand max-md:text-white max-md:rounded-none max-md:w-38.75 max-md:h-10"
+        {...entrance('controls')}
+        href="/contact"
+      >
         Contact Us
       </ButtonLink>
     </section>

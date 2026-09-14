@@ -1,7 +1,7 @@
 import pattern from '../../assets/about/pattern.svg?raw'
 import { animateDecoration } from '../shared/decoration'
-import { useAboutEntrance } from './use-about-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useAboutEntrance } from '../../lib/use-about-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { useRef } from 'react'
 import { Navbar } from '../shared/navbar'
 import { TextReveal } from '../text-reveal'
@@ -21,7 +21,7 @@ export function AboutHero() {
         className="pointer-events-none absolute -top-145.5 left-[calc((100vw-1856.7px)/2-68.65px)] -z-10 h-[774.949px] w-[1856.7px] max-w-none"
       />
       <Navbar light />
-      <div className="mx-auto flex max-w-[848px] flex-col items-center gap-[23px] px-5 pt-33.5 text-center max-md:pt-20">
+      <div className="mx-auto flex max-w-212 flex-col items-center gap-5.75 px-5 pt-33.5 text-center max-md:pt-20">
         <TextReveal
           as="h1"
           className="font-display text-[52px] leading-none tracking-[-1.04px] uppercase max-md:text-[36px]"
@@ -29,7 +29,7 @@ export function AboutHero() {
           Driven by the people
           <br className="max-md:hidden" /> behind every project
         </TextReveal>
-        <TextReveal as="p" className="text-base leading-[1.375]">
+        <TextReveal as="p" className="text-base leading-snug">
           That responsibility shapes our work.
         </TextReveal>
       </div>

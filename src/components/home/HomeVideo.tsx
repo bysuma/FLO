@@ -6,7 +6,15 @@ import { useEffect, useRef } from 'react'
 
 gsap.registerPlugin(useGSAP)
 
-export function HomeVideo({ src, mobileSrc, alt }: { src: string; mobileSrc: string; alt: string }) {
+export function HomeVideo({
+  src,
+  mobileSrc,
+  alt,
+}: {
+  src: string
+  mobileSrc: string
+  alt: string
+}) {
   const preparation = useHeroPreparation()
   const ref = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -112,9 +120,10 @@ export function HomeVideo({ src, mobileSrc, alt }: { src: string; mobileSrc: str
 
   return (
     <div
+      data-hero-media
       ref={ref}
       data-hero-mask
-      className="hero-landscape relative block w-199.5 h-125 max-w-none shrink-0 aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:w-[797.847px] min-[1101px]:h-[500px] min-[1101px]:ml-auto"
+      className="relative block w-[797.847px] h-125 max-w-none shrink-0 aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:ml-auto"
     >
       <div className="relative h-full w-full aspect-[797.847/500] mask-[url('/hero/video-mask.svg')] mask-size-[100%_100%] mask-no-repeat">
         <img
@@ -132,7 +141,9 @@ export function HomeVideo({ src, mobileSrc, alt }: { src: string; mobileSrc: str
           loop
           playsInline
           preload="none"
-          onPlaying={(event) => { event.currentTarget.style.opacity = '1' }}
+          onPlaying={(event) => {
+            event.currentTarget.style.opacity = '1'
+          }}
           className="relative block h-full w-full aspect-[797.847/500] object-cover opacity-0"
         >
           <source src={mobileSrc} media="(max-width: 767px)" type="video/mp4" />

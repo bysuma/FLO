@@ -89,7 +89,7 @@ export function PageTransition() {
     <div
       ref={curtainRef}
       aria-hidden="true"
-      className="pointer-events-none invisible fixed inset-0 z-[10000] bg-brand"
+      className="pointer-events-none invisible fixed inset-0 z-10000 bg-brand"
     />
   )
 }

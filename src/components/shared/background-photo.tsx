@@ -1,3 +1,4 @@
+import { cn } from '../../lib/cn'
 import { responsiveImage, responsiveSource } from '../../lib/images'
 
 /** Decorative photography; the section owns positioning, overlay and animation. */
@@ -22,7 +23,10 @@ export function BackgroundPhoto({
         height="900"
         loading="lazy"
         decoding="async"
-        className={`block h-full w-full object-cover ${position === 'bottom' ? 'object-bottom' : 'object-center'}`}
+        className={cn(
+          "block h-full w-full object-cover",
+          position === 'bottom' ? 'object-bottom' : 'object-center',
+        )}
       />
     </picture>
   )

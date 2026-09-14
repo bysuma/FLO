@@ -1,6 +1,6 @@
 import { HeroPreparation } from '../shared/hero-preparation'
-import { useEntrance } from '../shared/use-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { useRef } from 'react'
 import { Link } from '@tanstack/react-router'
 import { Rollover } from '../shared/rollover'
@@ -27,17 +27,17 @@ function HeroContent() {
     <header
       ref={motionRef}
       id="home"
-      className="hero sticky top-0 z-0 isolate min-h-190 overflow-clip bg-ink mask-[url('/hero/background.svg')] mask-size-[100%_100%] mask-no-repeat mask-center max-[1100px]:min-h-0 max-md:min-h-[652px] max-md:mask-none min-[1101px]:min-h-[758px]"
+      className="sticky top-0 z-0 isolate min-h-189.5 overflow-clip bg-ink mask-[url('/hero/background.svg')] mask-size-[100%_100%] mask-no-repeat mask-center max-[1100px]:min-h-0 max-md:min-h-163 max-md:mask-none"
     >
       <Decoration section="hero" />
       <Navbar />
-      <div className="hero-content flex items-start gap-0 ml-inset pt-26.75 pb-11.5 max-[1100px]:flex-col max-[1100px]:gap-10 max-[1100px]:ml-0 max-[1100px]:px-page max-[1100px]:pt-14 max-[1100px]:pb-12 max-md:pt-15 max-md:gap-6 max-md:pb-[27px] min-[1101px]:ml-[142px] min-[1101px]:mr-0 min-[1101px]:pt-[107px] min-[1101px]:pb-[44px] min-[1101px]:justify-between">
-        <div className="hero-copy min-w-0 max-[1100px]:self-stretch basis-124.5 pt-[.1rem] max-[1100px]:basis-auto max-md:pt-0 min-[1101px]:basis-[500px] min-[1101px]:pt-[1.95px] [&_a]:[--reveal-delay:0] [&_.button]:min-w-[127px] min-[1101px]:[&_h1>.font-light]:leading-[.958] min-[1101px]:[&>div]:mt-[35.806px] min-[1101px]:[&>div]:ml-1 min-[1101px]:[&>div]:gap-[30px] min-[1101px]:[&_.button]:w-[127px] min-[1101px]:[&_.button]:px-[13px] min-[1101px]:[&_.button]:py-[9px] min-[1101px]:[&_.button]:leading-normal flex shrink-0 flex-col items-start">
+      <div className="flex items-start gap-0 ml-35.5 pt-26.75 pb-11 max-[1100px]:flex-col max-[1100px]:gap-10 max-[1100px]:ml-0 max-[1100px]:px-page max-[1100px]:pt-14 max-[1100px]:pb-12 max-md:pt-15 max-md:gap-6 max-md:pb-6.75 min-[1101px]:justify-between">
+        <div className="min-w-0 max-[1100px]:self-stretch basis-125 pt-[.1rem] max-[1100px]:basis-auto max-md:pt-0 min-[1101px]:pt-[1.95px] flex shrink-0 flex-col items-start">
           <TextReveal
             as="h1"
             className="font-sans text-hero max-md:text-hero-mobile md:max-[1100px]:text-[60px] uppercase text-brand max-md:tracking-[-1.38px]"
           >
-            <span className="font-light">
+            <span className="font-light min-[1101px]:leading-[.958]">
               Built on
               <br />
               Integrity.
@@ -49,22 +49,31 @@ function HeroContent() {
               to last.
             </span>
           </TextReveal>
-          <div className="mt-9 max-md:mt-[23px] flex items-center gap-7 max-md:gap-7.5">
-            <ButtonLink {...entrance('controls', 'projects')} href="#projects" primary>
+          <div className="min-[1101px]:ml-1 min-[1101px]:gap-7.5 mt-9 max-md:mt-5.75 flex items-center gap-7 max-md:gap-7.5">
+            <ButtonLink
+              className="min-w-31.75 min-[1101px]:w-31.75 min-[1101px]:px-3.25 min-[1101px]:py-2.25 min-[1101px]:leading-normal"
+              {...entrance('controls', 'projects')}
+              href="#projects"
+              primary
+            >
               Projects
             </ButtonLink>
             <Link
               {...entrance('controls', 'services')}
               to="/"
               hash="services"
-              className="flex min-h-10 items-center gap-2 font-display text-white"
+              className="[--reveal-delay:0] flex min-h-10 items-center gap-2 font-display text-white"
             >
               <span className="size-1 bg-accent" />
               <Rollover>Services</Rollover>
             </Link>
           </div>
         </div>
-        <HomeVideo src="/hero/landscape-desktop.mp4" mobileSrc="/hero/landscape-mobile.mp4" alt="FLO Engineering project video" />
+        <HomeVideo
+          src="/hero/landscape-desktop.mp4"
+          mobileSrc="/hero/landscape-mobile.mp4"
+          alt="FLO Engineering project video"
+        />
       </div>
     </header>
   )

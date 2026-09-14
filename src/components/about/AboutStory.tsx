@@ -1,8 +1,8 @@
 import storyLines from '../../assets/about/story-lines.svg?raw'
 import { animateDecoration } from '../shared/decoration'
 import { useRef } from 'react'
-import { useAboutEntrance } from './use-about-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useAboutEntrance } from '../../lib/use-about-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { TextReveal } from '../text-reveal'
 import { responsiveImage } from '../../lib/images'
 const entrances = [
@@ -17,11 +17,11 @@ export function AboutStory() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate grid h-[847px] grid-cols-[145px_minmax(0,1fr)_309px_24px_319px_159px] grid-rows-[300px_72px_auto_minmax(0,1fr)] overflow-clip bg-[#f5f5f5] max-xl:flex max-xl:h-auto max-xl:flex-col max-xl:gap-8 max-xl:px-5 max-xl:py-16"
+      className="relative isolate grid min-h-212 grid-cols-12 gap-x-6 gap-y-16 py-16 overflow-clip bg-[#f5f5f5] max-xl:flex max-xl:flex-col max-xl:gap-8 max-xl:px-5"
     >
       <TextReveal
         as="h2"
-        className="col-start-2 col-end-4 row-start-1 row-span-2 mt-[139px] self-start font-display text-[100px] leading-[.8] tracking-[-4px] text-brand max-xl:mt-0 max-xl:text-[64px]"
+        className="col-start-2 col-span-6 row-start-1 self-start font-display text-[100px] leading-[.8] tracking-[-4px] text-brand max-xl:text-[64px]"
       >
         Built like
         <br />
@@ -29,17 +29,17 @@ export function AboutStory() {
         <br />
         is on it
       </TextReveal>
-      <div className="col-start-5 col-end-7 row-start-1 relative h-[299px] w-[358px] justify-self-end max-xl:self-end">
+      <div className="col-start-9 col-span-4 row-start-1 relative h-74.75 w-89.5 justify-self-end max-xl:self-end">
         <div
           {...entrance('photos', 'family')}
-          className="ml-auto -mt-[9px] translate-x-1 h-77 w-[271px] overflow-hidden"
+          className="ml-auto -mt-2.25 translate-x-1 h-77 w-67.75 overflow-hidden"
         >
           <img
             {...responsiveImage('/about-page/story-family.webp', '271px')}
             alt="The Flores family"
             width="271"
             height="308"
-            className="h-[416px] w-[313px] max-w-none -translate-x-[42px] -translate-y-[98px]"
+            className="h-104 w-78.25 max-w-none -translate-x-10.5 -translate-y-24.5"
           />
         </div>
         <img
@@ -48,16 +48,16 @@ export function AboutStory() {
           alt=""
           width="152"
           height="131"
-          className="absolute left-0 bottom-0 h-[131px] w-38"
+          className="absolute left-0 bottom-0 h-32.75 w-38"
         />
       </div>
-      <div className="col-start-3 col-end-6 row-start-3 flex items-start gap-6 text-lg leading-[normal] max-xl:flex-col">
-        <TextReveal as="p" className="w-[309px] shrink-0 tracking-[-.36px] max-xl:w-full">
+      <div className="col-start-5 col-span-7 row-start-2 grid grid-cols-2 items-start gap-6 text-lg leading-[normal] max-xl:grid-cols-1">
+        <TextReveal as="p" className="min-w-0 tracking-[-.36px]">
           Born from our family values and driven by our impact on communities, FLO, short for
           Flores, our family's last name, was founded on the belief that infrastructure should be
           built with intention, accountability, and long-term impact.
         </TextReveal>
-        <TextReveal as="p" className="w-[319px] shrink-0 max-xl:w-full">
+        <TextReveal as="p" className="min-w-0">
           Family-owned and operated, our company is backed by{' '}
           <strong>40 years of experience</strong> and grounded in hands-on field experience and
           multidisciplinary expertise spanning fintech, mechanical engineering, and construction
@@ -72,21 +72,21 @@ export function AboutStory() {
       </div>
       <div
         {...entrance('photos', 'team')}
-        className="col-start-1 col-end-3 row-start-1 row-span-4 mt-[620px] self-start h-[259px] w-[521px] overflow-hidden rounded-md max-xl:mt-0 max-xl:max-w-full"
+        className="col-start-1 col-span-4 row-start-2 self-end h-64.75 w-full overflow-hidden rounded-md"
       >
         <img
           {...responsiveImage('/about-page/story-team.webp', '521px')}
           alt="FLO team in the field"
           width="521"
           height="259"
-          className="h-[471px] w-[629px] max-w-none -translate-x-[65px] -translate-y-[212px]"
+          className="h-117.75 w-157.25 max-w-none -translate-x-16.25 -translate-y-53"
         />
       </div>
       <div
         {...entrance('lines')}
         aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: storyLines }}
-        className="pointer-events-none col-start-1 col-end-7 row-start-4 -z-10 mt-2 -ml-[221px] h-[262px] w-[2096px] max-w-none self-start max-xl:mt-0"
+        className="pointer-events-none absolute bottom-0 left-0 -z-10 h-65.5 w-[2096px] max-w-none"
       />
     </section>
   )

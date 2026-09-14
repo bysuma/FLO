@@ -1,3 +1,4 @@
+import { cn } from '../../lib/cn'
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
 import { gsap } from 'gsap'
@@ -7,11 +8,11 @@ import { responsiveImage } from '../../lib/images'
 gsap.registerPlugin(useGSAP)
 
 const photos = [
-  { name: 'field', width: 221, className: 'w-[221px]' },
-  { name: 'crew', width: 243, className: 'w-[243px]' },
-  { name: 'kristen', width: 397, className: 'w-[397px]' },
-  { name: 'road', width: 327, className: 'w-[327px]' },
-  { name: 'site', width: 323, className: 'w-[323px]' },
+  { name: 'field', width: 221, className: 'w-55.25' },
+  { name: 'crew', width: 243, className: 'w-60.75' },
+  { name: 'kristen', width: 397, className: 'w-99.25' },
+  { name: 'road', width: 327, className: 'w-81.75' },
+  { name: 'site', width: 323, className: 'w-80.75' },
 ]
 
 export function AboutGallery() {
@@ -51,7 +52,7 @@ export function AboutGallery() {
         )
       }
       const tick = (_time: number, delta: number) => {
-        if (drag || tween || !visible || document.hidden || reduced.matches || !cycle) return
+        if (drag || tween || visible! || document.hidden || reduced.matches || !cycle) return
         position.value =
           (position.value + (animations.aboutGallery.speed * Math.min(delta, 50)) / 1000) % cycle
         render()
@@ -173,7 +174,7 @@ export function AboutGallery() {
       role="region"
       aria-label="FLO team photo carousel"
       tabIndex={0}
-      className="mt-[97px] overflow-hidden px-[17px] mask-l-from-95% mask-r-from-95% select-none touch-pan-y cursor-grab active:cursor-grabbing"
+      className="mt-24.25 overflow-hidden px-4.25 mask-l-from-95% mask-r-from-95% select-none touch-pan-y cursor-grab active:cursor-grabbing"
     >
       <div ref={trackRef} className="flex w-max gap-3">
         {[0, 1, 2].map((copy) => (
@@ -181,7 +182,11 @@ export function AboutGallery() {
             {photos.map(({ name, width, className }, index) => (
               <div
                 key={name}
-                className={`${className} h-[299px] shrink-0 overflow-hidden rounded-md max-md:max-w-[80vw] ${index === 0 ? '-mr-0.5' : index === 3 ? '-mr-[5px]' : ''}`}
+                className={cn(
+                  className,
+                  "h-74.75 shrink-0 overflow-hidden rounded-md max-md:max-w-[80vw]",
+                  index === 0 ? '-mr-0.5' : index === 3 ? '-mr-1.25' : '',
+                )}
               >
                 <img
                   {...responsiveImage(`/about-page/hero-${name}.webp`, `${width}px`)}

@@ -1,6 +1,6 @@
 import { ServiceCard } from './service-card'
-import { useEntrance } from '../shared/use-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { useRef } from 'react'
 import { TextReveal } from '../text-reveal'
 import { Eyebrow } from '../shared/eyebrow'
@@ -18,9 +18,9 @@ export function HomeServices() {
       ref={motionRef}
       id="services"
       aria-labelledby="services-heading"
-      className="section-shell px-page bg-surface-soft py-10 max-md:bg-white max-md:px-5 max-md:py-16"
+      className="px-page bg-surface-soft py-10 max-md:bg-white max-md:px-5 max-md:py-16"
     >
-      <div className="flex flex-col items-start gap-5 max-md:gap-[22px]">
+      <div className="flex flex-col items-start gap-5 max-md:gap-5.5">
         <Eyebrow>Our services</Eyebrow>
         <TextReveal
           as="h2"
@@ -30,7 +30,7 @@ export function HomeServices() {
           From emergency response to lasting resilience
         </TextReveal>
       </div>
-      <div className="mt-12 max-md:mt-[22px] flex flex-col gap-1.5 max-md:gap-[22px] md:flex-row">
+      <div className="mt-12 max-md:mt-5.5 flex flex-col gap-1.5 max-md:gap-5.5 md:flex-row">
         <ServiceCard
           kind="emergency"
           cardEntrance={entrance('cards', 'emergency')}

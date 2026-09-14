@@ -1,7 +1,8 @@
+import { cn } from '../../lib/cn'
 import { useGSAP } from '@gsap/react'
 import { BackgroundPhoto } from '../shared/background-photo'
-import { useEntrance } from '../shared/use-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { useRef } from 'react'
 import { gsap } from 'gsap'
 
@@ -92,7 +93,7 @@ export function HomeResults() {
     <section
       ref={motionRef}
       aria-labelledby="results-heading"
-      className="results-section relative isolate overflow-clip min-h-194.75 pt-22.25 max-lg:min-h-0 max-lg:pt-16 max-md:min-h-[869px] max-md:px-5 max-md:py-14 max-md:gap-6.5 [--reveal-delay:0] [--reveal-stagger:70] [--reveal-threshold:.01] flex flex-col"
+      className="relative isolate overflow-clip min-h-194.75 pt-22.25 max-lg:min-h-0 max-lg:pt-16 max-md:min-h-217.25 max-md:px-5 max-md:py-14 max-md:gap-6.5 [--reveal-delay:0] [--reveal-stagger:70] [--reveal-threshold:.01] flex flex-col"
     >
       <div
         {...entrance('backdrop')}
@@ -119,18 +120,30 @@ export function HomeResults() {
           We've earned our reputation through consistent work and accountability.
         </TextReveal>
       </div>
-      <div className="stats-row mt-auto flex items-start max-md:hidden max-lg:mt-12 max-lg:grid max-lg:grid-cols-2 max-lg:items-stretch max-[480px]:grid-cols-1">
+      <div className="mt-auto flex items-start max-md:hidden max-lg:mt-12 max-lg:grid max-lg:grid-cols-2 max-lg:items-stretch">
         {stats.map((stat, index) => (
           <article
             {...entrance('cards', stat.title)}
             data-reveal-owner
-            className={`stat-card min-h-[12.8rem] pt-8.5 px-7.5 pb-4 bg-top-left bg-cover bg-no-repeat even:mt-[12.8rem] [&_h3]:text-base [&_.text-stat]:tabular-nums max-[1100px]:px-4 max-lg:min-h-60 max-lg:bg-surface max-lg:bg-none max-lg:even:mt-0 max-lg:p-6 [--reveal-delay:0] [--reveal-stagger:0] [--reveal-threshold:.01] ${["bg-[url('/results/card.svg')]", "bg-[url('/results/card-4.svg')]", "bg-[url('/results/card-2.svg')]", "bg-[url('/results/card-3.svg')]"][index]} flex min-w-0 flex-1 flex-col`}
+            className={cn(
+              "min-h-[12.8rem] pt-8.5 px-7.5 pb-4 bg-top-left bg-cover bg-no-repeat even:mt-[12.8rem] max-[1100px]:px-4 max-lg:min-h-60 max-lg:bg-surface max-lg:bg-none max-lg:even:mt-0 max-lg:p-6 [--reveal-delay:0] [--reveal-stagger:0] [--reveal-threshold:.01]",
+              [
+                "bg-[url('/results/card.svg')]",
+                "bg-[url('/results/card-4.svg')]",
+                "bg-[url('/results/card-2.svg')]",
+                "bg-[url('/results/card-3.svg')]",
+              ][index],
+              "flex min-w-0 flex-1 flex-col",
+            )}
             key={stat.title}
           >
-            <TextReveal as="p" className="text-stat max-lg:text-stat-mobile tracking-tight">
+            <TextReveal
+              as="p"
+              className="tabular-nums text-stat max-lg:text-stat-mobile tracking-tight"
+            >
               {stat.value}
             </TextReveal>
-            <TextReveal as="h3" className="mt-4 text-body font-semibold uppercase">
+            <TextReveal as="h3" className="mt-4 text-base font-semibold uppercase">
               {stat.title}
             </TextReveal>
             <TextReveal as="p" className="mt-4 max-w-52 text-small leading-tight">
@@ -139,25 +152,32 @@ export function HomeResults() {
           </article>
         ))}
       </div>
-      <div className="flex flex-col items-center gap-[9px] md:hidden">
+      <div className="flex flex-col items-center gap-2.25 md:hidden">
         {stats.map((stat, index) => (
           <article
             {...entrance('cards', `mobile-${stat.title}`)}
             data-reveal-owner
             key={stat.title}
-            className="relative isolate flex h-[132.579px] w-[242px] max-w-full shrink-0 flex-col pt-[22px] pl-[20.84px] pr-3 text-ink [--reveal-delay:0] [--reveal-stagger:0]"
+            className="relative isolate flex h-[132.579px] w-60.5 max-w-full shrink-0 flex-col pt-5.5 pl-[20.84px] pr-3 text-ink [--reveal-delay:0] [--reveal-stagger:0]"
           >
-            <img loading="lazy"
+            <img
+              loading="lazy"
               src={`/results/card-mobile-${index + 1}.svg`}
               alt=""
               aria-hidden="true"
               width="242"
               height="132.579"
-              className={`pointer-events-none absolute inset-0 -z-10 h-[132.579px] w-[242px] ${index === 2 ? '-scale-y-100' : ''}`}
+              className={cn(
+                "pointer-events-none absolute inset-0 -z-10 size-full",
+                index === 2 ? '-scale-y-100' : '',
+              )}
             />
             <TextReveal
               as="p"
-              className={`text-results-stat-mobile tracking-[-1.04px] tabular-nums ${index === 3 ? '' : 'h-[34.737px]'}`}
+              className={cn(
+                "text-results-stat-mobile tracking-[-1.04px] tabular-nums",
+                index === 3 ? '' : 'h-[34.737px]',
+              )}
             >
               {stat.value.endsWith('+') ? (
                 <>
@@ -176,7 +196,10 @@ export function HomeResults() {
             </TextReveal>
             <TextReveal
               as="p"
-              className={`w-[128.526px] -ml-[1.16px] text-results-description-mobile ${index === 3 ? 'mt-[5.73px]' : index === 2 ? 'mt-[9.212px]' : 'mt-[11.522px]'}`}
+              className={cn(
+                "w-[128.526px] ml-[-1.16px] text-results-description-mobile",
+                index === 3 ? 'mt-[5.73px]' : index === 2 ? 'mt-[9.212px]' : 'mt-[11.522px]',
+              )}
             >
               {index === 1
                 ? 'Trusted by public agencies and private partners.'

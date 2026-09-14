@@ -1,3 +1,4 @@
+import { cn } from '../../lib/cn'
 import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -143,7 +144,7 @@ export function AboutLeadership() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate flex min-h-[863px] items-center gap-12 overflow-clip p-4 pl-inset max-lg:grid max-lg:min-h-svh max-lg:grid-cols-1 max-lg:gap-8 max-lg:px-4 max-lg:py-12"
+      className="relative isolate flex min-h-215.75 items-center gap-12 overflow-clip p-4 pl-inset max-lg:grid max-lg:min-h-svh max-lg:grid-cols-1 max-lg:gap-8 max-lg:px-4 max-lg:py-12"
     >
       <div ref={backgroundRef} className="absolute inset-0 -z-10">
         <BackgroundPhoto
@@ -213,11 +214,14 @@ export function AboutLeadership() {
           id="leadership-profile"
           inert={!open}
           aria-hidden={!open}
-          className={`flex min-h-[792px] w-[698px] max-w-full flex-col items-center gap-6 rounded-md bg-white p-3 text-center max-lg:min-h-0 max-lg:max-h-none max-lg:overflow-visible max-lg:gap-4 ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}
+          className={cn(
+            "flex min-h-198 w-174.5 max-w-full flex-col items-center gap-6 rounded-md bg-white p-3 text-center max-lg:min-h-0 max-lg:gap-4",
+            open ? 'pointer-events-auto' : 'pointer-events-none',
+          )}
         >
           <div
             ref={portraitsRef}
-            className="grid h-88 shrink-0 w-full max-lg:h-[min(30svh,240px)] items-end justify-items-center overflow-hidden bg-[#c5c4c9] [mask-image:url(/about-page/leadership-portrait-mask.svg)] [mask-size:100%_100%] [mask-repeat:no-repeat]"
+            className="grid h-88 shrink-0 w-full max-lg:h-[min(30svh,240px)] items-end justify-items-center overflow-hidden bg-[#c5c4c9] mask-[url(/about-page/leadership-portrait-mask.svg)] mask-size-[100%_100%] mask-no-repeat"
           >
             {['kristen', 'greg'].map((name, index) => (
               <img
@@ -227,7 +231,14 @@ export function AboutLeadership() {
                 aria-hidden={selected !== index}
                 width="335"
                 height="335"
-                className={`col-start-1 row-start-1 ${index === 0 ? 'size-84 max-lg:h-[min(30svh,240px)] max-lg:w-full object-contain' : 'h-88 max-lg:h-[min(30svh,240px)] w-full object-cover'} object-bottom ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+                className={cn(
+                  "col-start-1 row-start-1",
+                  index === 0
+                    ? 'size-84 max-lg:h-[min(30svh,240px)] max-lg:w-full object-contain'
+                    : 'h-88 max-lg:h-[min(30svh,240px)] w-full object-cover',
+                  "object-bottom",
+                  index === 0 ? 'opacity-100' : 'opacity-0',
+                )}
               />
             ))}
           </div>
@@ -235,7 +246,7 @@ export function AboutLeadership() {
             {selected === 0 ? 'Kristen Flores' : 'Greg Flores'}
           </h3>
           <p className="font-display text-xs">FOUNDER</p>
-          <div className="grid max-w-120 text-base leading-[1.375]">
+          <div className="grid max-w-120 text-base leading-snug">
             {[
               'CEO & Co-Founder of FLO Engineering Inc., with a multidisciplinary background spanning finance, construction, and infrastructure management. Her experience combines strategic planning, operational leadership, and project execution across complex infrastructure initiatives.',
               'Principal & Co-Founder of FLO Engineering Inc., with a background in mechanical engineering, heavy civil construction, and field operations. His experience combines structural project delivery, field leadership, and technical expertise across complex infrastructure projects.',
@@ -243,7 +254,7 @@ export function AboutLeadership() {
               <p
                 key={index}
                 aria-hidden={selected !== index}
-                className={`col-start-1 row-start-1 ${selected === index ? '' : 'invisible'}`}
+                className={cn("col-start-1 row-start-1", selected === index ? '' : 'invisible')}
               >
                 {bio}
               </p>
@@ -277,7 +288,10 @@ export function AboutLeadership() {
                   alt=""
                   width="96"
                   height="96"
-                  className={`size-24 max-lg:size-16 object-cover ${selected === index ? '' : 'grayscale'}`}
+                  className={cn(
+                    "size-24 max-lg:size-16 object-cover",
+                    selected === index ? '' : 'grayscale',
+                  )}
                 />
                 <span>{name} Flores</span>
                 <span className="font-display text-[9px]">FOUNDER</span>

@@ -4,8 +4,8 @@ import { gsap } from 'gsap'
 gsap.registerPlugin(useGSAP)
 import { animations } from '../../lib/animations'
 import { responsiveImage } from '../../lib/images'
-import { useEntrance } from '../shared/use-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { memo, useRef } from 'react'
 import type { Ref } from 'react'
 import { Rollover } from '../shared/rollover'
@@ -27,16 +27,17 @@ const PartnerCard = memo(function PartnerCard({
     <figure
       {...entrance}
       data-reveal-owner
-      className={`testimonial-card relative after:pointer-events-none after:absolute after:inset-y-0 after:right-18.5 after:w-[0.5px] after:bg-ink/30 snap-start w-100.25 min-h-99.25 [&_blockquote]:max-w-94 [&_blockquote]:min-h-70 max-md:min-h-[346.509px] max-md:[&_blockquote]:min-h-0 max-md:[&_blockquote]:h-[244.39px] max-md:rounded-[8.728px] [&_blockquote]:[--reveal-stagger:110] [--reveal-delay:80] [&_figcaption]:[--reveal-delay:180] max-md:w-auto max-md:self-stretch flex shrink-0 flex-col overflow-hidden rounded-card bg-brand`}
+      className={"relative after:pointer-events-none after:absolute after:inset-y-0 after:right-18.5 after:w-[0.5px] after:bg-ink/30 snap-start w-100.25 min-h-99.25 max-md:min-h-[346.509px] max-md:rounded-[8.728px] [--reveal-delay:80] max-md:w-auto max-md:self-stretch flex shrink-0 flex-col overflow-hidden rounded-card bg-brand"}
     >
       <Text
         as="blockquote"
-        className="flex-1 px-6 pt-9 font-display text-quote max-md:text-quote-mobile max-md:flex-none max-md:px-[20.07px] max-md:pt-[31.42px] max-md:tracking-[-.559px]"
+        className="max-w-94 min-h-70 max-md:min-h-0 max-md:h-[244.39px] [--reveal-stagger:110] flex-1 px-6 pt-9 font-display text-quote max-md:text-quote-mobile max-md:flex-none max-md:px-[20.07px] max-md:pt-[31.42px] max-md:tracking-[-.559px]"
       >
         “They showed up before dawn and didn't leave until the slope was secure.”
       </Text>
-      <figcaption className="flex items-center gap-4 max-md:gap-[13.088px] max-md:px-[33.17px] max-md:py-[26.18px] max-md:[&_img]:w-[59.352px] max-md:[&_img]:h-[47.132px] border-t-[0.5px] border-ink/30 px-9 py-7">
+      <figcaption className="[--reveal-delay:180] flex items-center gap-4 max-md:gap-[13.088px] max-md:px-[33.17px] max-md:py-[26.18px] border-t-[0.5px] border-ink/30 px-9 py-7">
         <img
+          className="max-md:w-[59.352px] max-md:h-[47.132px]"
           {...responsiveImage('/testimonials/avatar.webp', '(max-width: 767px) 59.352px, 68px')}
           alt=""
           width="68"
@@ -50,7 +51,7 @@ const PartnerCard = memo(function PartnerCard({
           </Text>
           <Text
             as="p"
-            className="mt-2 max-w-40 text-caption max-md:mt-[5px] max-md:max-w-[132.668px] max-md:text-[10.474px]"
+            className="mt-2 max-w-40 text-caption max-md:mt-1.25 max-md:max-w-[132.668px] max-md:text-[10.474px]"
           >
             Facilities Director, Monterey Park
           </Text>
@@ -279,23 +280,23 @@ export function HomeTestimonials() {
     <section
       ref={motionRef}
       aria-labelledby="testimonials-heading"
-      className="testimonials-section relative isolate min-h-168.5 pt-41.25 pr-0 pb-28 pl-inset bg-ink overflow-clip max-md:min-h-0 max-md:pt-16 max-md:pb-[26px] max-md:px-5 max-md:gap-[27px] flex flex-col gap-12 lg:flex-row"
+      className="relative isolate min-h-168.5 pt-41.25 pr-0 pb-28 pl-inset bg-ink overflow-clip max-md:min-h-0 max-md:pt-16 max-md:pb-6.5 max-md:px-5 max-md:gap-6.75 flex flex-col gap-12 lg:flex-row"
     >
       <Decoration section="testimonials" />
-      <div className="testimonial-heading basis-108 max-[1100px]:basis-80 max-lg:basis-auto max-md:w-[270px] max-md:gap-[29px] flex shrink-0 flex-col items-start gap-7">
+      <div className="basis-108 max-[1100px]:basis-80 max-lg:basis-auto max-md:w-67.5 max-md:gap-7.25 flex shrink-0 flex-col items-start gap-7">
         <Eyebrow light>HomeTestimonials</Eyebrow>
         <TextReveal
           as="h2"
           id="testimonials-heading"
-          className="max-w-72 font-display text-section max-md:text-[42px] max-md:leading-[1.071] max-md:tracking-[-.84px] text-white"
+          className="max-w-72 font-display text-section text-white"
         >
           Trusted by Our Partners
         </TextReveal>
       </div>
-      <div className="mr-page flex min-w-0 max-w-[812px] flex-1 flex-col gap-6 max-md:mr-0 max-md:max-w-none">
+      <div className="mr-page flex min-w-0 max-w-203 flex-1 flex-col gap-6 max-md:mr-0 max-md:max-w-none">
         <div
           ref={trackRef}
-          className="testimonial-track flex flex-1 min-w-0 gap-2.5 overflow-x-clip pb-2 cursor-grab select-none touch-pan-y [scrollbar-width:none] [overflow-anchor:none] max-md:flex-col max-md:gap-6 max-md:pr-0 max-md:cursor-auto"
+          className="flex flex-1 min-w-0 gap-2.5 overflow-x-clip pb-2 cursor-grab select-none touch-pan-y scrollbar-none [overflow-anchor:none] max-md:flex-col max-md:gap-6 max-md:cursor-auto"
           tabIndex={0}
           role="region"
           aria-label="Partner testimonials"

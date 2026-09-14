@@ -1,6 +1,6 @@
 import { responsiveImage, responsiveSource } from '../../lib/images'
-import { useEntrance } from '../shared/use-entrance'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 import { useRef } from 'react'
 import { Decoration } from '../shared/decoration'
 import { TextReveal } from '../text-reveal'
@@ -23,15 +23,15 @@ export function HomeAbout() {
       ref={motionRef}
       id="about"
       aria-labelledby="about-heading"
-      className="about-section mt-0.5 relative isolate overflow-clip min-h-177.75 flex flex-col pt-[7.8rem] pr-page pb-4 pl-inset max-md:mt-0 max-md:min-h-[532px] max-md:pt-14 max-md:px-5 max-md:pb-[45px] bg-white"
+      className="mt-0.5 relative isolate overflow-clip min-h-177.75 flex flex-col pt-[7.8rem] pr-page pb-4 pl-inset max-md:mt-0 max-md:min-h-133 max-md:pt-14 max-md:px-5 max-md:pb-11.25 bg-white"
     >
       <Decoration section="about" />
       {/* Desktop: 124.8px section padding + 262.674px copy row = SVG line at y=387.474. */}
-      <div className="about-copy items-start [&>p]:[--reveal-delay:240] flex flex-col gap-8 max-md:gap-[25px] lg:min-h-[262.674px] lg:flex-row lg:gap-16">
+      <div className="items-start flex flex-col gap-8 max-md:gap-6.25 lg:min-h-[262.674px] lg:flex-row lg:gap-16">
         <TextReveal
           as="h2"
           id="about-heading"
-          className="max-w-lg flex-1 font-display text-display max-md:text-intro-heading-mobile max-md:max-w-[318px] max-md:[&_br]:hidden"
+          className="max-w-lg flex-1 font-display text-display max-md:text-intro-heading-mobile max-md:max-w-79.5"
         >
           The partner
           <br className="max-md:hidden" /> communities
@@ -39,7 +39,7 @@ export function HomeAbout() {
         </TextReveal>
         <TextReveal
           as="p"
-          className="max-w-96 flex-1 text-intro max-md:text-[15px] max-md:leading-[1.4]"
+          className="[--reveal-delay:240] max-w-96 flex-1 text-intro max-md:text-[15px] max-md:leading-[1.4]"
         >
           From road repair to landslide stabilization, we restore what needs attention today while
           reinforcing what needs to last tomorrow.
@@ -47,7 +47,7 @@ export function HomeAbout() {
       </div>
       <div
         ref={galleryRef}
-        className="about-gallery min-w-0 mt-[2.85rem] lg:mt-0 self-end overflow-clip max-md:self-stretch max-md:mt-8 max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory max-md:gap-[3px] max-md:[scrollbar-width:none] [&_img]:min-w-0 [&_img]:flex-1 [&_img]:w-55 [&_img]:h-77 [&_img]:object-cover max-md:[&_img]:w-[158.33px] max-md:[&_img]:flex-none max-md:[&_img]:h-[210px] max-md:[&_img]:snap-start flex gap-2.5"
+        className="min-w-0 mt-[2.85rem] lg:mt-0 self-end overflow-clip max-md:self-stretch max-md:mt-8 max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory max-md:gap-0.75 max-md:scrollbar-none flex gap-2.5"
       >
         <picture className="contents">
           <source
@@ -55,6 +55,7 @@ export function HomeAbout() {
             {...responsiveSource('/about/team-mobile.webp', '158.33px')}
           />
           <img
+            className="min-w-0 flex-1 w-55 h-77 object-cover max-md:w-[158.33px] max-md:flex-none max-md:h-52.5 max-md:snap-start"
             {...entrance('images', 'team')}
             {...responsiveImage('/about/team.webp', '220px')}
             alt="FLO team inspecting work on site"
@@ -70,6 +71,7 @@ export function HomeAbout() {
             {...responsiveSource('/about/excavator-mobile.webp', '158.33px')}
           />
           <img
+            className="min-w-0 flex-1 w-55 h-77 object-cover max-md:w-[158.33px] max-md:flex-none max-md:h-52.5 max-md:snap-start"
             {...entrance('images', 'excavator')}
             {...responsiveImage('/about/excavator.webp', '220px')}
             alt="Excavator carrying out hillside repairs"
@@ -85,6 +87,7 @@ export function HomeAbout() {
             {...responsiveSource('/about/hillside-mobile.webp', '158.33px')}
           />
           <img
+            className="min-w-0 flex-1 w-55 h-77 object-cover max-md:w-[158.33px] max-md:flex-none max-md:h-52.5 max-md:snap-start"
             {...entrance('images', 'hillside')}
             {...responsiveImage('/about/hillside.webp', '220px')}
             alt="Restored road along a wooded hillside"
@@ -103,7 +106,8 @@ export function HomeAbout() {
           className="flex size-7 items-center justify-center"
           onClick={() => scrollGallery(-1)}
         >
-          <img loading="lazy"
+          <img
+            loading="lazy"
             src="/about/gallery-arrow.svg"
             alt=""
             width="28"

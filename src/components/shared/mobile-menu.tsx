@@ -8,9 +8,15 @@ gsap.registerPlugin(useGSAP)
 import { animations } from '../../lib/animations'
 import { Rollover } from './rollover'
 
-import type { NavigationLink } from './navigation'
+import type { NavigationLink } from '../../lib/config'
 
-export function MobileMenu({ links, onClose }: { links: readonly NavigationLink[]; onClose: () => void }) {
+export function MobileMenu({
+  links,
+  onClose,
+}: {
+  links: readonly NavigationLink[]
+  onClose: () => void
+}) {
   const ref = useRef<HTMLDialogElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const timeline = useRef<gsap.core.Timeline | null>(null)
@@ -149,12 +155,9 @@ export function MobileMenu({ links, onClose }: { links: readonly NavigationLink[
           onClick={() => close()}
           className="flex size-14 items-center justify-center"
         >
-          <span
-            aria-hidden="true"
-            className="grid w-14 [&>span]:col-start-1 [&>span]:row-start-1 [&>span]:h-[1.3px] [&>span]:w-14 [&>span]:bg-white"
-          >
-            <span className="rotate-45" />
-            <span className="-rotate-45" />
+          <span aria-hidden="true" className="grid w-14">
+            <span className="col-start-1 row-start-1 h-[1.3px] w-14 bg-white rotate-45" />
+            <span className="col-start-1 row-start-1 h-[1.3px] w-14 bg-white -rotate-45" />
           </span>
         </button>
       </div>

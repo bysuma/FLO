@@ -1,8 +1,9 @@
+import { cn } from '../../lib/cn'
 import { gsap } from 'gsap'
 import { animations } from '../../lib/animations'
 import { useRef } from 'react'
-import { useEntrance } from './use-entrance'
-import type { EntranceGroup } from './use-entrance'
+import { useEntrance } from '../../lib/use-entrance'
+import type { EntranceGroup } from '../../lib/use-entrance'
 // Local Figma vectors, kept inline so GSAP can animate the actual strokes.
 const vectors = {
   hero: '<svg xmlns="http://www.w3.org/2000/svg" width="1256" height="170" viewBox="0 0 1256 170" fill="none">\n  <path d="M506.619 117.636V235.04H27L-163 41.3124V0.24999L228.988 0.25L506.619 117.636ZM506.619 117.636V0.25H978.024L1255.66 117.636V235.04H784.249L506.619 117.636Z" stroke="#3B6DFE" stroke-width="0.5" stroke-miterlimit="10"/>\n</svg>\n',
@@ -16,13 +17,11 @@ const vectors = {
 
 // Figma coordinates include the exported stroke bounds. About starts at page x=-3.
 const positioning = {
-  hero: 'max-md:hidden left-0 top-[588.035px] w-[1256px] h-[170px] overflow-hidden [&_svg]:flex-none [&_svg]:w-[1256px] [&_svg]:h-[170px] max-md:top-auto max-md:bottom-0',
-  about:
-    'max-md:hidden -left-[229.361px] top-0 w-[1856.71px] h-[774.949px] [&_svg]:flex-none [&_svg]:w-[1856.71px] [&_svg]:h-[774.949px]',
+  hero: 'max-md:hidden left-0 top-[588.035px] w-314 h-42.5 overflow-hidden',
+  about: 'max-md:hidden left-[-229.361px] top-0 w-[1856.71px] h-[774.949px] ',
   footer:
-    'max-md:left-[-185px] max-md:top-[400px] max-md:w-[844px] max-md:h-[560px] max-md:[&_svg]:w-[844px] max-md:[&_svg]:h-[560px] max-md:contain-paint left-[244.552px] -top-[84.448px] w-[1407.9px] h-[934.963px] [&_svg]:flex-none [&_svg]:w-[1407.9px] [&_svg]:h-[934.963px]',
-  testimonials:
-    'max-md:hidden -left-[47px] top-[374px] w-160 h-[399px] [&_svg]:flex-none [&_svg]:w-160 [&_svg]:h-[399px]',
+    'max-md:-left-46.25 max-md:top-100 max-md:w-211 max-md:h-140 max-md:contain-paint left-[244.552px] top-[-84.448px] w-[1407.9px] h-[934.963px] ',
+  testimonials: 'max-md:hidden -left-11.75 top-93.5 w-160 h-99.75 ',
 }
 
 export function animateDecoration(target: Element) {
@@ -102,8 +101,13 @@ export function Decoration({ section }: { section: keyof typeof vectors }) {
         entrance('decoration').ref(node)
       }}
       aria-hidden="true"
-      className={`motion-decoration absolute pointer-events-none -z-10 flex [&_svg]:min-w-0 ${positioning[section]}`}
-      dangerouslySetInnerHTML={{ __html: vectors[section] }}
+      className={cn(
+        "absolute pointer-events-none -z-10 flex",
+        positioning[section],
+      )}
+      dangerouslySetInnerHTML={{
+        __html: vectors[section].replace('<svg ', '<svg class="h-full w-full min-w-0 flex-none" '),
+      }}
     />
   )
 }

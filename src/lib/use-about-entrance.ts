@@ -1,11 +1,11 @@
-import { scheduleMotionPreparation } from '../../lib/motion-preparation'
+import { scheduleMotionPreparation } from './motion-preparation'
 import { useRef } from 'react'
 import type { RefObject } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
-import { animations } from '../../lib/animations'
-import { motionEase } from '../../lib/motion-ease'
-import type { EntranceGroup } from '../shared/use-entrance'
+import { animations } from './animations'
+import { motionEase } from './motion-ease'
+import type { EntranceGroup } from './use-entrance'
 
 gsap.registerPlugin(useGSAP)
 

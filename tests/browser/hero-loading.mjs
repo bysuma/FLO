@@ -7,7 +7,7 @@ try {
   const staticPage = await browser.newPage({ javaScriptEnabled: false })
   await staticPage.goto(baseURL)
   assert(await staticPage.locator('h1').isVisible())
-  assert(await staticPage.locator('.hero-landscape img').evaluate((img) => img.complete && img.naturalWidth > 0))
+  assert(await staticPage.locator('[data-hero-media] img').evaluate((img) => img.complete && img.naturalWidth > 0))
   await staticPage.close()
   console.log('PASS headline and poster render without hydration')
   for (const mobile of [false, true]) {
@@ -19,7 +19,7 @@ try {
       window.heroMotionSamples = []
       const started = performance.now()
       const sample = () => {
-        const media = document.querySelector('.hero-landscape')
+        const media = document.querySelector('[data-hero-media]')
         const line = document.querySelector('h1 [data-line]')
         if (media && line) window.heroMotionSamples.push({
           media: getComputedStyle(media).clipPath + ':' + getComputedStyle(media).opacity,

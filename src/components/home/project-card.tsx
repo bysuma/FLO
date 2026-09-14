@@ -78,7 +78,10 @@ export function ProjectCard({ image, children }: { image: ReactNode; children: R
   )
 
   return (
-    <article ref={card} className="flex min-w-0 flex-1 flex-col bg-surface max-md:bg-[#f6f6f2]">
+    <article
+      ref={card}
+      className="overflow-clip flex min-w-0 flex-1 flex-col bg-surface max-md:bg-[#f6f6f2]"
+    >
       {image}
       <div className="relative isolate flex flex-1 overflow-clip">
         <div
@@ -88,7 +91,7 @@ export function ProjectCard({ image, children }: { image: ReactNode; children: R
         />
         <div
           ref={content}
-          className="flex min-w-0 flex-1 flex-col items-start px-5 pt-8 pb-6 text-ink max-md:p-[18px]"
+          className="flex min-w-0 flex-1 flex-col items-start px-5 pt-8 pb-6 text-ink max-md:p-4.5"
         >
           {children}
         </div>

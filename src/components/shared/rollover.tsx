@@ -20,7 +20,7 @@ export function Rollover({
   useGSAP(
     () => {
       const element = ref.current
-      const control = element?.closest('a, button')
+      const control = element?.closest("a,")
       if (!element || !control) return
       const media = gsap.matchMedia()
       media.add(
@@ -57,14 +57,14 @@ export function Rollover({
   )
 
   return (
-    <span
-      ref={ref}
-      className="rollover inline-grid overflow-clip align-middle [&>span]:[grid-area:1/1] [&>span]:inline-flex [&>span]:items-center [&>span]:justify-center"
-    >
-      <span className="rollover-original">
+    <span ref={ref} className="inline-grid overflow-clip align-middle">
+      <span className="[grid-area:1/1] inline-flex items-center justify-center">
         {icon || !reveal ? children : <TextReveal as="span">{children}</TextReveal>}
       </span>
-      <span className="rollover-copy invisible" aria-hidden="true">
+      <span
+        className="invisible [grid-area:1/1] inline-flex items-center justify-center"
+        aria-hidden="true"
+      >
         {children}
       </span>
     </span>

@@ -89,9 +89,10 @@ export function ParallaxImage({
         ref.current = node
         entrance?.ref(node)
       }}
-      className="project-image self-stretch w-auto h-auto aspect-447/392 max-md:aspect-auto max-md:h-60 object-cover parallax-frame grid overflow-clip @container-size [&>img]:[grid-area:1/1] [&>img]:w-[100cqw] [&>img]:h-[100cqh] [&>img]:min-w-0 [&>img]:min-h-0 [&>img]:object-cover"
+      className="self-stretch w-auto h-auto aspect-447/392 max-md:aspect-auto max-md:h-60 grid overflow-clip @container-size"
     >
       <img
+        className="[grid-area:1/1] w-[100cqw] h-[100cqh] min-w-0 min-h-0 object-cover"
         ref={imageRef}
         {...responsiveImage(
           src,
