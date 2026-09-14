@@ -10,7 +10,7 @@ export function SmoothScroll() {
     const media = gsap.matchMedia()
 
     media.add(
-      '(prefers-reduced-motion: no-preference)',
+      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
       () => {
         gsap.ticker.lagSmoothing(0)
         const lenis = new Lenis({
@@ -18,8 +18,6 @@ export function SmoothScroll() {
           autoToggle: true,
           anchors: true,
           stopInertiaOnNavigate: true,
-          // Use Lenis's touch inertia defaults without a second smoothing loop.
-          syncTouch: true,
         })
         const update = (time: number) => {
           // GSAP uses seconds; Lenis expects milliseconds.

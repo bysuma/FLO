@@ -1,6 +1,6 @@
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
-import { createPortal } from 'react-dom'
+import { createPortal, flushSync } from 'react-dom'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { gsap } from 'gsap'
 
@@ -83,9 +83,18 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
     if (closing.current) return
     closing.current = true
     finish.current = after ?? null
+    let completed = false
     const complete = () => {
-      onClose()
-      finish.current?.()
+      if (completed) return
+      completed = true
+      const navigateAfterClose = finish.current
+      finish.current = null
+      // Leave the menu's GSAP callback context before starting the page curtain.
+      // Finish unmounting the modal and reverting its animations first.
+      queueMicrotask(() => {
+        flushSync(onClose)
+        navigateAfterClose?.()
+      })
     }
     if (matchMedia('(prefers-reduced-motion: reduce)').matches || !timeline.current) {
       complete()
