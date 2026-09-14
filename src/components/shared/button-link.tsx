@@ -17,13 +17,13 @@ export function ButtonLink({
   ref?: Ref<HTMLAnchorElement>
   'data-entrance'?: string
 }) {
-  const className = `button inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] has-[img]:p-[.2rem] has-[img]:pl-[.8rem] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none ${primary ? 'bg-brand text-white' : 'bg-white text-ink'}`
+  const className = `button inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] has-[img]:p-[.2rem] has-[img]:pl-[.8rem] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none ${primary ? 'bg-[#3564ed] text-white' : 'bg-white text-ink'}`
   const content = (
     <>
       <Rollover>{children}</Rollover>
       {arrow && (
         <Rollover icon>
-          <img src="/services/arrow.svg" alt="" width="34" height="34" />
+          <img loading="lazy" src="/services/arrow.svg" alt="" width="34" height="34" />
         </Rollover>
       )}
     </>

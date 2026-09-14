@@ -20,7 +20,7 @@ export const Route = createFileRoute('/')({
         : []),
     ],
     links: [
-      { rel: 'preload', href: '/hero/video-poster.webp', as: 'image' },
+      { rel: 'preload', href: '/hero/video-poster.avif', as: 'image', fetchPriority: 'high' },
       ...(siteUrl ? [{ rel: 'canonical', href: `${siteUrl}/` }] : []),
     ],
   }),

@@ -64,7 +64,7 @@ function HeroContent() {
             </Link>
           </div>
         </div>
-        <HomeVideo src="/hero/landscape.mp4" alt="FLO Engineering project video" />
+        <HomeVideo src="/hero/landscape-desktop.mp4" mobileSrc="/hero/landscape-mobile.mp4" alt="FLO Engineering project video" />
       </div>
     </header>
   )

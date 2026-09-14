@@ -4,6 +4,7 @@ import { join, relative, basename, dirname } from 'node:path'
 
 const root = new URL('../public/', import.meta.url).pathname
 const manifest = {}
+const generator = await stat(new URL(import.meta.url))
 async function walk(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (entry.name === 'responsive') continue
@@ -15,13 +16,12 @@ async function walk(directory) {
     const candidates = [...new Set([160, 320, 480, 640, 960, 1280, 1600, 1920].filter(size => size < width).concat(width))]
     const variants = []
     for (const size of candidates) {
-      if (size === width) { variants.push({ src: source, width: size }); continue }
       const output = join(dirname(path), 'responsive', `${basename(path, '.webp')}-${size}.webp`)
       await mkdir(dirname(output), { recursive: true })
       const original = await stat(path)
       const generated = await stat(output).catch(() => null)
-      if (!generated || generated.mtimeMs < original.mtimeMs) {
-        await sharp(path).resize({ width: size, withoutEnlargement: true }).webp({ quality: 82 }).toFile(output)
+      if (!generated || generated.mtimeMs < Math.max(original.mtimeMs, generator.mtimeMs)) {
+        await sharp(path).resize({ width: size, withoutEnlargement: true }).webp({ quality: 72, effort: 5 }).toFile(output)
       }
       variants.push({ src: `/${relative(root, output)}`, width: size })
     }
@@ -29,5 +29,10 @@ async function walk(directory) {
   }
 }
 await walk(root)
+// The above-the-fold video poster is decoded before video playback begins.
+await sharp(join(root, 'hero/video-poster.webp'))
+  .resize({ width: 960, withoutEnlargement: true })
+  .avif({ quality: 40, effort: 6 })
+  .toFile(join(root, 'hero/video-poster.avif'))
 await writeFile(new URL('../src/lib/images.generated.json', import.meta.url), JSON.stringify(manifest, null, 2) + '\n')
 console.log(`Generated responsive variants for ${Object.keys(manifest).length} WebP images.`)

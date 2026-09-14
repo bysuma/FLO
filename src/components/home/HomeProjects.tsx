@@ -88,7 +88,7 @@ export function HomeProjects() {
                 <Rollover>View Project</Rollover>
               </span>
               <Rollover icon>
-                <img src="/projects/arrow.svg" width="34" height="34" alt="" />
+                <img loading="lazy" src="/projects/arrow.svg" width="34" height="34" alt="" />
               </Rollover>
             </button>
           </ProjectCard>
@@ -111,7 +111,7 @@ export function HomeProjects() {
           >
             <Rollover>Close</Rollover>
           </button>
-          <img
+          <img loading="lazy"
             {...responsiveImage(
               `/projects/${selected.image}.webp`,
               '(max-width: 767px) calc(100vw - 80px), 720px',

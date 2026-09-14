@@ -147,7 +147,7 @@ export function HomeResults() {
             key={stat.title}
             className="relative isolate flex h-[132.579px] w-[242px] max-w-full shrink-0 flex-col pt-[22px] pl-[20.84px] pr-3 text-ink [--reveal-delay:0] [--reveal-stagger:0]"
           >
-            <img
+            <img loading="lazy"
               src={`/results/card-mobile-${index + 1}.svg`}
               alt=""
               aria-hidden="true"

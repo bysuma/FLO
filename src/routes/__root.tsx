@@ -6,7 +6,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { SmoothScroll } from '../components/smooth-scroll'
 
-import appCss from '../styles.css?url'
+import appCss from '../styles.css?inline'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -23,37 +23,34 @@ export const Route = createRootRoute({
       },
     ],
     links: [
+      { rel: 'icon', href: '/navbar/logo.svg', type: 'image/svg+xml' },
       {
         rel: 'preload',
-        href: '/fonts/PPMori-Regular.woff2',
+        href: '/fonts/PPMori-Regular.latin.woff2',
         as: 'font',
         type: 'font/woff2',
         crossOrigin: 'anonymous',
       },
       {
         rel: 'preload',
-        href: '/fonts/PPMori-Light.woff2',
+        href: '/fonts/PPMori-Light.latin.woff2',
         as: 'font',
         type: 'font/woff2',
         crossOrigin: 'anonymous',
       },
       {
         rel: 'preload',
-        href: '/fonts/PPMori-Semibold.woff2',
+        href: '/fonts/PPMori-Semibold.latin.woff2',
         as: 'font',
         type: 'font/woff2',
         crossOrigin: 'anonymous',
       },
       {
         rel: 'preload',
-        href: '/fonts/PPTelegraf-Regular.woff2',
+        href: '/fonts/PPTelegraf-Regular.latin.woff2',
         as: 'font',
         type: 'font/woff2',
         crossOrigin: 'anonymous',
-      },
-      {
-        rel: 'stylesheet',
-        href: appCss,
       },
     ],
   }),
@@ -67,6 +64,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <style dangerouslySetInnerHTML={{ __html: appCss }} />
         <style dangerouslySetInnerHTML={{ __html: motionInitialCSS }} />
         <script dangerouslySetInnerHTML={{ __html: motionBootstrap }} />
       </head>

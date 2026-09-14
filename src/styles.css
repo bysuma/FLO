@@ -35,6 +35,42 @@
 
 
 
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-Light.latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+2122;
+}
+
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-Regular.latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+2122;
+}
+
+@font-face {
+  font-family: 'PP Mori';
+  src: url('/fonts/PPMori-Semibold.latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+2122;
+}
+
+@font-face {
+  font-family: 'PP Telegraf';
+  src: url('/fonts/PPTelegraf-Regular.latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+2000-206F, U+2122;
+}
+
 @theme {
   --color-brand: #3b6dfe;
   --color-ink: #121c58;

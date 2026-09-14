@@ -103,7 +103,7 @@ export function HomeAbout() {
           className="flex size-7 items-center justify-center"
           onClick={() => scrollGallery(-1)}
         >
-          <img
+          <img loading="lazy"
             src="/about/gallery-arrow.svg"
             alt=""
             width="28"
@@ -118,7 +118,7 @@ export function HomeAbout() {
           className="flex size-7 items-center justify-center"
           onClick={() => scrollGallery(1)}
         >
-          <img src="/about/gallery-arrow.svg" alt="" width="28" height="28" />
+          <img loading="lazy" src="/about/gallery-arrow.svg" alt="" width="28" height="28" />
         </button>
       </div>
     </section>

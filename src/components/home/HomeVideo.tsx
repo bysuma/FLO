@@ -1,12 +1,12 @@
 import { useGSAP } from '@gsap/react'
-import { useHeroPreparation } from '../shared/hero-preparation'
 import { animations, usesSimpleMotion } from '../../lib/animations'
-import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { useHeroPreparation } from '../shared/hero-preparation'
+import { useEffect, useRef } from 'react'
 
 gsap.registerPlugin(useGSAP)
 
-export function HomeVideo({ src, alt }: { src: string; alt: string }) {
+export function HomeVideo({ src, mobileSrc, alt }: { src: string; mobileSrc: string; alt: string }) {
   const preparation = useHeroPreparation()
   const ref = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -65,7 +65,7 @@ export function HomeVideo({ src, alt }: { src: string; alt: string }) {
       motion.removeEventListener('change', sync)
       video.pause()
     }
-  }, [src, preparation])
+  }, [src, mobileSrc, preparation])
 
   useGSAP(
     () => {
@@ -113,21 +113,31 @@ export function HomeVideo({ src, alt }: { src: string; alt: string }) {
   return (
     <div
       ref={ref}
-      className="hero-landscape relative block w-199.5 h-125 max-w-none shrink-0 aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:w-[797.847px] min-[1101px]:h-[500px] min-[1101px]:ml-auto"
       data-hero-mask
+      className="hero-landscape relative block w-199.5 h-125 max-w-none shrink-0 aspect-[797.847/500] max-[1100px]:self-stretch max-[1100px]:w-auto max-[1100px]:h-auto max-[1100px]:min-w-0 min-[1101px]:w-[797.847px] min-[1101px]:h-[500px] min-[1101px]:ml-auto"
     >
-      <div className="h-full w-full aspect-[797.847/500] mask-[url('/hero/video-mask.svg')] mask-size-[100%_100%] mask-no-repeat">
+      <div className="relative h-full w-full aspect-[797.847/500] mask-[url('/hero/video-mask.svg')] mask-size-[100%_100%] mask-no-repeat">
+        <img
+          src="/hero/video-poster.avif"
+          alt=""
+          width="960"
+          height="540"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
         <video
           ref={videoRef}
-          src={src}
-          poster="/hero/video-poster.webp"
           aria-label={alt}
           muted
           loop
           playsInline
-          preload="auto"
-          className="block h-full w-full aspect-[797.847/500] object-cover"
-        />
+          preload="none"
+          onPlaying={(event) => { event.currentTarget.style.opacity = '1' }}
+          className="relative block h-full w-full aspect-[797.847/500] object-cover opacity-0"
+        >
+          <source src={mobileSrc} media="(max-width: 767px)" type="video/mp4" />
+          <source src={src} type="video/mp4" />
+        </video>
       </div>
     </div>
   )

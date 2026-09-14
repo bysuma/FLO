@@ -82,21 +82,21 @@ export function Footer() {
           className="ml-auto flex items-start gap-12 max-md:ml-0 max-md:basis-auto max-md:order-1 max-md:gap-12"
           aria-label="Social media"
         >
-          <img
+          <img loading="lazy"
             {...entrance('images', 'image-1')}
             src="/footer/social-1.svg"
             width="20"
             height="20"
             alt="Facebook"
           />
-          <img
+          <img loading="lazy"
             {...entrance('images', 'image-2')}
             src="/footer/social-2.svg"
             width="20"
             height="20"
             alt="Instagram"
           />
-          <img
+          <img loading="lazy"
             {...entrance('images', 'image-3')}
             src="/footer/social-3.svg"
             width="20"
@@ -107,7 +107,7 @@ export function Footer() {
       </div>
       <div className="footer-bottom max-md:pt-9 max-md:flex-col max-md:items-start max-md:gap-[57px] mt-auto flex flex-wrap items-end justify-between gap-8 pt-24">
         <Link to="/" hash="home" aria-label="FLO home" className="flex items-start max-md:order-2">
-          <img
+          <img loading="lazy"
             {...entrance('images', 'image-6')}
             className="footer-logo w-97.5 h-auto max-[1100px]:w-72 max-md:w-[178px]"
             src="/footer/logo.svg"
@@ -115,7 +115,7 @@ export function Footer() {
             height="182"
             alt="FLO"
           />
-          <img
+          <img loading="lazy"
             {...entrance('images', 'image-7')}
             src="/footer/trademark.svg"
             alt=""
