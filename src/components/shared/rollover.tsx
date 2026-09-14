@@ -20,7 +20,7 @@ export function Rollover({
   useGSAP(
     () => {
       const element = ref.current
-      const control = element?.closest("a,")
+      const control = element?.closest('a, button')
       if (!element || !control) return
       const media = gsap.matchMedia()
       media.add(

@@ -69,7 +69,7 @@ export function TextReveal({ as = 'h2', children, ...props }: TextRevealProps) {
           prepared?.()
           return
         }
-        const owner = element.closest("[data-reveal-owner], a[data-entrance],")
+        const owner = element.closest('[data-reveal-owner], a[data-entrance], button')
         const configuredThreshold = Number.parseFloat(
           getComputedStyle(element).getPropertyValue('--reveal-threshold'),
         )
