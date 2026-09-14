@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import { Flip } from 'gsap/Flip'
 import { animations } from '../../lib/animations'
 import { TextReveal } from '../text-reveal'
 import { BackgroundPhoto } from './background-photo'
@@ -26,7 +25,6 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
   useEffect(() => {
     const element = card.current
     if (!element) return
-    gsap.registerPlugin(Flip)
     const media = gsap.matchMedia()
     media.add({ desktop: '(min-width: 768px) and (hover: hover) and (pointer: fine)', reduced: '(prefers-reduced-motion: reduce)' }, context => {
       if (!context.conditions?.desktop) return
@@ -35,6 +33,9 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
       const vectors = ribbons.current.filter(node => node !== null)
       const lengths = paths.current.map(path => path?.getTotalLength() ?? 0)
       const timeline = gsap.timeline({ paused: true, defaults: { duration: duration / 1000, ease } })
+        // Animate flex continuously: FLIP on both sibling cards caused competing
+        // transforms and stretched content when switching hover mid-transition.
+        .to(element, { flexGrow: 795 / 577 }, 0)
         .fromTo(background.current, { scaleX: 0 }, { scaleX: 1 }, 0)
         .to(heading.current, { y: -63 }, 0)
         .fromTo(description.current, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0 }, .12)
@@ -49,20 +50,9 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
       } else {
         timeline.fromTo(vectors, { scaleY: 0, transformOrigin: 'center top' }, { scaleY: 1, stagger: stagger / 1000 }, .08)
       }
-      const cards = Array.from(element.parentElement?.children ?? []) as HTMLElement[]
-      let expanded = false
-      let layoutTween: gsap.core.Timeline | undefined
-      const resizeCard = (active: boolean) => {
-        if (active === expanded) return
-        expanded = active
-        const state = Flip.getState(cards)
-        element.style.flexGrow = active ? String(795 / 577) : ''
-        layoutTween = Flip.from(state, { scale: true, duration: reduced ? 0 : duration / 1000, ease })
-      }
       let hovered = false
       const update = () => {
         const active = hovered || element.contains(document.activeElement)
-        resizeCard(active)
         if (reduced) timeline.progress(active ? 1 : 0).pause()
         else if (active) timeline.play()
         else timeline.reverse()
@@ -71,7 +61,6 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
       const leave = () => { hovered = false; update() }
       const blur = (event: FocusEvent) => {
         if (!element.contains(event.relatedTarget as Node | null)) {
-          resizeCard(hovered)
           if (reduced) timeline.progress(hovered ? 1 : 0).pause()
           else if (!hovered) timeline.reverse()
         }
@@ -81,8 +70,6 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
       element.addEventListener('focusin', update)
       element.addEventListener('focusout', blur)
       return () => {
-        layoutTween?.revert()
-        element.style.removeProperty('flex-grow')
         element.removeEventListener('pointerenter', enter)
         element.removeEventListener('pointerleave', leave)
         element.removeEventListener('focusin', update)
