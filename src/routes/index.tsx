@@ -36,7 +36,7 @@ function Home() {
   return <div className="relative isolate">
     <Hero />
     <div className="relative z-10 bg-white">
-      <main><About /><Services /><Results /><Projects /><Testimonials /><Contact /></main>
+      <main className="relative z-10 bg-white"><About /><Services /><Results /><Projects /><Testimonials /><Contact /></main>
       <Footer />
     </div>
   </div>
