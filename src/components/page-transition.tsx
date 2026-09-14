@@ -14,7 +14,7 @@ export function PageTransition() {
 
   useBlocker({
     enableBeforeUnload: false,
-    shouldBlockFn: ({ current, next }) => {
+    shouldBlockFn: async ({ current, next }) => {
       const curtain = curtainRef.current
       if (
         current.pathname === next.pathname ||
@@ -48,6 +48,8 @@ export function PageTransition() {
           gsap.set(curtain, { visibility: 'hidden', pointerEvents: 'none' })
         }, 10000)
       }
+      // Keep the current route mounted until the curtain fully covers it.
+      await pendingRef.current
       return false
     },
   })
