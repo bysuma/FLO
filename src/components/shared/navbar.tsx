@@ -6,16 +6,11 @@ import { TextReveal } from '../text-reveal'
 import { useCallback, useState } from 'react'
 import { MobileMenu } from './mobile-menu'
 
-const links = [
-  { label: 'About us', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact Us', href: '#contact' },
-]
+import { navigationLinks as links } from './navigation'
 
 const entrances = [{ name: 'controls', distance: 20 }] satisfies readonly EntranceGroup[]
 
-export function Navbar({ light = false }: { light?: boolean }) {
+export function Navbar({ light = false, variant = 'default' }: { light?: boolean; variant?: 'default' | 'photo' }) {
   const motionRef = useRef<HTMLElement>(null)
   const entrance = useEntrance(motionRef, entrances)
   const [open, setOpen] = useState(false)
@@ -29,10 +24,10 @@ export function Navbar({ light = false }: { light?: boolean }) {
       <div className="hidden flex-1 items-center justify-between md:flex">
         {links.slice(0, 2).map((link) => (
           <Link
-            {...entrance('controls', link.href)}
-            key={link.href}
-            to={link.href === '#about' ? '/about' : '/'}
-            hash={link.href === '#about' ? undefined : link.href.slice(1)}
+            {...entrance('controls', link.label)}
+            key={link.label}
+            to={link.to}
+            hash={link.hash}
           >
             <TextReveal as="span">{link.label}</TextReveal>
           </Link>
@@ -43,7 +38,7 @@ export function Navbar({ light = false }: { light?: boolean }) {
         to="/"
         hash="home"
         aria-label="FLO Engineering home"
-        className={`${light ? "[background-image:url('/about-page/nav-detail.svg'),url('/about-page/nav-logo.svg')]! [&_.brand-word]:text-white" : ''} brand-logo max-md:size-[69px] max-md:pb-[16.7px] max-md:bg-size-[11.87px_11.87px,contain] max-md:bg-position-[right_16px_top_28.6px,center] w-21.5 h-21.5 [background:url('/navbar/logo-detail.svg')_right_1.25rem_top_2.22rem/.925rem_.925rem_no-repeat,url('/navbar/logo.svg')_center/contain_no-repeat] flex items-end justify-center pb-[1.3rem] shrink-0`}
+        className={`${variant === 'photo' ? "[background-image:url('/contact-page/nav-detail.svg'),url('/contact-page/nav-logo.svg')]! [&_.brand-word]:text-white" : light ? "[background-image:url('/about-page/nav-detail.svg'),url('/about-page/nav-logo.svg')]! [&_.brand-word]:text-white" : ''} brand-logo max-md:size-[69px] max-md:pb-[16.7px] max-md:bg-size-[11.87px_11.87px,contain] max-md:bg-position-[right_16px_top_28.6px,center] w-21.5 h-21.5 [background:url('/navbar/logo-detail.svg')_right_1.25rem_top_2.22rem/.925rem_.925rem_no-repeat,url('/navbar/logo.svg')_center/contain_no-repeat] flex items-end justify-center pb-[1.3rem] shrink-0`}
       >
         <TextReveal
           as="span"
@@ -55,10 +50,10 @@ export function Navbar({ light = false }: { light?: boolean }) {
       <div className="hidden flex-1 items-center justify-between md:flex">
         {links.slice(2).map((link) => (
           <Link
-            {...entrance('controls', link.href)}
-            key={link.href}
-            to={link.href === '#about' ? '/about' : '/'}
-            hash={link.href === '#about' ? undefined : link.href.slice(1)}
+            {...entrance('controls', link.label)}
+            key={link.label}
+            to={link.to}
+            hash={link.hash}
           >
             <TextReveal as="span">{link.label}</TextReveal>
           </Link>

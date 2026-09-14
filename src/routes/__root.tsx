@@ -1,6 +1,6 @@
 import { PageTransition } from '../components/page-transition'
 import { NotFound, RouteError } from '../components/route-feedback'
-import { motionBootstrap, motionInitialCSS } from '../lib/motion-bootstrap'
+import { motionBootstrap } from '../lib/motion-bootstrap'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
@@ -65,7 +65,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
         <style dangerouslySetInnerHTML={{ __html: appCss }} />
-        <style dangerouslySetInnerHTML={{ __html: motionInitialCSS }} />
         <script dangerouslySetInnerHTML={{ __html: motionBootstrap }} />
       </head>
       <body className="m-0 bg-white font-sans text-ink antialiased [&_a]:[-webkit-tap-highlight-color:transparent] [&_button]:[-webkit-tap-highlight-color:transparent] [&_button]:cursor-pointer [&_a]:touch-manipulation [&_button]:touch-manipulation [&_section]:scroll-mt-6 **:focus-visible:outline-2 **:focus-visible:outline-accent **:focus-visible:outline-offset-5">

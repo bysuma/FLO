@@ -16,7 +16,7 @@ const config = defineConfig(({ mode }) => {
     nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),
     tanstackStart({
-      prerender: { enabled: true, failOnError: true, filter: page => ['/', '/about'].includes(page.path) },
+      prerender: { enabled: true, failOnError: true, filter: page => ['/', '/about', '/contact'].includes(page.path) },
       sitemap: { enabled: Boolean(siteUrl), ...(siteUrl ? { host: new URL(siteUrl).origin } : {}) },
     }),
     viteReact(),

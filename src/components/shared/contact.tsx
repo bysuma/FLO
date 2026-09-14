@@ -45,7 +45,7 @@ export function Contact() {
       >
         Let's talk about what your infrastructure needs and how we can help.
       </TextReveal>
-      <ButtonLink {...entrance('controls')} href="mailto:info@floengineering.net">
+      <ButtonLink {...entrance('controls')} href="/contact">
         Contact Us
       </ButtonLink>
     </section>

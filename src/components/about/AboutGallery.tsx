@@ -7,11 +7,11 @@ import { responsiveImage } from '../../lib/images'
 gsap.registerPlugin(useGSAP)
 
 const photos = [
-  { name: 'field', width: 221 },
-  { name: 'crew', width: 243 },
-  { name: 'kristen', width: 397 },
-  { name: 'road', width: 327 },
-  { name: 'site', width: 323 },
+  { name: 'field', width: 221, className: 'w-[221px]' },
+  { name: 'crew', width: 243, className: 'w-[243px]' },
+  { name: 'kristen', width: 397, className: 'w-[397px]' },
+  { name: 'road', width: 327, className: 'w-[327px]' },
+  { name: 'site', width: 323, className: 'w-[323px]' },
 ]
 
 export function AboutGallery() {
@@ -178,11 +178,10 @@ export function AboutGallery() {
       <div ref={trackRef} className="flex w-max gap-3">
         {[0, 1, 2].map((copy) => (
           <div key={copy} aria-hidden={copy !== 1} className="flex gap-3">
-            {photos.map(({ name, width }, index) => (
+            {photos.map(({ name, width, className }, index) => (
               <div
                 key={name}
-                style={{ width }}
-                className={`h-[299px] shrink-0 overflow-hidden rounded-md max-md:max-w-[80vw] ${index === 0 ? '-mr-0.5' : index === 3 ? '-mr-[5px]' : ''}`}
+                className={`${className} h-[299px] shrink-0 overflow-hidden rounded-md max-md:max-w-[80vw] ${index === 0 ? '-mr-0.5' : index === 3 ? '-mr-[5px]' : ''}`}
               >
                 <img
                   {...responsiveImage(`/about-page/hero-${name}.webp`, `${width}px`)}

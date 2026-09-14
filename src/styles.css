@@ -133,3 +133,9 @@
   --spacing-page: clamp(1.25rem, 2.2vw, 2rem);
   --spacing-inset: clamp(1.25rem, 10vw, 9rem);
 }
+
+/* Global pre-hydration entrance visibility; reduced motion stays visible. */
+@media (prefers-reduced-motion: no-preference) {
+html[data-motion="boot"] :is([data-hero-mask], [data-text-reveal], [data-entrance]):not([data-motion-ready]),
+html[data-motion] [data-motion-pending]:not([data-motion-ready]) { opacity: 0; }
+}

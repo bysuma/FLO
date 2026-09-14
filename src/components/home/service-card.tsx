@@ -1,3 +1,4 @@
+import { contactLinks } from '../../lib/config'
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
 import { gsap } from 'gsap'
@@ -193,7 +194,7 @@ export function ServiceCard({ kind, cardEntrance, controlEntrance }: Props) {
       </p>
       <ButtonLink
         {...controlEntrance}
-        href={`mailto:info@floengineering.net?subject=${encodeURIComponent(emergency ? 'Emergency work' : 'Infrastructure planning')}`}
+        href={`${contactLinks.email}?subject=${encodeURIComponent(emergency ? 'Emergency work' : 'Infrastructure planning')}`}
         arrow
       >
         Learn More

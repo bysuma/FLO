@@ -1,3 +1,4 @@
+import { company, contactLinks } from '../../lib/config'
 import { responsiveImage } from '../../lib/images'
 import { useEntrance } from './use-entrance'
 import type { EntranceGroup } from './use-entrance'
@@ -22,25 +23,25 @@ export function Footer() {
       className="footer sticky bottom-0 z-0 isolate overflow-clip motion-reduce:relative max-md:relative [@media(max-height:650px)]:relative min-h-149.75 bg-brand [&_a]:transition-colors [&_a]:duration-250 [&_a]:motion-safe:hover:text-white [&_a]:motion-reduce:transition-none [&_address]:[--reveal-stagger:90] [&_li:nth-child(2)]:[--reveal-delay:180] [&_li:nth-child(3)]:[--reveal-delay:260] [&_li:nth-child(4)]:[--reveal-delay:340] section-shell px-page flex flex-col py-8 max-md:py-12 max-md:px-[34px]"
     >
       <Decoration section="footer" />
-      <div className="flex flex-wrap gap-10 md:gap-16 max-md:flex-col max-md:gap-[33px]">
+      <div className="footer-top flex flex-wrap gap-10 md:gap-16 max-md:flex-col max-md:gap-[33px]">
         <div className="w-52 max-md:w-[236px] max-md:order-0">
           <TextReveal as="h2" className="font-semibold">
             Contact Us
           </TextReveal>
           <TextReveal as="address" className="mt-8 text-small not-italic leading-tight">
-            25029 Bleecker St
+            {company.address.street}
             <br />
-            Suite 200
+            {company.address.suite}
             <br />
-            Baldwin Park, CA
+            {company.address.locality}
             <br />
             <br />
             <br />
-            <a className={footerLink} href="mailto:info@floengineering.net">
-              info@floengineering.net
+            <a className={footerLink} href={contactLinks.email}>
+              {company.email}
             </a>
             <br />
-            License No. 1078272
+            License No. {company.licenseNumber}
           </TextReveal>
         </div>
         <div className="w-40 max-md:order-2 max-sm:w-auto max-sm:flex-1">
@@ -64,7 +65,7 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link className={footerLink} to="/" hash="contact">
+              <Link className={footerLink} to="/contact">
                 <TextReveal as="span">Contact</TextReveal>
               </Link>
             </li>
@@ -161,7 +162,7 @@ export function Footer() {
             </span>
           </div>
           <TextReveal as="p" className="pb-1 text-caption">
-            © 2026 FLO Engineering. All rights reserved.
+            © 2026 {company.name}. All rights reserved.
           </TextReveal>
         </div>
       </div>

@@ -8,9 +8,9 @@ gsap.registerPlugin(useGSAP)
 import { animations } from '../../lib/animations'
 import { Rollover } from './rollover'
 
-type MenuLink = { label: string; href: string }
+import type { NavigationLink } from './navigation'
 
-export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () => void }) {
+export function MobileMenu({ links, onClose }: { links: readonly NavigationLink[]; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const timeline = useRef<gsap.core.Timeline | null>(null)
@@ -164,9 +164,9 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
       >
         {links.map((link) => (
           <Link
-            key={link.href}
-            to={link.href === '#about' ? '/about' : '/'}
-            hash={link.href === '#about' ? undefined : link.href.slice(1)}
+            key={link.label}
+            to={link.to}
+            hash={link.hash}
             data-menu-link
             onClick={(event) => {
               if (
@@ -181,8 +181,8 @@ export function MobileMenu({ links, onClose }: { links: MenuLink[]; onClose: () 
               event.preventDefault()
               close(() => {
                 void navigate({
-                  to: link.href === '#about' ? '/about' : '/',
-                  hash: link.href === '#about' ? undefined : link.href.slice(1),
+                  to: link.to,
+                  hash: link.hash,
                 })
               })
             }}

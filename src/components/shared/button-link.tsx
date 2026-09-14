@@ -28,7 +28,9 @@ export function ButtonLink({
       )}
     </>
   )
-  return href.startsWith('#') ? (
+  return href === '/contact' ? (
+    <Link ref={ref} data-entrance={entrance} to="/contact" className={className}>{content}</Link>
+  ) : href.startsWith('#') ? (
     <Link ref={ref} data-entrance={entrance} to="/" hash={href.slice(1)} className={className}>
       {content}
     </Link>

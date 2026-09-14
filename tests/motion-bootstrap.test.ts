@@ -1,7 +1,10 @@
 import { describe, it as test } from 'node:test'
 import assert from 'node:assert/strict'
 import { runInNewContext } from 'node:vm'
-import { motionBootstrap, motionInitialCSS } from '../src/lib/motion-bootstrap'
+import { readFileSync } from 'node:fs'
+import { motionBootstrap } from '../src/lib/motion-bootstrap'
+
+const motionInitialCSS = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8')
 
 function boot(reduced = false) {
   const dataset: Record<string, string> = {}

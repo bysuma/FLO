@@ -1,3 +1,4 @@
+import { contactLinks } from '../../lib/config'
 import { TextReveal } from '../text-reveal'
 import { ButtonLink } from '../shared/button-link'
 import { responsiveImage } from '../../lib/images'
@@ -30,7 +31,7 @@ export function AboutOpportunities() {
             </TextReveal>
             <div className="[&_a]:min-h-7.5 [&_a]:text-sm">
               <ButtonLink
-                href={`mailto:info@floengineering.net?subject=${index ? 'Partnership' : 'Careers'}`}
+                href={`${contactLinks.email}?subject=${index ? 'Partnership' : 'Careers'}`}
                 primary
               >
                 {item.action}

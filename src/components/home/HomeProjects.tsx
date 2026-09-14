@@ -1,3 +1,4 @@
+import { contactLinks } from '../../lib/config'
 import { responsiveImage } from '../../lib/images'
 import { useEntrance } from '../shared/use-entrance'
 import type { EntranceGroup } from '../shared/use-entrance'
@@ -132,7 +133,7 @@ export function HomeProjects() {
           <a
             {...entrance('controls', 'contact')}
             className="button inline-flex items-center justify-center gap-3 min-h-9 px-4 py-2 rounded-button font-display text-base leading-[1.2] has-[img]:p-[.2rem] has-[img]:pl-[.8rem] active:scale-[.98] [--reveal-delay:0] motion-reduce:transition-none self-start bg-brand text-white"
-            href={`mailto:info@floengineering.net?subject=${encodeURIComponent(selected.description)}`}
+            href={`${contactLinks.email}?subject=${encodeURIComponent(selected.description)}`}
           >
             <Rollover>Ask about this project</Rollover>
           </a>
