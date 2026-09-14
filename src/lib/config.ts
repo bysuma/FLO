@@ -31,3 +31,8 @@ export const navigationLinks = [
 ] as const
 
 export type NavigationLink = (typeof navigationLinks)[number]
+
+export const socialLinks = {
+  instagram: 'https://www.instagram.com/floengineeringinc/',
+  linkedin: 'https://www.linkedin.com/company/flo-engineering-inc/home/',
+} as const

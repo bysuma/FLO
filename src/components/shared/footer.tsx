@@ -1,4 +1,4 @@
-import { company, contactLinks } from '../../lib/config'
+import { company, contactLinks, socialLinks } from '../../lib/config'
 import { responsiveImage } from '../../lib/images'
 import { useEntrance } from '../../lib/use-entrance'
 import type { EntranceGroup } from '../../lib/use-entrance'
@@ -86,30 +86,13 @@ export function Footer() {
           className="ml-auto flex items-start gap-12 max-md:ml-0 max-md:order-1"
           aria-label="Social media"
         >
-          <img
-            loading="lazy"
-            {...entrance('images', 'image-1')}
-            src="/footer/social-1.svg"
-            width="20"
-            height="20"
-            alt="Facebook"
-          />
-          <img
-            loading="lazy"
-            {...entrance('images', 'image-2')}
-            src="/footer/social-2.svg"
-            width="20"
-            height="20"
-            alt="Instagram"
-          />
-          <img
-            loading="lazy"
-            {...entrance('images', 'image-3')}
-            src="/footer/social-3.svg"
-            width="20"
-            height="20"
-            alt="LinkedIn"
-          />
+          <a {...entrance('images', 'instagram')} href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="FLO Engineering on Instagram">
+            <img loading="lazy" src="/footer/social-1.svg" width="20" height="20" alt="" />
+          </a>
+          <a {...entrance('images', 'linkedin')} href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="FLO Engineering on LinkedIn">
+            <img loading="lazy" src="/footer/social-2.svg" width="20" height="20" alt="" />
+          </a>
+          <img {...entrance('images', 'facebook')} loading="lazy" src="/footer/social-3.svg" width="20" height="20" alt="Facebook" />
         </div>
       </div>
       <div className="max-md:pt-9 max-md:flex-col max-md:items-start max-md:gap-14.25 mt-auto flex flex-wrap items-end justify-between gap-8 pt-24">

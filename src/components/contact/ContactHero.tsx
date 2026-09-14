@@ -1,3 +1,4 @@
+import { socialLinks } from '../../lib/config'
 import { useRef } from 'react'
 import { useEntrance, type EntranceGroup } from '../../lib/use-entrance'
 import { Navbar } from '../shared/navbar'
@@ -40,14 +41,15 @@ function ContactHeroContent() {
         >
           Let’s build together
         </TextReveal>
-        <img
-          {...entrance('socials')}
-          src="/contact-page/socials.svg"
-          alt="Instagram, LinkedIn and Facebook"
-          width="157"
-          height="20"
-          className="h-[19.783px] w-39.25"
-        />
+        <div className="flex w-39.25 items-center justify-between" aria-label="Social media">
+          <a {...entrance('socials', 'instagram')} href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="FLO Engineering on Instagram">
+            <img src="/footer/social-1.svg" width="20" height="20" alt="" className="size-5 brightness-0 invert" />
+          </a>
+          <a {...entrance('socials', 'linkedin')} href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="FLO Engineering on LinkedIn">
+            <img src="/footer/social-2.svg" width="20" height="20" alt="" className="size-5 brightness-0 invert" />
+          </a>
+          <img {...entrance('socials', 'facebook')} src="/footer/social-3.svg" width="20" height="20" alt="Facebook" className="size-5 brightness-0 invert" />
+        </div>
       </div>
     </header>
   )
