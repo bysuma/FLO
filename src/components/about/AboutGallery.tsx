@@ -52,7 +52,7 @@ export function AboutGallery() {
         )
       }
       const tick = (_time: number, delta: number) => {
-        if (drag || tween || visible! || document.hidden || reduced.matches || !cycle) return
+        if (drag || tween || !visible || document.hidden || reduced.matches || !cycle) return
         position.value =
           (position.value + (animations.aboutGallery.speed * Math.min(delta, 50)) / 1000) % cycle
         render()

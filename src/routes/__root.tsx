@@ -23,7 +23,7 @@ export const Route = createRootRoute({
       },
     ],
     links: [
-      { rel: 'icon', href: '/navbar/logo.svg', type: 'image/svg+xml' },
+      { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
       {
         rel: 'preload',
         href: '/fonts/PPMori-Regular.latin.woff2',
