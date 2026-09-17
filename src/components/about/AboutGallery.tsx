@@ -174,18 +174,17 @@ export function AboutGallery() {
       role="region"
       aria-label="FLO team photo carousel"
       tabIndex={0}
-      className="mt-24.25 overflow-hidden px-4.25 mask-l-from-95% mask-r-from-95% select-none touch-pan-y cursor-grab active:cursor-grabbing"
+      className="mt-24.25 overflow-hidden px-4.25 select-none touch-pan-y cursor-grab active:cursor-grabbing"
     >
       <div ref={trackRef} className="flex w-max gap-3">
         {[0, 1, 2].map((copy) => (
           <div key={copy} aria-hidden={copy !== 1} className="flex gap-3">
-            {photos.map(({ name, width, className }, index) => (
+            {photos.map(({ name, width, className }) => (
               <div
                 key={name}
                 className={cn(
                   className,
                   "h-74.75 shrink-0 overflow-hidden rounded-md max-md:max-w-[80vw]",
-                  index === 0 ? '-mr-0.5' : index === 3 ? '-mr-1.25' : '',
                 )}
               >
                 <img
