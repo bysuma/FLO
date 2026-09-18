@@ -111,18 +111,18 @@
   },
   "/contact/background-mobile.webp": {
     "width": 960,
-    "height": 398,
+    "height": 566,
     "srcSet": "/contact/responsive/background-mobile-160.webp 160w, /contact/responsive/background-mobile-320.webp 320w, /contact/responsive/background-mobile-480.webp 480w, /contact/responsive/background-mobile-640.webp 640w, /contact/responsive/background-mobile-960.webp 960w"
   },
   "/contact/background.webp": {
     "width": 1600,
-    "height": 664,
+    "height": 943,
     "srcSet": "/contact/responsive/background-160.webp 160w, /contact/responsive/background-320.webp 320w, /contact/responsive/background-480.webp 480w, /contact/responsive/background-640.webp 640w, /contact/responsive/background-960.webp 960w, /contact/responsive/background-1280.webp 1280w, /contact/responsive/background-1600.webp 1600w"
   },
   "/contact-page/hero.webp": {
-    "width": 1670,
-    "height": 941,
-    "srcSet": "/contact-page/responsive/hero-160.webp 160w, /contact-page/responsive/hero-320.webp 320w, /contact-page/responsive/hero-480.webp 480w, /contact-page/responsive/hero-640.webp 640w, /contact-page/responsive/hero-960.webp 960w, /contact-page/responsive/hero-1280.webp 1280w, /contact-page/responsive/hero-1600.webp 1600w, /contact-page/responsive/hero-1670.webp 1670w"
+    "width": 1920,
+    "height": 1132,
+    "srcSet": "/contact-page/responsive/hero-160.webp 160w, /contact-page/responsive/hero-320.webp 320w, /contact-page/responsive/hero-480.webp 480w, /contact-page/responsive/hero-640.webp 640w, /contact-page/responsive/hero-960.webp 960w, /contact-page/responsive/hero-1280.webp 1280w, /contact-page/responsive/hero-1600.webp 1600w, /contact-page/responsive/hero-1920.webp 1920w"
   },
   "/footer/dbe.webp": {
     "width": 160,
