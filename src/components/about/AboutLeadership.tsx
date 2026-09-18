@@ -6,20 +6,20 @@ import { Rollover } from '../shared/rollover'
 import { animations } from '../../lib/animations'
 import { useRef, useState } from 'react'
 import { TextReveal } from '../text-reveal'
-import { BackgroundPhoto } from '../shared/background-photo'
+import { BackgroundVideo } from '../shared/background-video'
 import { responsiveImage } from '../../lib/images'
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 export function AboutLeadership() {
   const [selected, setSelected] = useState(0)
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const backgroundRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const headingRef = useRef<HTMLDivElement>(null)
-  const blurRef = useRef<HTMLDivElement>(null)
   const toggleIconRef = useRef<HTMLSpanElement>(null)
   const portraitsRef = useRef<HTMLDivElement>(null)
   const panelTimeline = useRef<gsap.core.Timeline | null>(null)
@@ -51,7 +51,12 @@ export function AboutLeadership() {
               0,
             )
             .fromTo(toggleIconRef.current, { rotation: 0 }, { rotation: 45 }, 0)
-            .fromTo(blurRef.current, { opacity: 0 }, { opacity: 1 }, 0)
+            .fromTo(
+              videoRef.current,
+              { filter: 'blur(0px)', scale: 1 },
+              { filter: 'blur(14px)', scale: 1.04 },
+              0,
+            )
             .fromTo(
               headingRef.current,
               { scale: desktop ? 1.15 : 1, transformOrigin: 'left center' },
@@ -147,16 +152,11 @@ export function AboutLeadership() {
       className="relative isolate flex min-h-215.75 items-center gap-12 overflow-clip p-4 pl-inset max-lg:grid max-lg:min-h-svh max-lg:grid-cols-1 max-lg:gap-8 max-lg:px-4 max-lg:py-12"
     >
       <div ref={backgroundRef} className="absolute inset-0 -z-10">
-        <BackgroundPhoto
-          src="/about-page/leadership-bg.webp"
-          mobileSrc="/about-page/leadership-bg.webp"
+        <BackgroundVideo
+          ref={videoRef}
+          src="/about-page/leadership-video.mp4"
+          poster="/about-page/leadership-bg.webp"
         />
-        <div ref={blurRef} aria-hidden="true" className="absolute inset-0 opacity-0">
-          <BackgroundPhoto
-            src="/about-page/leadership-bg-blurred.webp"
-            mobileSrc="/about-page/leadership-bg-blurred.webp"
-          />
-        </div>
         <div className="absolute inset-0 bg-black/30" />
       </div>
       <div
